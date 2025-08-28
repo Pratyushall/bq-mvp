@@ -1,0 +1,161 @@
+/* --- Tailwind entry (choose ONE style depending on your Tailwind version) --- */
+
+/* ✅ Tailwind v3.x (fixes the “@layer base … no matching @tailwind base” error) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ❗ If you’re on Tailwind v4, comment the three lines above and uncomment: */
+/* @import "tailwindcss"; */
+
+/* --- Design tokens: near-black background with slightly grey tone --- */
+:root {
+  /* Near-black with a hint of grey */
+  --background: #0b0d10; /* fallback */
+  --foreground: #e8eaed; /* soft white */
+  --muted: #101317;
+  --muted-foreground: #b7bec7;
+
+  /* Accent palette used by your hero */
+  --primary: #10b981; /* emerald */
+  --primary-foreground: #05120e;
+  --secondary: #0ea5e9; /* sky */
+  --accent: #22d3ee; /* cyan */
+
+  /* Borders / ring */
+  --border: #1a1f27;
+  --ring: #22d3ee;
+
+  /* Font families (from next/font variables) */
+  --font-cormorant: ui-serif, Georgia, "Times New Roman", serif;
+  --font-cinzel: ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* Prefer OKLCH when supported */
+@supports (color: oklch(50% 0 0)) {
+  :root {
+    --background: oklch(19% 0 0); /* slightly grey black */
+    --foreground: oklch(95% 0 0);
+    --muted: oklch(15% 0 0);
+    --muted-foreground: oklch(78% 0 0);
+
+    /* Accents in OKLCH for nicer luminance control */
+    --primary: oklch(70% 0.14 160);
+    --primary-foreground: oklch(18% 0.02 170);
+    --secondary: oklch(67% 0.11 220);
+    --accent: oklch(82% 0.11 210);
+
+    --border: oklch(23% 0 0);
+    --ring: oklch(82% 0.11 210);
+  }
+}
+
+/* --- Base layer: apply background site-wide --- */
+@layer base {
+  html,
+  body {
+    height: 100%;
+    background-color: var(--background);
+    color: var(--foreground);
+    color-scheme: dark;
+  }
+
+  body {
+    font-family: var(--font-cormorant), system-ui, -apple-system, Segoe UI,
+      Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans",
+      "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in oklab, var(--ring), transparent 50%);
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--foreground), transparent 85%);
+    color: var(--foreground);
+  }
+}
+
+/* --- Utilities: map your token classes used in components (fallbacks if Tailwind theme isn't extended) --- */
+@layer utilities {
+  .bg-background {
+    background-color: var(--background);
+  }
+  .text-foreground {
+    color: var(--foreground);
+  }
+
+  .text-muted-foreground {
+    color: var(--muted-foreground);
+  }
+  .bg-muted {
+    background-color: var(--muted);
+  }
+
+  .text-primary {
+    color: var(--primary);
+  }
+  .bg-primary {
+    background-color: var(--primary);
+  }
+  .text-primary-foreground {
+    color: var(--primary-foreground);
+  }
+
+  .text-secondary {
+    color: var(--secondary);
+  }
+  .bg-secondary {
+    background-color: var(--secondary);
+  }
+
+  .text-accent {
+    color: var(--accent);
+  }
+  .bg-accent {
+    background-color: var(--accent);
+  }
+
+  /* Light drop shadows and subtle card look on dark bg */
+  .card {
+    background-color: color-mix(in oklab, var(--background), white 3%);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
+  }
+}
+
+/* --- Optional niceties: scrollbar + smooth scrolling --- */
+:root {
+  scroll-behavior: smooth;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--background), white 4%);
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--background), white 12%);
+  border-radius: 999px;
+  border: 2px solid color-mix(in oklab, var(--background), white 4%);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--background), white 18%);
+}
+
+/* --- Safe area helpers for mobile --- */
+.safe-px {
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
+}
+.safe-pt {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+.safe-pb {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
