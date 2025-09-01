@@ -1,62 +1,49 @@
-/* --- Tailwind entry (choose ONE style depending on your Tailwind version) --- */
-
-/* ✅ Tailwind v3.x (fixes the “@layer base … no matching @tailwind base” error) */
+/* --- Tailwind entry (Tailwind v3.x) --- */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ❗ If you’re on Tailwind v4, comment the three lines above and uncomment: */
+/* If you’re on Tailwind v4, comment the three lines above and use: */
 /* @import "tailwindcss"; */
 
-/* --- Design tokens: near-black background with slightly grey tone --- */
-:root {
+/* ============================================================
+   Design tokens (HSL components) — dark theme
+   ============================================================ */
+:root,
+.dark {
   /* Near-black with a hint of grey */
-  --background: #0b0d10; /* fallback */
-  --foreground: #e8eaed; /* soft white */
-  --muted: #101317;
-  --muted-foreground: #b7bec7;
+  --background: 210 18% 5%; /* ≈ #0b0d10 */
+  --foreground: 210 15% 92%; /* soft white */
 
-  /* Accent palette used by your hero */
-  --primary: #10b981; /* emerald */
-  --primary-foreground: #05120e;
-  --secondary: #0ea5e9; /* sky */
-  --accent: #22d3ee; /* cyan */
+  --muted: 210 16% 7%;
+  --muted-foreground: 210 14% 75%;
+
+  /* 🔆 Primary/accent = yellow (Tailwind-ish yellow-400) */
+  --primary: 50 96% 54%;
+  --primary-foreground: 220 13% 6%;
+
+  --secondary: 210 90% 56%; /* optional; not used for hover if you stick to primary */
+  --accent: 50 96% 54%;
+  --accent-foreground: 220 13% 6%;
 
   /* Borders / ring */
-  --border: #1a1f27;
-  --ring: #22d3ee;
+  --border: 220 15% 14%;
+  --ring: 50 96% 54%;
 
   /* Font families (from next/font variables) */
   --font-cormorant: ui-serif, Georgia, "Times New Roman", serif;
   --font-cinzel: ui-serif, Georgia, "Times New Roman", serif;
 }
 
-/* Prefer OKLCH when supported */
-@supports (color: oklch(50% 0 0)) {
-  :root {
-    --background: oklch(19% 0 0); /* slightly grey black */
-    --foreground: oklch(95% 0 0);
-    --muted: oklch(15% 0 0);
-    --muted-foreground: oklch(78% 0 0);
-
-    /* Accents in OKLCH for nicer luminance control */
-    --primary: oklch(70% 0.14 160);
-    --primary-foreground: oklch(18% 0.02 170);
-    --secondary: oklch(67% 0.11 220);
-    --accent: oklch(82% 0.11 210);
-
-    --border: oklch(23% 0 0);
-    --ring: oklch(82% 0.11 210);
-  }
-}
-
-/* --- Base layer: apply background site-wide --- */
+/* ============================================================
+   Base layer: apply background site-wide
+   ============================================================ */
 @layer base {
   html,
   body {
     height: 100%;
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     color-scheme: dark;
   }
 
@@ -69,65 +56,70 @@
   }
 
   * {
-    border-color: var(--border);
-    outline-color: color-mix(in oklab, var(--ring), transparent 50%);
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring));
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--foreground), transparent 85%);
-    color: var(--foreground);
+    background: color-mix(in hsl, hsl(var(--primary)) 25%, transparent);
+    color: hsl(var(--foreground));
   }
 }
 
-/* --- Utilities: map your token classes used in components (fallbacks if Tailwind theme isn't extended) --- */
+/* ============================================================
+   Utilities: fallbacks if Tailwind theme isn’t extended
+   (Prefer using Tailwind classes mapped to vars in tailwind.config.js)
+   ============================================================ */
 @layer utilities {
   .bg-background {
-    background-color: var(--background);
+    background-color: hsl(var(--background));
   }
   .text-foreground {
-    color: var(--foreground);
+    color: hsl(var(--foreground));
   }
 
-  .text-muted-foreground {
-    color: var(--muted-foreground);
-  }
   .bg-muted {
-    background-color: var(--muted);
+    background-color: hsl(var(--muted));
+  }
+  .text-muted-foreground {
+    color: hsl(var(--muted-foreground));
   }
 
-  .text-primary {
-    color: var(--primary);
-  }
   .bg-primary {
-    background-color: var(--primary);
+    background-color: hsl(var(--primary));
+  }
+  .text-primary {
+    color: hsl(var(--primary));
   }
   .text-primary-foreground {
-    color: var(--primary-foreground);
+    color: hsl(var(--primary-foreground));
   }
 
-  .text-secondary {
-    color: var(--secondary);
-  }
   .bg-secondary {
-    background-color: var(--secondary);
+    background-color: hsl(var(--secondary));
+  }
+  .text-secondary {
+    color: hsl(var(--secondary));
   }
 
-  .text-accent {
-    color: var(--accent);
-  }
   .bg-accent {
-    background-color: var(--accent);
+    background-color: hsl(var(--accent));
+  }
+  .text-accent {
+    color: hsl(var(--accent));
   }
 
-  /* Light drop shadows and subtle card look on dark bg */
+  /* Subtle dark card look */
   .card {
-    background-color: color-mix(in oklab, var(--background), white 3%);
-    border: 1px solid var(--border);
+    background-color: color-mix(in hsl, hsl(var(--background)) 97%, white);
+    border: 1px solid hsl(var(--border));
     box-shadow: 0 10px 30px rgb(0 0 0 / 0.35);
   }
 }
 
-/* --- Optional niceties: scrollbar + smooth scrolling --- */
+/* ============================================================
+   Optional niceties: scrollbar + smooth scrolling + safe areas
+   ============================================================ */
 :root {
   scroll-behavior: smooth;
 }
@@ -137,18 +129,17 @@
   height: 10px;
 }
 *::-webkit-scrollbar-track {
-  background: color-mix(in oklab, var(--background), white 4%);
+  background: color-mix(in hsl, hsl(var(--background)) 96%, white);
 }
 *::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--background), white 12%);
+  background: color-mix(in hsl, hsl(var(--background)) 88%, white);
   border-radius: 999px;
-  border: 2px solid color-mix(in oklab, var(--background), white 4%);
+  border: 2px solid color-mix(in hsl, hsl(var(--background)) 96%, white);
 }
 *::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklab, var(--background), white 18%);
+  background: color-mix(in hsl, hsl(var(--background)) 84%, white);
 }
 
-/* --- Safe area helpers for mobile --- */
 .safe-px {
   padding-left: max(1rem, env(safe-area-inset-left));
   padding-right: max(1rem, env(safe-area-inset-right));
