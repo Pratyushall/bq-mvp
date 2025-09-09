@@ -45,7 +45,7 @@ export default function HyderabadNightsPage() {
     },
   ];
 
-  const heroImage = "/images/hnwb.png"; // full-screen hero image
+  const heroImage = "/images/hnpd.png"; // full-screen hero image
 
   const openModal = (index: number) => setSelectedImage(index);
   const closeModal = () => setSelectedImage(null);
