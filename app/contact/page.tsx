@@ -2,7 +2,6 @@
 
 import type React from "react";
 import { useState } from "react";
-import Link from "next/link";
 import { Navigation } from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -420,22 +419,13 @@ export default function ContactPage() {
             Every great project starts with a conversation. We're excited to
             hear about your vision and explore how we can bring it to life.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <Button
               size="lg"
               onClick={handleSchedule}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
             >
               Schedule a Call
-            </Button>
-
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-4 rounded-full bg-transparent transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(255,255,0,0.3)] hover:-translate-y-2 hover:-rotate-1 active:scale-95"
-            >
-              <Link href="/work">View Our Portfolio</Link>
             </Button>
           </div>
         </div>

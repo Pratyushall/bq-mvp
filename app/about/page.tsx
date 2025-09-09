@@ -85,7 +85,7 @@ Keeper of alt takes and late-night coffee.`,
       <section className="pt-24 pb-16 bg-gradient-to-br from-background via-card to-muted group">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 group-hover:-translate-y-2 cursor-default">
-            About Balqony Sitraalu
+            Who We Are
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
             We are a passionate team of filmmakers, storytellers, and creative
@@ -122,7 +122,7 @@ Keeper of alt takes and late-night coffee.`,
 
           <div className="relative group/image">
             <img
-              src="/images/bqlogo2.png"
+              src="/images/abti.png"
               alt="Our team at work"
               className="rounded-2xl shadow-2xl transition-all duration-500 group-hover/image:scale-105 group-hover/image:shadow-[0_25px_50px_-12px_rgba(250,204,21,0.35)] cursor-pointer"
             />
