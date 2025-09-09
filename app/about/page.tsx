@@ -4,11 +4,18 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 import { X } from "lucide-react";
 
 type Member = {
   name: string;
-  role: "Founder" | "Cinematographer" | "Actor" | "Editor";
+  role:
+    | "Founder"
+    | "Cinematographer"
+    | "Actor"
+    | "Editor"
+    | "Executive Producer"
+    | "Actor & Show Host";
   image: string;
   bio: string;
 };
@@ -18,7 +25,7 @@ export default function AboutPage() {
     {
       name: "Sagar Yvv",
       role: "Founder",
-      image: "/images/Sagar.jpg", // update paths
+      image: "/images/Sagar.jpg",
       bio: `Sagar founded Balqony Sitraalu to blend craft and culture—turning everyday moments
 into cinematic experiences. He leads creative, guides scripts on set, and sits with
 the edit until the story *feels* inevitable.`,
@@ -33,14 +40,28 @@ and subtle natural bounce. Loves long lenses in the rain and the last 5 minutes 
     {
       name: "Shiva Pranav",
       role: "Actor",
-      image: "/images/pranav.jpg",
+      image: "/images/pranav1.jpg",
       bio: `A natural on camera with a quiet range—grounded realism, deadpan humor, and sudden
 vulnerability. Brings lived-in truth to every scene.`,
     },
     {
       name: "Sai Kumar",
       role: "Editor",
-      image: "/images/kumar.jpg",
+      image: "/images/saik1.jpg",
+      bio: `Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.
+Keeper of alt takes and late-night coffee.`,
+    },
+    {
+      name: "Bhanu Prasad",
+      role: "Executive Producer",
+      image: "/images/bhanu.jpg",
+      bio: `Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.
+Keeper of alt takes and late-night coffee.`,
+    },
+    {
+      name: "Gayathri Gupta",
+      role: "Actor & Show Host",
+      image: "/images/gg.jpg",
       bio: `Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.
 Keeper of alt takes and late-night coffee.`,
     },
@@ -251,19 +272,26 @@ Keeper of alt takes and late-night coffee.`,
             Let's discuss how we can bring your vision to life with our
             expertise and passion for storytelling.
           </p>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Start Your Project -> /contact */}
             <Button
-              size="lg"
-              className="bg-[var(--primary)] hover:bg-[var(--primary)]/90 text-[var(--primary-foreground)] px-8 py-4 transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(250,204,21,0.45)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
-            >
-              Start Your Project
-            </Button>
-            <Button
+              asChild
               variant="outline"
               size="lg"
               className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] px-8 py-4 bg-transparent transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(250,204,21,0.35)] hover:-translate-y-2 hover:-rotate-1 active:scale-95"
             >
-              View Our Work
+              <Link href="/contact">Start Your Project</Link>
+            </Button>
+
+            {/* View Our Work (unchanged style, add link if desired) */}
+            <Button
+              asChild
+              variant="outline"
+              size="lg"
+              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] px-8 py-4 bg-transparent transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(250,204,21,0.35)] hover:-translate-y-2 hover:-rotate-1 active:scale-95"
+            >
+              <Link href="/work">View Our Work</Link>
             </Button>
           </div>
         </div>

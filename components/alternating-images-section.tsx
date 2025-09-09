@@ -2,8 +2,6 @@
 
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { ExternalLink } from "lucide-react";
 import { Playfair_Display } from "next/font/google";
 
 const playfair = Playfair_Display({
@@ -25,7 +23,7 @@ const imageContent: ImageContentItem[] = [
   {
     id: 1,
     image: "/images/hp4.png",
-    title: "Hyderabad Nights",
+    title: "Hyderabad Nights - A Feature Film",
     description: "",
     expandedImage: "/images/hnp1.jpg",
     expandedText:
@@ -35,7 +33,7 @@ const imageContent: ImageContentItem[] = [
   {
     id: 2,
     image: "/images/akb.png",
-    title: "Akshabhyasam",
+    title: "Aksharabhyasam",
     description: "",
     expandedImage: "/images/ab1.jpg",
     expandedText:
@@ -120,7 +118,7 @@ export function AlternatingImagesSection() {
                   {/* Image Container */}
                   <div className="relative w-full h-full overflow-hidden rounded-2xl shadow-2xl bg-muted border border-border">
                     <img
-                      src={item.image || "/placeholder.svg"}
+                      src={item.image || "/images/mm.jpg"}
                       alt={item.title}
                       className={`w-full h-full object-cover transition-all duration-700 ${
                         isHovered ? "scale-110 brightness-110" : "scale-100"
@@ -134,7 +132,7 @@ export function AlternatingImagesSection() {
                       }`}
                     >
                       <img
-                        src="/abstract-overlay-pattern.png"
+                        src="/images/mm.jpg"
                         alt="Overlay pattern"
                         className="w-full h-full object-cover mix-blend-overlay"
                       />
@@ -142,19 +140,6 @@ export function AlternatingImagesSection() {
 
                     {/* Dark vignette */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-
-                    {/* External link */}
-                    {item.link && (
-                      <button
-                        onClick={(e) => handleLinkClick(e, item.link)}
-                        className={`absolute top-4 right-4 w-10 h-10 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-white/30 transition-all duration-300 ${
-                          isHovered ? "opacity-100 scale-110" : "opacity-80"
-                        }`}
-                        aria-label={`Open ${item.title}`}
-                      >
-                        <ExternalLink className="w-4 h-4 text-white" />
-                      </button>
-                    )}
 
                     {/* Title — keep OLD site font (no Playfair here), bottom-left, longer reveal */}
                     <div
@@ -189,7 +174,7 @@ export function AlternatingImagesSection() {
                 <div
                   className={`overflow-hidden transition-all duration-700 ease-in-out ${
                     isExpanded
-                      ? "max-h-96 opacity-100 mt-6"
+                      ? "max-h-[600px] opacity-100 mt-6"
                       : "max-h-0 opacity-0"
                   }`}
                 >
@@ -200,7 +185,7 @@ export function AlternatingImagesSection() {
                         <img
                           src={item.expandedImage || "/placeholder.svg"}
                           alt={`${item.title} expanded`}
-                          className="w-full h-48 object-cover rounded-xl shadow-lg border border-border"
+                          className="w-full h-96 object-cover rounded-xl shadow-lg border border-border"
                         />
                       </div>
 

@@ -45,7 +45,7 @@ export default function HyderabadNightsPage() {
     },
   ];
 
-  const heroImage = "/images/bqhn.png"; // full-screen hero image
+  const heroImage = "/images/hnwb.png"; // full-screen hero image
 
   const openModal = (index: number) => setSelectedImage(index);
   const closeModal = () => setSelectedImage(null);
@@ -62,15 +62,17 @@ export default function HyderabadNightsPage() {
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       <Navigation />
 
-      {/* Full-screen hero image (no overlays/text) */}
-      <div className="relative h-[100svh] w-screen">
+      {/* Full-screen hero image (zoomed out 6x) */}
+      <div className="relative h-[100svh] w-screen overflow-hidden">
         <img
           src={
             heroImage ||
             "/placeholder.svg?height=1080&width=1920&query=Hyderabad Nights hero"
           }
           alt="Hyderabad Nights Hero"
-          className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover origin-center transform-gpu scale-[0.1667]"
         />
       </div>
 

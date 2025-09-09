@@ -1,10 +1,20 @@
 "use client";
 
+import type React from "react";
+
 import { useMemo, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Play, ExternalLink, Calendar, Award } from "lucide-react";
+import {
+  Play,
+  ExternalLink,
+  Calendar,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+  X,
+} from "lucide-react";
 
 interface Project {
   id: number;
@@ -23,6 +33,7 @@ interface Project {
   videoUrl?: string;
   awards?: string[];
   tags: string[];
+  videoFile?: string; // New field for video file path
 }
 
 const projects: Project[] = [
@@ -79,14 +90,16 @@ const projects: Project[] = [
   },
   {
     id: 5,
-    title: "Enchanted Land",
+    title: "Honey Ad",
     client: "Balqony Sitraalu",
     category: "Commercial",
     year: "2024",
     description:
       "A dreamlike commercial that wanders through rain-washed lanes and moonlit markets—minimal narrative, lush frames, and a shimmering product reveal.",
-    image: "/images/el1",
-    tags: ["Commercial", "Cinematic", "Beauty Shots"],
+    image: "/images/honey1.jpg", // Keep as fallback
+    videoUrl: "https://example.com/your-video-url", // You can replace this with your actual video URL
+    videoFile: "/videos/honey.mp4", // Replace this path with your actual video file
+    tags: ["Commercial", "Cinematic", "Beauty shots"],
   },
   {
     id: 6,
@@ -96,9 +109,9 @@ const projects: Project[] = [
     year: "2024",
     description:
       "Coverage of the traditional ‘Akshabhyasam’ ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
-    image: "/ab1.png",
+    image: "/images/aksh.png",
     videoUrl: "https://youtu.be/your-video-id",
-    tags: ["Event", "Ceremony", "Family"],
+    tags: ["Short Film"],
   },
 ];
 
@@ -220,6 +233,32 @@ export default function WorkPage() {
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[number]>("All");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const galleryImages = [
+    "/images/honey1.jpg",
+    "/images/honey2.jpg",
+    "/images/honey3.jpg",
+    "/images/honey4.jpg",
+    "/images/honey5.jpg",
+  ];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex(
+      (prev) => (prev - 1 + galleryImages.length) % galleryImages.length
+    );
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowRight") nextImage();
+    if (e.key === "ArrowLeft") prevImage();
+    if (e.key === "Escape") setIsGalleryOpen(false);
+  };
 
   const filteredProjects = useMemo(
     () =>
@@ -286,11 +325,22 @@ export default function WorkPage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                  />
+                  {project.category === "Commercial" && project.videoFile ? (
+                    <video
+                      src={project.videoFile}
+                      className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                      controls
+                      poster={project.image || "/placeholder.svg"}
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img
+                      src={project.image || "/placeholder.svg"}
+                      alt={project.title}
+                      className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                    />
+                  )}
 
                   {/* hover overlay */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
@@ -376,11 +426,24 @@ export default function WorkPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="relative group">
-              <img
-                src={selectedProject.image || "/placeholder.svg"}
-                alt={selectedProject.title}
-                className="w-full h-64 sm:h-80 object-cover rounded-t-2xl transition-all duration-500 group-hover:brightness-110"
-              />
+              {selectedProject.category === "Commercial" &&
+              selectedProject.videoFile ? (
+                <video
+                  src={selectedProject.videoFile}
+                  className="w-full h-64 sm:h-80 object-cover rounded-t-2xl transition-all duration-500 group-hover:brightness-110"
+                  controls
+                  poster={selectedProject.image || "/placeholder.svg"}
+                >
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img
+                  src={selectedProject.image || "/placeholder.svg"}
+                  alt={selectedProject.title}
+                  className="w-full h-64 sm:h-80 object-cover rounded-t-2xl transition-all duration-500 group-hover:brightness-110"
+                />
+              )}
+
               {/* Close */}
               <CinematicButton
                 as="button"
@@ -450,18 +513,112 @@ export default function WorkPage() {
                   Watch Full Video
                 </CinematicButton>
 
-                <CinematicButton
-                  as="a"
-                  href={selectedProject.videoUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-transparent text-foreground border border-white/20 hover:bg-white hover:text-black"
-                >
-                  <ExternalLink className="h-5 w-5" />
-                  View Case Study
-                </CinematicButton>
+                {selectedProject.category === "Commercial" && (
+                  <CinematicButton
+                    as="button"
+                    onClick={() => {
+                      setIsGalleryOpen(true);
+                      setCurrentImageIndex(0);
+                    }}
+                    className="bg-transparent text-foreground border border-white/20 hover:bg-white hover:text-black"
+                  >
+                    <ExternalLink className="h-5 w-5" />
+                    View Gallery
+                  </CinematicButton>
+                )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Gallery Modal */}
+      {isGalleryOpen && (
+        <div
+          className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center overflow-y-auto"
+          onClick={() => {
+            console.log("[v0] Backdrop clicked, closing gallery");
+            setIsGalleryOpen(false);
+          }}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+        >
+          {/* Close Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              console.log("[v0] Close button clicked");
+              setIsGalleryOpen(false);
+            }}
+            className="absolute top-6 right-6 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 text-white border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            aria-label="Close Gallery"
+            title="Close Gallery"
+          >
+            <X className="h-6 w-6" />
+          </button>
+
+          {/* Image Counter */}
+          <div className="absolute top-6 left-6 z-10 px-4 py-2 rounded-full bg-black/50 text-white text-sm font-medium">
+            {currentImageIndex + 1} / {galleryImages.length}
+          </div>
+
+          {/* Previous Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              prevImage();
+            }}
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
+          >
+            <ChevronLeft className="h-8 w-8" />
+          </button>
+
+          {/* Next Button */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
+          >
+            <ChevronRight className="h-8 w-8" />
+          </button>
+
+          {/* Main Image */}
+          <div
+            className="max-w-7xl max-h-[90vh] mx-auto px-20 py-20 overflow-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={
+                galleryImages[currentImageIndex] ||
+                "/placeholder.svg?height=800&width=1200&query=commercial gallery image" ||
+                "/placeholder.svg" ||
+                "/placeholder.svg" ||
+                "/placeholder.svg" ||
+                "/placeholder.svg"
+              }
+              alt={`Gallery image ${currentImageIndex + 1}`}
+              className="w-full h-full object-contain rounded-lg shadow-2xl"
+            />
+          </div>
+
+          {/* Thumbnail Strip */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm">
+            {galleryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentImageIndex(index);
+                }}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentImageIndex
+                    ? "bg-[var(--primary)] scale-125"
+                    : "bg-white/50 hover:bg-white/80 hover:scale-110"
+                }`}
+              />
+            ))}
           </div>
         </div>
       )}
@@ -476,18 +633,9 @@ export default function WorkPage() {
             Let’s discuss how we can bring your vision to life with the same
             level of creativity and excellence showcased in our portfolio.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex justify-center">
             <CinematicButton as="a" href="/contact">
               Start Your Project
-            </CinematicButton>
-            <CinematicButton
-              as="a"
-              href="https://cal.com/your-link-or-a-form"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-transparent text-foreground border border-white/20 hover:bg-white hover:text-black"
-            >
-              Get a Quote
             </CinematicButton>
           </div>
         </div>
