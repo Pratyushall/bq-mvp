@@ -62,7 +62,7 @@ export default function HyderabadNightsPage() {
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       <Navigation />
 
-      {/* Full-screen hero image (zoomed out 6x) */}
+      {/* Full-screen hero image (zoomed out 3x) */}
       <div className="relative h-[100svh] w-screen overflow-hidden">
         <img
           src={
