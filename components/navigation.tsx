@@ -143,7 +143,7 @@ export function Navigation() {
               >
                 <span className="text-base">{item.label}</span>
                 {/* Elegant underline */}
-                <span className="mt-2 block h-px w-full bg-border/50 group-hover:bg-amber-400/60 transition-colors"></span>
+                <span className="mt-2 block h-px w-full bg-border/50 transition-colors"></span>
               </Link>
             </li>
           ))}

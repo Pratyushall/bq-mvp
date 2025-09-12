@@ -30,9 +30,9 @@ function mulberry32(seed: number) {
 
 export function HeroSection({
   backgroundImage = "/images/windb.png",
-  line1 = "Between light and shadow",
-  line2 = "we frame the unsaid,",
-  line3 = "turning moments into memory.",
+  line1 = "",
+  line2 = "",
+  line3 = "",
 }: HeroSectionProps) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
