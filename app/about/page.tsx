@@ -279,7 +279,7 @@ Keeper of alt takes and late-night coffee.`,
               asChild
               variant="outline"
               size="lg"
-              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] px-8 py-4 bg-transparent transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(250,204,21,0.35)] hover:-translate-y-2 hover:-rotate-1 active:scale-95"
+              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] hover:border-yellow-400 px-8 py-4 bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.6),0_0_60px_rgba(255,255,255,0.3)] active:scale-95"
             >
               <Link href="/contact">Start Your Project</Link>
             </Button>
@@ -289,7 +289,7 @@ Keeper of alt takes and late-night coffee.`,
               asChild
               variant="outline"
               size="lg"
-              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] px-8 py-4 bg-transparent transition-all duration-300 hover:scale-110 hover:shadow-[0_0_25px_rgba(250,204,21,0.35)] hover:-translate-y-2 hover:-rotate-1 active:scale-95"
+              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] hover:border-yellow-400 px-8 py-4 bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.6),0_0_60px_rgba(255,255,255,0.3)] active:scale-95"
             >
               <Link href="/work">View Our Work</Link>
             </Button>

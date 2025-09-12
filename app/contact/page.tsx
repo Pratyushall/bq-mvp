@@ -8,6 +8,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import Link from "next/link";
+
 import {
   Select,
   SelectContent,
@@ -413,19 +415,30 @@ export default function ContactPage() {
       <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center group">
           <h2 className="text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
-            Let's Create Something Amazing
+            Ready to Work Together?
           </h2>
           <p className="text-xl text-muted-foreground mb-8 transition-all duration-500 group-hover:text-foreground">
-            Every great project starts with a conversation. We're excited to
-            hear about your vision and explore how we can bring it to life.
+            Let's discuss how we can bring your vision to life with our
+            expertise and passion for storytelling.
           </p>
-          <div className="flex justify-center">
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* Start Your Project -> /contact */}
             <Button
+              asChild
               size="lg"
-              onClick={handleSchedule}
               className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
             >
-              Schedule a Call
+              <Link href="/contact">Start Your Project</Link>
+            </Button>
+
+            {/* View Our Work -> /work */}
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
+            >
+              <Link href="/work">View Our Work</Link>
             </Button>
           </div>
         </div>

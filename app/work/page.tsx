@@ -42,7 +42,7 @@ const projects: Project[] = [
     title: "AD",
     client: "Aegon",
     category: "Corporate",
-    year: "2024",
+    year: "",
     description:
       "A crisp corporate brand film highlighting people, culture, and impact—shot across Hyderabad offices and shopfloors with clean graphics and VO.",
     image: "/images/aegon.png",
@@ -54,7 +54,7 @@ const projects: Project[] = [
     title: "BTC - Behind The Card",
     client: "Balqony Sitraalu",
     category: "Documentary",
-    year: "2023",
+    year: "",
     description:
       "A behind-the-scenes documentary following our design and VFX team crafting a signature title card—scribbles to storyboards to final comp.",
     image: "/images/btc.png",
@@ -67,7 +67,7 @@ const projects: Project[] = [
     title: "Ee Sannivesham",
     client: "Independent Artist",
     category: "Music Video",
-    year: "2023",
+    year: "",
     description:
       "A Telugu music video about a fleeting moment—warm sodium lights, handheld energy, intimate blocking, and a hook that lingers.",
     image: "/images/es.png",
@@ -81,7 +81,7 @@ const projects: Project[] = [
     title: "Podcasts",
     client: "",
     category: "Social Media",
-    year: "2024",
+    year: "",
     description:
       "Snackable vertical edits from long-form conversations—studio-lit frames, animated captions, rhythmic cuts for Reels & Shorts.",
     image: "/images/bqk.png",
@@ -93,7 +93,7 @@ const projects: Project[] = [
     title: "Honey Ad",
     client: "Balqony Sitraalu",
     category: "Commercial",
-    year: "2024",
+    year: "",
     description:
       "A dreamlike commercial that wanders through rain-washed lanes and moonlit markets—minimal narrative, lush frames, and a shimmering product reveal.",
     image: "/images/honey1.jpg", // Keep as fallback
@@ -106,7 +106,7 @@ const projects: Project[] = [
     title: "Akshabhyasam",
     client: "",
     category: "Short Film",
-    year: "2024",
+    year: "",
     description:
       "Coverage of the traditional ‘Akshabhyasam’ ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
     image: "/images/aksh.png",

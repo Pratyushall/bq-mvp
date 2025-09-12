@@ -11,6 +11,7 @@ export function VideoSection() {
   const [isMuted, setIsMuted] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isPiP, setIsPiP] = useState(false);
+  const [showAnimatedText, setShowAnimatedText] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const textSectionRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -43,6 +44,13 @@ export function VideoSection() {
     }
 
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowAnimatedText(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -138,7 +146,7 @@ export function VideoSection() {
         </div>
 
         {/* Minimal custom controls */}
-        <div className="absolute bottom-6 right-6 z-10 flex gap-3">
+        <div className="absolute bottom-6 left-6 z-10 flex gap-3">
           <Button
             onClick={togglePlay}
             aria-label={isPlaying ? "Pause video" : "Play video"}
@@ -165,14 +173,40 @@ export function VideoSection() {
           </Button>
         </div>
 
+        {/* Animated text "Make stories that move" sliding from bottom left to bottom right */}
+        <div className="absolute bottom-20 right-6 z-10 overflow-hidden w-full max-w-md">
+          <div
+            className={`text-white text-2xl md:text-3xl font-medium tracking-wide transition-all duration-[4000ms] ease-out ${
+              showAnimatedText
+                ? "translate-x-0 translate-y-0 opacity-100"
+                : "-translate-x-[400px] translate-y-12 opacity-0"
+            }`}
+            style={{
+              fontFamily: "var(--font-cormorant)",
+              textShadow: "0 2px 8px rgba(0,0,0,0.8), 0 0 16px rgba(0,0,0,0.6)",
+              transform: showAnimatedText
+                ? "translateX(0px) translateY(0px)"
+                : "translateX(-400px) translateY(48px)",
+            }}
+          >
+            Make stories that move
+          </div>
+        </div>
+
         {/* Elegant CTA button overlay */}
-        <div className="absolute inset-0 flex items-center justify-center z-20">
+        <div className="absolute bottom-6 right-6 z-20">
           <Button
             onClick={handleViewWork}
-            className="group bg-white/10 text-white border border-white/20 backdrop-blur-md hover:bg-white/20 hover:border-white/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] transition-all duration-500 px-8 py-4 text-lg font-medium rounded-full"
+            className="group relative bg-white/10 text-white border border-white/20 backdrop-blur-md hover:bg-white/20 hover:border-white/30 transition-all duration-500 px-6 py-3 text-base font-medium rounded-full overflow-hidden hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] hover:scale-105"
           >
-            View Our Work
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+            <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-all duration-500 rounded-full" />
+            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10 blur-sm rounded-full" />
+            </div>
+            <span className="relative z-10 flex items-center">
+              View Our Work
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </span>
           </Button>
         </div>
 
@@ -246,7 +280,7 @@ export function VideoSection() {
           {/* it is simple (slightly smaller) with delayed animation */}
           <div className="overflow-hidden">
             <p
-              className={`text-2xl sm:text-3xl md:text-4xl text-foreground/90 transition-all duration-1000 ease-out hover:text-yellow-400 hover:scale-102 cursor-default ${
+              className={`text-2xl sm:text-3xl md:text-4xl text-foreground/90 transition-all duration-1000 ease-out hover:text-yellow-400 hover:scale-[1.02] cursor-default ${
                 isVisible
                   ? "translate-y-0 opacity-100"
                   : "translate-y-full opacity-0"
