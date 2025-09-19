@@ -17,6 +17,7 @@ const DEFAULTS = {
       primary: "#eab308",
       enableHoverGlow: true,
       enableShadows: true,
+      background: "/images/site-bg.png",
     },
     socials: {
       instagram: "https://www.instagram.com/balqony_sitralu",
@@ -37,6 +38,7 @@ const DEFAULTS = {
       marquee: "Make Stories That Move",
       ctaText: "View Our Work",
       pipOnNavigate: true,
+      background: "/images/home-hero-bg.png",
     },
     vision: {
       title: "OUR VISION",
@@ -62,6 +64,7 @@ const DEFAULTS = {
       leftDividerText: "",
     },
     alternating: {
+      background: "/images/alternating-bg.png",
       moreButton: {
         label: "Take a Glimpse",
         href: "https://www.youtube.com/watch?v=baQNINsX-B4",
@@ -97,6 +100,7 @@ const DEFAULTS = {
   film: {
     hyderabadNights: {
       hero: "/images/hnpd.jpg",
+      background: "/images/film-bg.png",
       scenes: [
         {
           title: "Opening Night",
@@ -144,6 +148,7 @@ const DEFAULTS = {
     heading: "Our Work",
     intro:
       "Explore our portfolio of award-winning projects that showcase our commitment to creative excellence and innovative storytelling across diverse industries.",
+    background: "/images/work-bg.png",
     categories: [
       "All",
       "Commercial",
@@ -263,6 +268,7 @@ const DEFAULTS = {
       heading: "Who We Are",
       sub: "We are a passionate team of filmmakers, storytellers, and creative professionals dedicated to bringing your vision to life through the power of visual storytelling.",
       heroImage: "/images/abti.png",
+      background: "/images/about-hero-bg.png",
     },
     story: {
       heading: "Our Story",
@@ -271,10 +277,12 @@ const DEFAULTS = {
         "Our name reflects our philosophy—“Balqony” is our elevated perspective...",
         "Today, we blend timeless narrative with modern craft to create work that looks stunning and moves people.",
       ],
+      background: "/images/about-story-bg.png",
     },
     team: {
       heading: "Meet Our Team",
       sub: "A compact crew with a big cinema heart—directors, camera, performance, and post.",
+      background: "/images/about-team-bg.png",
       members: [
         {
           name: "Sagar Yvv",
@@ -329,6 +337,7 @@ const DEFAULTS = {
     cta: {
       heading: "Ready to Work Together?",
       copy: "Let's discuss how we can bring your vision to life with our expertise and passion for storytelling.",
+      background: "/images/about-cta-bg.png",
       buttons: [
         { label: "Start Your Project", href: "/contact", style: "outline" },
         { label: "View Our Work", href: "/work", style: "outline" },
@@ -340,11 +349,13 @@ const DEFAULTS = {
     hero: {
       heading: "Get In Touch",
       copy: "Ready to bring your vision to life? Let's discuss your project and explore how we can create something extraordinary together.",
+      background: "/images/contact-hero-bg.png",
     },
     formSpreeId: "yourFormId",
     scheduleUrl: "https://calendly.com/your_handle/intro-call-15",
     address:
       "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
+    background: "/images/contact-bg.png",
     mapsUrl:
       "https://www.google.com/maps/search/?api=1&query=Balqony%20Sitraalu%20Studio%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
     phones: ["+91 98765 43210", "+91 91234 56789"],
@@ -396,6 +407,7 @@ const DEFAULTS = {
 
   footer: {
     brand: "Balqony Sitraalu",
+    background: "/images/footer-bg.png",
     instagram: "https://www.instagram.com/balqony_sitralu",
     youtube: "https://www.youtube.com/@BalQonySitralu",
     contactButton: { label: "Contact Us" },
