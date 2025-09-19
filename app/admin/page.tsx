@@ -1,3 +1,4 @@
+// app/admin/page.tsx
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -9,12 +10,12 @@ const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "balqony"; // set if yo
 const DEFAULTS = {
   site: {
     brand: {
-      name: "Balqony Sitraalu", // navbar center title
-      logo: "/images/bqlogo2.png", // navbar logo
+      name: "Balqony Sitraalu",
+      logo: "/images/bqlogo2.png",
     },
     theme: {
-      primary: "#eab308", // used as --primary in your styles
-      enableHoverGlow: true, // global stylistic toggles if you want them
+      primary: "#eab308",
+      enableHoverGlow: true,
       enableShadows: true,
     },
     socials: {
@@ -31,29 +32,20 @@ const DEFAULTS = {
   },
 
   home: {
-    // HERO (components/hero-section.tsx)
     hero: {
       video: "/videos/hnvidv.mp4",
       marquee: "Make Stories That Move",
       ctaText: "View Our Work",
-      pipOnNavigate: true, // try PiP when navigating
+      pipOnNavigate: true,
     },
-
-    // VISION COPY (components/video-section.tsx)
     vision: {
       title: "OUR VISION",
       line1: "it is simple",
       line2:
         "to tell stories that feel like your own, that stay with you forever.",
       background: "/images/bqbg.png",
-      cta: {
-        enabled: false,
-        text: "View Our Work",
-        href: "/hyderabad-nights",
-      },
+      cta: { enabled: false, text: "View Our Work", href: "/hyderabad-nights" },
     },
-
-    // SERVICES (components/services-section.tsx)
     services: {
       heading: "Services We Offer",
       background: "/images/bqbg.png",
@@ -65,12 +57,10 @@ const DEFAULTS = {
         "Social Media Content",
         "Events",
       ],
-      link: "/work", // link each service to work
-      hoverScale: 1.5, // how much the item grows on hover
-      leftDividerText: "", // optional small caption under heading
+      link: "/work",
+      hoverScale: 1.5,
+      leftDividerText: "",
     },
-
-    // ALTERNATING CARDS (components/alternating-images-section.tsx)
     alternating: {
       moreButton: {
         label: "Take a Glimpse",
@@ -104,7 +94,6 @@ const DEFAULTS = {
     },
   },
 
-  // HYDERABAD NIGHTS PAGE (app/hyderabad-nights/page.tsx)
   film: {
     hyderabadNights: {
       hero: "/images/hnpd.jpg",
@@ -151,7 +140,6 @@ const DEFAULTS = {
     },
   },
 
-  // WORK / PORTFOLIO (app/work/page.tsx)
   work: {
     heading: "Our Work",
     intro:
@@ -270,7 +258,6 @@ const DEFAULTS = {
     },
   },
 
-  // ABOUT (app/about/page.tsx)
   about: {
     hero: {
       heading: "Who We Are",
@@ -288,7 +275,6 @@ const DEFAULTS = {
     team: {
       heading: "Meet Our Team",
       sub: "A compact crew with a big cinema heart—directors, camera, performance, and post.",
-      // matches your Member type + dialog extras
       members: [
         {
           name: "Sagar Yvv",
@@ -307,10 +293,7 @@ const DEFAULTS = {
           role: "Cinematographer",
           image: "/images/Saik.jpg",
           bio: "Prefers practicals over perfection. Frames breathe with handheld energy...",
-          dialog: {
-            favoriteGear: "",
-            offSet: "",
-          },
+          dialog: { favoriteGear: "", offSet: "" },
         },
         {
           name: "Shiva Pranav",
@@ -353,7 +336,6 @@ const DEFAULTS = {
     },
   },
 
-  // CONTACT (app/contact/page.tsx)
   contact: {
     hero: {
       heading: "Get In Touch",
@@ -412,7 +394,6 @@ const DEFAULTS = {
     },
   },
 
-  // FOOTER (components/scroll-footer.tsx)
   footer: {
     brand: "Balqony Sitraalu",
     instagram: "https://www.instagram.com/balqony_sitralu",
@@ -433,17 +414,17 @@ const DEFAULTS = {
 type CMS = typeof DEFAULTS;
 
 const SECTIONS = [
-  { key: "site", label: "Site" }, // brand, theme, socials, nav
-  { key: "home.hero", label: "Home • Hero" }, // video, marquee
-  { key: "home.vision", label: "Home • Vision" }, // big title + 2 lines (VideoSection)
-  { key: "home.services", label: "Home • Services" }, // bg image + list + link
-  { key: "home.alternating", label: "Home • Alternating" }, // cards
-  { key: "work", label: "Work" }, // projects[] incl. snippetSrc
-  { key: "film.hyderabadNights", label: "Hyderabad Nights" }, // hero + scenes[]
-  { key: "about.story", label: "About • Story" }, // paragraphs
-  { key: "about.team", label: "About • Team" }, // members[]
-  { key: "contact", label: "Contact" }, // phones/emails/map/formspree
-  { key: "footer", label: "Footer" }, // scroll-footer: phone/email, socials
+  { key: "site", label: "Site" },
+  { key: "home.hero", label: "Home • Hero" },
+  { key: "home.vision", label: "Home • Vision" },
+  { key: "home.services", label: "Home • Services" },
+  { key: "home.alternating", label: "Home • Alternating" },
+  { key: "work", label: "Work" },
+  { key: "film.hyderabadNights", label: "Hyderabad Nights" },
+  { key: "about.story", label: "About • Story" },
+  { key: "about.team", label: "About • Team" },
+  { key: "contact", label: "Contact" },
+  { key: "footer", label: "Footer" },
 ] as const;
 
 type SectionKey = (typeof SECTIONS)[number]["key"];
@@ -454,7 +435,8 @@ function get(obj: any, path: string) {
 function set(obj: any, path: string, value: any) {
   const keys = path.split(".");
   const last = keys.pop() as string;
-  const parent = keys.reduce((o, k) => (o[k] ??= {}), obj);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const parent = keys.reduce((o: any, k) => (o[k] ??= {}), obj);
   parent[last] = value;
 }
 
@@ -482,6 +464,11 @@ export default function AdminPage() {
     setText(JSON.stringify(slice, null, 2));
   }, [active, config]);
 
+  function ping(msg: string) {
+    setToast(msg);
+    setTimeout(() => setToast(null), 1500);
+  }
+
   function saveSection() {
     try {
       const value = JSON.parse(text);
@@ -490,7 +477,7 @@ export default function AdminPage() {
       setConfig(next);
       window.localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
       ping("Saved ✔");
-    } catch (e: any) {
+    } catch {
       ping("Invalid JSON");
     }
   }
@@ -540,11 +527,6 @@ export default function AdminPage() {
     ping("Cleared");
   }
 
-  function ping(msg: string) {
-    setToast(msg);
-    setTimeout(() => setToast(null), 1500);
-  }
-
   function promptGate() {
     const input =
       typeof window !== "undefined" ? window.prompt("Password") : null;
@@ -563,7 +545,7 @@ export default function AdminPage() {
     <main className="min-h-screen bg-black text-white">
       <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur px-6 py-4 flex items-center justify-between">
         <h1 className="text-lg font-semibold">
-          Balqony Sitraalu — Admin (Ultra‑Simple)
+          Balqony Sitraalu — Admin (Ultra-Simple)
         </h1>
         <div className="flex items-center gap-3 text-sm">
           <button
@@ -636,7 +618,7 @@ export default function AdminPage() {
 
         {toast && (
           <div className="mt-3 text-sm">
-            <span className="px-2 py-1 rounded bg-white/10 border border-white/20">
+            <span className="px-2 py-1 rounded bg白/10 border border-white/20">
               {toast}
             </span>
           </div>
@@ -645,21 +627,3 @@ export default function AdminPage() {
     </main>
   );
 }
-
-export function getCMS<T = any>(path: string, fallback?: T): T {
-  if (typeof window === "undefined") return (fallback as T)!;
-  try {
-    const raw = window.localStorage.getItem("bq.cms");
-    const cfg = raw ? JSON.parse(raw) : {};
-    return (
-      path
-        .split(".")
-        .reduce((o: any, k: string) => (o ? o[k] : undefined), cfg) ??
-      (fallback as T)
-    );
-  } catch {
-    return (fallback as T)!;
-  }
-}
-
-export const CMS_DEFAULTS = DEFAULTS; // optional export if you need it
