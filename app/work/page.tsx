@@ -1,21 +1,20 @@
 "use client";
 
 import type React from "react";
-
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Play,
-  ExternalLink,
-  Calendar,
-  Award,
-  ChevronLeft,
-  ChevronRight,
-  X,
-} from "lucide-react";
+import { Play, ExternalLink, ChevronLeft, ChevronRight, X } from "lucide-react";
 
+/* ==========================================================
+   ✨ WHAT'S NEW
+   - 15s snippet support for each project
+   - <SnippetVideo/> loops between start/end for MP4/HLS
+   - YouTube embeds respect start/end for preview (no API key)
+   - Removed: calendar icon, category badge, award ribbon
+========================================================== */
+
+/* ---------- Types ---------- */
 interface Project {
   id: number;
   title: string;
@@ -30,23 +29,28 @@ interface Project {
   year: string;
   description: string;
   image: string;
-  videoUrl?: string;
+  videoUrl?: string; // YouTube/Vimeo/etc
+  videoFile?: string; // Local MP4/HLS path
+  snippetSrc?: string; // Optional: direct short MP4 to use for the grid
+  snippetStart?: number; // seconds
+  snippetEnd?: number; // seconds
   awards?: string[];
   tags: string[];
-  videoFile?: string; // New field for video file path
 }
 
+/* ---------- Demo data: add snippetStart/End or snippetSrc ---------- */
 const projects: Project[] = [
   {
     id: 1,
-    title: "AD",
+    title: "Ad",
     client: "Aegon",
     category: "Corporate",
     year: "",
     description:
       "A crisp corporate brand film highlighting people, culture, and impact—shot across Hyderabad offices and shopfloors with clean graphics and VO.",
     image: "/images/aegon.png",
-    videoUrl: "https://vimeo.com/user203244766/review/845898106/14d6434466",
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    snippetSrc: "/videos/aegonv.mp4",
     tags: ["Corporate", "Brand Film", "Hyderabad"],
   },
   {
@@ -55,10 +59,10 @@ const projects: Project[] = [
     client: "Balqony Sitraalu",
     category: "Documentary",
     year: "",
-    description:
-      "A behind-the-scenes documentary following our design and VFX team crafting a signature title card—scribbles to storyboards to final comp.",
+    description: "A documentary.",
     image: "/images/btc.png",
     videoUrl: "https://www.youtube.com/watch?v=xlIpoJ15Pb0",
+    snippetSrc: "/videos/btcv.mp4",
     awards: ["Festival Official Selection"],
     tags: ["Documentary", "Design", "VFX", "Process"],
   },
@@ -68,11 +72,10 @@ const projects: Project[] = [
     client: "Independent Artist",
     category: "Music Video",
     year: "",
-    description:
-      "A Telugu music video about a fleeting moment—warm sodium lights, handheld energy, intimate blocking, and a hook that lingers.",
+    description: "A Telugu music video.",
     image: "/images/es.png",
-    videoUrl:
-      "https://www.youtube.com/watch?v=Q0aZd371bPs&list=RDQ0aZd371bPs&start_radio=1",
+    videoUrl: "https://www.youtube.com/watch?v=Q0aZd371bPs",
+    snippetSrc: "/videos/eesanv.mp4",
     awards: ["MTV VMA Nomination"],
     tags: ["Music Video", "Telugu", "Romance"],
   },
@@ -86,6 +89,7 @@ const projects: Project[] = [
       "Snackable vertical edits from long-form conversations—studio-lit frames, animated captions, rhythmic cuts for Reels & Shorts.",
     image: "/images/bqk.png",
     videoUrl: "https://www.youtube.com/watch?v=tEEiIUJlo_U",
+    snippetSrc: "/videos/podcastv.mp4",
     tags: ["Social Media", "Vertical", "Captions"],
   },
   {
@@ -96,9 +100,9 @@ const projects: Project[] = [
     year: "",
     description:
       "A dreamlike commercial that wanders through rain-washed lanes and moonlit markets—minimal narrative, lush frames, and a shimmering product reveal.",
-    image: "/images/honey1.jpg", // Keep as fallback
-    videoUrl: "https://example.com/your-video-url", // You can replace this with your actual video URL
-    videoFile: "/videos/honey.mp4", // Replace this path with your actual video file
+    image: "/images/honey1.jpg",
+    videoFile: "/videos/honey.mp4",
+    snippetSrc: "/videos/honey.mp4",
     tags: ["Commercial", "Cinematic", "Beauty shots"],
   },
   {
@@ -110,7 +114,8 @@ const projects: Project[] = [
     description:
       "Coverage of the traditional ‘Akshabhyasam’ ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
     image: "/images/aksh.png",
-    videoUrl: "https://youtu.be/your-video-id",
+    videoUrl: "https://vimeo.com/845898106",
+    snippetSrc: "/videos/abv.mp4",
     tags: ["Short Film"],
   },
 ];
@@ -122,25 +127,196 @@ const categories = [
   "Documentary",
   "Music Video",
   "Social Media",
-  "Short Film", // ← replaced Event
+  "Short Film",
 ] as const;
 
-/* ---------- Reusable: Cinematic Button ---------- */
-type CBProps =
-  | ({
-      as?: "button";
-      href?: never;
-      onClick?: () => void;
-    } & React.ButtonHTMLAttributes<HTMLButtonElement>)
-  | ({
-      as: "a";
-      href: string;
-      onClick?: () => void;
-      target?: string;
-      rel?: string;
-    } & React.AnchorHTMLAttributes<HTMLAnchorElement>);
+/* ==========================================================
+   Utilities
+========================================================== */
+function getYouTubeId(url?: string): string | null {
+  if (!url) return null;
+  const m = url.match(/(?:v=|be\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : null;
+}
 
-function CinematicButton(props: CBProps) {
+/* ==========================================================
+   SnippetVideo: loops a time window for MP4/HLS; uses YouTube iframe for YT
+========================================================== */
+function SnippetVideo({
+  project,
+  className,
+  muted = true,
+}: {
+  project: Project;
+  className?: string;
+  muted?: boolean;
+}) {
+  const { image, videoFile, videoUrl, snippetSrc } = project;
+
+  // Prefer explicit snippetSrc for reliability (esp. Vimeo)
+  const effectiveSrc = snippetSrc || videoFile || undefined;
+
+  // If YouTube and no local snippetSrc, use an iframe with start/end
+  const ytId = !effectiveSrc ? getYouTubeId(videoUrl) : null;
+
+  if (ytId) {
+    const start = Math.max(0, project.snippetStart || 0);
+    const end =
+      project.snippetEnd && project.snippetEnd > start
+        ? project.snippetEnd
+        : start + 15;
+    const src = `https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&fs=0&modestbranding=1&rel=0&iv_load_policy=3&start=${start}&end=${end}`;
+    return (
+      <div
+        className={`relative w-full h-64 overflow-hidden ${className || ""}`}
+      >
+        <iframe
+          className="w-full h-full object-cover"
+          src={src}
+          title={project.title}
+          loading="lazy"
+          allow="autoplay; encrypted-media; picture-in-picture"
+        />
+      </div>
+    );
+  }
+
+  // For MP4/HLS sources: loop in [start, end]
+  if (effectiveSrc) {
+    return (
+      <SegmentLoopVideo
+        src={effectiveSrc}
+        poster={image}
+        start={project.snippetStart ?? 0}
+        end={project.snippetEnd ?? (project.snippetStart ?? 0) + 15}
+        className={className}
+        muted={muted}
+      />
+    );
+  }
+
+  // Fallback: image only
+  return (
+    <img
+      src={image || "/placeholder.svg"}
+      alt={project.title}
+      className={`w-full h-64 object-cover ${className || ""}`}
+    />
+  );
+}
+
+function SegmentLoopVideo({
+  src,
+  poster,
+  start = 0,
+  end = 15,
+  className,
+  muted = true,
+}: {
+  src: string;
+  poster?: string;
+  start?: number;
+  end?: number;
+  className?: string;
+  muted?: boolean;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+
+    let seekingToStart = false;
+
+    const onLoaded = () => {
+      try {
+        v.currentTime = start;
+        v.play().catch(() => {});
+      } catch {}
+    };
+
+    const onTimeUpdate = () => {
+      if (!Number.isFinite(end) || end <= start) return;
+      if (v.currentTime >= end) {
+        seekingToStart = true;
+        v.currentTime = start + 0.05; // small nudge to avoid stall
+      } else if (seekingToStart && v.currentTime > start + 0.2) {
+        seekingToStart = false;
+      }
+    };
+
+    v.addEventListener("loadedmetadata", onLoaded);
+    v.addEventListener("timeupdate", onTimeUpdate);
+    return () => {
+      v.removeEventListener("loadedmetadata", onLoaded);
+      v.removeEventListener("timeupdate", onTimeUpdate);
+    };
+  }, [start, end]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      poster={poster}
+      className={`w-full h-64 object-cover ${className || ""}`}
+      playsInline
+      autoPlay
+      muted={muted}
+      loop
+      preload="metadata"
+    >
+      Your browser does not support the video tag.
+    </video>
+  );
+}
+
+/* ---------- Pill Tabs ---------- */
+function PillTab({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={[
+        "relative overflow-hidden",
+        "rounded-full px-5 py-3 md:px-6 md:py-3.5",
+        "text-sm md:text-base font-semibold",
+        "transition-all duration-300",
+        active
+          ? "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_0_0_1px_rgba(250,204,21,0.45),0_12px_40px_-12px_rgba(250,204,21,0.45)]"
+          : "border border-white/15 text-foreground hover:border-[var(--primary)]/60 hover:text-[var(--primary)] hover:shadow-[0_0_20px_rgba(250,204,21,0.25)]",
+      ].join(" ")}
+    >
+      <span className="relative z-10">{label}</span>
+      {!active && (
+        <span className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 hover:opacity-100 [background:radial-gradient(120px_120px_at_var(--mx,50%)_var(--my,50%),rgba(250,204,21,.18),transparent_45%)]" />
+      )}
+    </button>
+  );
+}
+
+/* ---------- Cinematic Button ---------- */
+function CinematicButton(
+  props:
+    | ({
+        as?: "button";
+        href?: never;
+        onClick?: () => void;
+      } & React.ButtonHTMLAttributes<HTMLButtonElement>)
+    | ({
+        as: "a";
+        href: string;
+        onClick?: () => void;
+        target?: string;
+        rel?: string;
+      } & React.AnchorHTMLAttributes<HTMLAnchorElement>)
+) {
   const {
     as = "button",
     className = "",
@@ -149,9 +325,7 @@ function CinematicButton(props: CBProps) {
     style,
     ...rest
   } = props as any;
-
   const Comp: any = as;
-
   const handleMove = (e: React.MouseEvent) => {
     const el = e.currentTarget as HTMLElement;
     const r = el.getBoundingClientRect();
@@ -161,7 +335,6 @@ function CinematicButton(props: CBProps) {
     el.style.setProperty("--my", `${y}%`);
     onMouseMove?.(e);
   };
-
   return (
     <Comp
       onMouseMove={handleMove}
@@ -198,37 +371,6 @@ function CinematicButton(props: CBProps) {
   );
 }
 
-/* ---------- Pill Tabs (hover goes yellow via var) ---------- */
-function PillTab({
-  active,
-  label,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={[
-        "relative overflow-hidden",
-        "rounded-full px-5 py-3 md:px-6 md:py-3.5",
-        "text-sm md:text-base font-semibold",
-        "transition-all duration-300",
-        active
-          ? "bg-[var(--primary)] text-[var(--primary-foreground)] shadow-[0_0_0_1px_rgba(250,204,21,0.45),0_12px_40px_-12px_rgba(250,204,21,0.45)]"
-          : "border border-white/15 text-foreground hover:border-[var(--primary)]/60 hover:text-[var(--primary)] hover:shadow-[0_0_20px_rgba(250,204,21,0.25)]",
-      ].join(" ")}
-    >
-      <span className="relative z-10">{label}</span>
-      {!active && (
-        <span className="pointer-events-none absolute inset-0 rounded-full opacity-0 transition-opacity duration-300 hover:opacity-100 [background:radial-gradient(120px_120px_at_var(--mx,50%)_var(--my,50%),rgba(250,204,21,.18),transparent_45%)]" />
-      )}
-    </button>
-  );
-}
-
 export default function WorkPage() {
   const [selectedCategory, setSelectedCategory] =
     useState<(typeof categories)[number]>("All");
@@ -244,16 +386,12 @@ export default function WorkPage() {
     "/images/honey5.jpg",
   ];
 
-  const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length);
-  };
-
-  const prevImage = () => {
+  const nextImage = () =>
+    setCurrentImageIndex((p) => (p + 1) % galleryImages.length);
+  const prevImage = () =>
     setCurrentImageIndex(
-      (prev) => (prev - 1 + galleryImages.length) % galleryImages.length
+      (p) => (p - 1 + galleryImages.length) % galleryImages.length
     );
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight") nextImage();
     if (e.key === "ArrowLeft") prevImage();
@@ -325,33 +463,15 @@ export default function WorkPage() {
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="relative overflow-hidden">
-                  {project.category === "Commercial" && project.videoFile ? (
-                    <video
-                      src={project.videoFile}
-                      className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                      controls
-                      poster={project.image || "/placeholder.svg"}
-                    >
-                      Your browser does not support the video tag.
-                    </video>
-                  ) : (
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                    />
-                  )}
+                  {/* 15s snippet player */}
+                  <SnippetVideo
+                    project={project}
+                    className="transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                  />
 
                   {/* hover overlay */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                     <Play className="h-12 w-12 text-white transition-all duration-300 group-hover:scale-125 group-hover:text-[var(--primary)]" />
-                  </div>
-
-                  {/* category badge */}
-                  <div className="absolute top-4 left-4 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1">
-                    <Badge className="bg-[var(--primary)] text-[var(--primary-foreground)] shadow-lg group-hover:shadow-[0_0_15px_rgba(250,204,21,0.45)]">
-                      {project.category}
-                    </Badge>
                   </div>
 
                   {/* direct link icon (new tab) */}
@@ -368,12 +488,6 @@ export default function WorkPage() {
                     </a>
                   )}
 
-                  {project.awards && (
-                    <div className="absolute bottom-4 right-4 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                      <Award className="h-6 w-6 text-accent group-hover:text-[var(--primary)] group-hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.65)]" />
-                    </div>
-                  )}
-
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary)]/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
                 </div>
 
@@ -382,10 +496,7 @@ export default function WorkPage() {
                     <h3 className="text-xl font-bold text-card-foreground transition-all duration-300 group-hover:text-[var(--primary)] group-hover:scale-105">
                       {project.title}
                     </h3>
-                    <div className="flex items-center text-muted-foreground text-sm transition-all duration-300 group-hover:text-foreground group-hover:scale-105">
-                      <Calendar className="h-4 w-4 mr-1 transition-all duration-300 group-hover:text-[var(--primary)]" />
-                      {project.year}
-                    </div>
+                    {/* removed calendar/year UI */}
                   </div>
 
                   <p className="text-[var(--primary)] font-medium mb-3 transition-all duration-300 group-hover:scale-105 group-hover:text-yellow-400">
@@ -395,19 +506,6 @@ export default function WorkPage() {
                   <p className="text-muted-foreground text-sm leading-relaxed mb-4 transition-all duration-300 group-hover:text-foreground">
                     {project.description}
                   </p>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.slice(0, 3).map((tag, tagIndex) => (
-                      <Badge
-                        key={tagIndex}
-                        variant="secondary"
-                        className="text-xs transition-all duration-300 group-hover:scale-105 group-hover:bg-[var(--primary)]/20 group-hover:text-[var(--primary)]"
-                        style={{ animationDelay: `${tagIndex * 50}ms` }}
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
                 </CardContent>
               </Card>
             ))}
@@ -422,20 +520,39 @@ export default function WorkPage() {
           onClick={() => setSelectedProject(null)}
         >
           <div
-            className="bg-background rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300 hover:scale-[1.02] transition-transform"
+            className="bg-background rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300 hover:scale-[1.02] transition-transform relative"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Close (fixed to real top-right) */}
+            <CinematicButton
+              as="button"
+              onClick={() => setSelectedProject(null)}
+              className="absolute top-4 right-4 h-12 w-12 rounded-full p-0 !uppercase tracking-normal z-10"
+              aria-label="Close"
+              title="Close"
+            >
+              ×
+            </CinematicButton>
+
             <div className="relative group">
-              {selectedProject.category === "Commercial" &&
-              selectedProject.videoFile ? (
+              {/* If we have a local file, play full video; else YT iframe; else image */}
+              {selectedProject.videoFile ? (
                 <video
                   src={selectedProject.videoFile}
                   className="w-full h-64 sm:h-80 object-cover rounded-t-2xl transition-all duration-500 group-hover:brightness-110"
                   controls
-                  poster={selectedProject.image || "/placeholder.svg"}
-                >
-                  Your browser does not support the video tag.
-                </video>
+                  poster={selectedProject.image}
+                />
+              ) : getYouTubeId(selectedProject.videoUrl) ? (
+                <iframe
+                  className="w-full h-64 sm:h-80 object-cover rounded-t-2xl"
+                  src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(
+                    selectedProject.videoUrl!
+                  )}?autoplay=1&mute=0&controls=1&rel=0`}
+                  title={selectedProject.title}
+                  loading="lazy"
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                />
               ) : (
                 <img
                   src={selectedProject.image || "/placeholder.svg"}
@@ -443,17 +560,6 @@ export default function WorkPage() {
                   className="w-full h-64 sm:h-80 object-cover rounded-t-2xl transition-all duration-500 group-hover:brightness-110"
                 />
               )}
-
-              {/* Close */}
-              <CinematicButton
-                as="button"
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 h-12 w-12 rounded-full p-0 !uppercase tracking-normal"
-                aria-label="Close"
-                title="Close"
-              >
-                ×
-              </CinematicButton>
 
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--primary)]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-t-2xl" />
             </div>
@@ -468,39 +574,12 @@ export default function WorkPage() {
                     {selectedProject.client}
                   </p>
                 </div>
-                <div className="flex items-center gap-4 mt-4 sm:mt-0">
-                  <Badge className="bg-[var(--primary)] text-[var(--primary-foreground)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_15px_rgba(250,204,21,0.45)]">
-                    {selectedProject.category}
-                  </Badge>
-                  <div className="flex items-center text-muted-foreground transition-all duration-300 hover:text-foreground hover:scale-105">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {selectedProject.year}
-                  </div>
-                </div>
+                {/* removed year/calendar block */}
               </div>
 
               <p className="text-lg text-muted-foreground leading-relaxed mb-8 transition-all duration-300 hover:text-foreground cursor-default">
                 {selectedProject.description}
               </p>
-
-              {selectedProject.awards && (
-                <div className="mb-8 group">
-                  <h3 className="text-lg font-semibold text-foreground mb-3 flex items-center transition-all duration-300 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
-                    <Award className="h-5 w-5 mr-2 text-accent transition-all duration-300 group-hover:text-[var(--primary)] group-hover:scale-125 group-hover:rotate-12" />
-                    Awards & Recognition
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedProject.awards.map((award, index) => (
-                      <Badge
-                        key={index}
-                        className="bg-accent text-accent-foreground transition-all duration-300 hover:scale-110 hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] hover:shadow-[0_0_15px_rgba(250,204,21,0.45)] cursor-pointer"
-                      >
-                        {award}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <CinematicButton
@@ -536,18 +615,14 @@ export default function WorkPage() {
       {isGalleryOpen && (
         <div
           className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center overflow-y-auto"
-          onClick={() => {
-            console.log("[v0] Backdrop clicked, closing gallery");
-            setIsGalleryOpen(false);
-          }}
+          onClick={() => setIsGalleryOpen(false)}
           onKeyDown={handleKeyDown}
           tabIndex={0}
         >
-          {/* Close Button */}
+          {/* Close Button (top-right, not mid) */}
           <button
             onClick={(e) => {
               e.stopPropagation();
-              console.log("[v0] Close button clicked");
               setIsGalleryOpen(false);
             }}
             className="absolute top-6 right-6 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 text-white border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
@@ -557,12 +632,7 @@ export default function WorkPage() {
             <X className="h-6 w-6" />
           </button>
 
-          {/* Image Counter */}
-          <div className="absolute top-6 left-6 z-10 px-4 py-2 rounded-full bg-black/50 text-white text-sm font-medium">
-            {currentImageIndex + 1} / {galleryImages.length}
-          </div>
-
-          {/* Previous Button */}
+          {/* Prev/Next */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -572,8 +642,6 @@ export default function WorkPage() {
           >
             <ChevronLeft className="h-8 w-8" />
           </button>
-
-          {/* Next Button */}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -590,22 +658,15 @@ export default function WorkPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <img
-              src={
-                galleryImages[currentImageIndex] ||
-                "/placeholder.svg?height=800&width=1200&query=commercial gallery image" ||
-                "/placeholder.svg" ||
-                "/placeholder.svg" ||
-                "/placeholder.svg" ||
-                "/placeholder.svg"
-              }
+              src={`/images/honey${(currentImageIndex % 5) + 1}.jpg`}
               alt={`Gallery image ${currentImageIndex + 1}`}
               className="w-full h-full object-contain rounded-lg shadow-2xl"
             />
           </div>
 
-          {/* Thumbnail Strip */}
+          {/* Dots */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm">
-            {galleryImages.map((_, index) => (
+            {new Array(5).fill(0).map((_, index) => (
               <button
                 key={index}
                 onClick={(e) => {

@@ -88,12 +88,8 @@ export function AlternatingImagesSection() {
     <section className="py-20 bg-background text-foreground relative overflow-hidden">
       <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16 group">
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 group-hover:-translate-y-2">
-            Dream. Frame. Deliver.
-          </h2>
-          <div className="w-32 h-0.5 bg-gradient-to-r from-primary to-primary/60 mx-auto transition-all duration-500 group-hover:w-48 group-hover:shadow-[0_0_10px_rgba(255,221,0,0.35)]" />
-        </div>
+
+        <div className="w-32 h-0.5 bg-gradient-to-r from-primary to-primary/60 mx-auto transition-all duration-500 group-hover:w-48 group-hover:shadow-[0_0_10px_rgba(255,221,0,0.35)]" />
 
         <div className="space-y-12">
           {imageContent.map((item) => {
@@ -208,22 +204,6 @@ export function AlternatingImagesSection() {
               </div>
             );
           })}
-        </div>
-
-        {/* ===== Take a Glimpse button (exactly like before: black/white, invert on hover) ===== */}
-        <div className="mt-16 flex justify-center">
-          <a
-            href="https://www.youtube.com/watch?v=baQNINsX-B4"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-3 rounded-full border border-white/80 bg-black px-6 py-3 text-white transition-all duration-300 hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.15)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
-            aria-label="Take a Glimpse on YouTube"
-          >
-            <span className="text-sm md:text-base tracking-wide uppercase">
-              Take a Glimpse
-            </span>
-            <span className="h-2 w-2 rounded-full bg-white transition-colors group-hover:bg-black" />
-          </a>
         </div>
       </div>
 

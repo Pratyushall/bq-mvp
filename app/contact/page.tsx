@@ -384,28 +384,6 @@ export default function ContactPage() {
               </div>
 
               {/* Map → open Google Maps */}
-              <Card
-                onClick={openMaps}
-                className="rounded-2xl border-border bg-card mt-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_40px_-12px_rgba(255,255,0,0.25)] hover:border-primary/50 cursor-pointer group/map"
-                title="Open in Google Maps"
-              >
-                <CardContent className="p-0">
-                  <div className="h-64 rounded-2xl bg-muted flex items-center justify-center transition-all duration-500 group-hover/map:bg-primary/10">
-                    <div className="text-center">
-                      <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2 transition-all duration-500 group-hover/map:text-primary group-hover/map:scale-125 group-hover/map:animate-bounce" />
-                      <p className="text-muted-foreground transition-all duration-300 group-hover/map:text-foreground">
-                        Interactive Map
-                      </p>
-                      <p className="text-sm text-muted-foreground transition-all duration-300 group-hover/map:text-primary">
-                        Jubilee Hills, Hyderabad, Telangana, India
-                      </p>
-                      <p className="text-xs text-muted-foreground/70 mt-1">
-                        (click to open Google Maps)
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
@@ -424,13 +402,6 @@ export default function ContactPage() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {/* Start Your Project -> /contact */}
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
-            >
-              <Link href="/contact">Start Your Project</Link>
-            </Button>
 
             {/* View Our Work -> /work */}
             <Button

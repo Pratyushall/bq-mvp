@@ -2,6 +2,8 @@ import { Navigation } from "@/components/navigation";
 import { HeroSection } from "@/components/hero-section";
 import { VideoSection } from "@/components/video-section";
 import { AlternatingImagesSection } from "@/components/alternating-images-section";
+import { ServicesSection } from "@/components/services-section";
+import ScrollFooter from "@/components/scroll-footer";
 
 export default function HomePage() {
   return (
@@ -9,7 +11,9 @@ export default function HomePage() {
       <Navigation />
       <HeroSection />
       <VideoSection />
+      <ServicesSection />
       <AlternatingImagesSection />
+      <ScrollFooter />
     </main>
   );
 }

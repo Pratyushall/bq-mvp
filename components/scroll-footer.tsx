@@ -1,105 +1,111 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import {
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Instagram,
-  Linkedin,
-  Youtube,
-} from "lucide-react";
+import { useState } from "react";
+import { Phone, Mail, Instagram, Youtube } from "lucide-react";
 
 export default function ScrollFooter() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Show footer when scrolling up, hide when scrolling down
-      if (currentScrollY < lastScrollY && currentScrollY > 100) {
-        setIsVisible(true);
-      } else if (currentScrollY > lastScrollY) {
-        setIsVisible(false);
-      }
-
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
-    <footer
-      className={`fixed bottom-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-sm border-t border-yellow-400/20 transition-transform duration-300 ease-in-out ${
-        isVisible ? "translate-y-0" : "translate-y-full"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Company Info */}
-          <div className="flex items-center gap-6">
-            <div className="text-yellow-400 font-serif text-xl font-bold transition-all duration-300 hover:scale-105 hover:text-yellow-300">
-              Balqony Sitraalu
-            </div>
-            <div className="hidden md:flex items-center gap-4 text-sm text-gray-300">
-              <div className="flex items-center gap-2 transition-all duration-300 hover:text-yellow-400 hover:scale-105">
-                <Phone className="w-4 h-4" />
-                <span>+919675867548</span>
-              </div>
-              <div className="flex items-center gap-2 transition-all duration-300 hover:text-yellow-400 hover:scale-105">
-                <Mail className="w-4 h-4" />
-                <span>hello@balqonysitraalu.com</span>
-              </div>
-              <div className="flex items-center gap-2 transition-all duration-300 hover:text-yellow-400 hover:scale-105">
-                <MapPin className="w-4 h-4" />
-                <span>Hyderabad</span>
-              </div>
-            </div>
-          </div>
+    <>
+      {/* Footer (always visible, bigger) */}
+      <footer className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-t border-yellow-400/20">
+        <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between text-base text-gray-300">
+          {/* Brand */}
+          <span className="text-yellow-400 font-semibold text-xl">
+            Balqony Sitraalu
+          </span>
 
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-3">
+          {/* Right cluster: social + contact + copyright */}
+          <div className="flex items-center gap-8">
+            {/* Socials */}
+            <div className="flex items-center gap-6">
               <a
-                href="#"
-                className="text-gray-400 hover:text-yellow-400 transition-all duration-300 hover:scale-125 hover:-translate-y-1"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-yellow-400 transition-all duration-300 hover:scale-125 hover:-translate-y-1"
+                href="https://www.instagram.com/balqony_sitralu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
                 aria-label="Instagram"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="w-7 h-7" />
               </a>
               <a
-                href="#"
-                className="text-gray-400 hover:text-yellow-400 transition-all duration-300 hover:scale-125 hover:-translate-y-1"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-gray-400 hover:text-yellow-400 transition-all duration-300 hover:scale-125 hover:-translate-y-1"
+                href="https://www.youtube.com/@BalQonySitralu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
                 aria-label="YouTube"
               >
-                <Youtube className="w-5 h-5" />
+                <Youtube className="w-7 h-7" />
               </a>
             </div>
-            <div className="text-xs text-gray-500 ml-4 transition-all duration-300 hover:text-yellow-400">
+
+            {/* Contact button (looping pulse, larger) */}
+            <button
+              onClick={() => setIsContactOpen(true)}
+              className="px-5 py-2 text-base rounded-full bg-yellow-400 text-black font-semibold ring-1 ring-yellow-300/70 hover:bg-yellow-300 transition animate-contact-pulse"
+            >
+              Contact Us
+            </button>
+
+            {/* Copyright */}
+            <span className="text-sm text-gray-500">
               © 2024 Balqony Sitraalu
+            </span>
+          </div>
+        </div>
+      </footer>
+
+      {/* Contact Modal */}
+      {isContactOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-8 text-center relative">
+            <button
+              onClick={() => setIsContactOpen(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6">
+              Contact Us
+            </h3>
+            <div className="space-y-6 text-gray-700">
+              <div className="flex items-center justify-center gap-3">
+                <Phone className="w-6 h-6 text-yellow-500" />
+                <span className="font-medium text-lg">+91 94965 67888</span>
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <Mail className="w-6 h-6 text-yellow-500" />
+                <span className="font-medium text-lg">
+                  balqonysitralu@gmail.com
+                </span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </footer>
+      )}
+
+      {/* Styles: looping pulse for Contact button */}
+      <style jsx>{`
+        @keyframes contactPulse {
+          0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.6);
+          }
+          50% {
+            transform: scale(1.06);
+            box-shadow: 0 0 30px 8px rgba(251, 191, 36, 0.25);
+          }
+          100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.6);
+          }
+        }
+        .animate-contact-pulse {
+          animation: contactPulse 2.6s ease-in-out infinite;
+        }
+      `}</style>
+    </>
   );
 }
