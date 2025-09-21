@@ -51,17 +51,67 @@ const DEFAULTS = {
     services: {
       heading: "Services We Offer",
       background: "/images/bqbg.png",
-      items: [
-        "Commercial Ads",
-        "Corporate Ads",
-        "Documentaries",
-        "Music Videos",
-        "Social Media Content",
-        "Events",
-      ],
       link: "/work",
       hoverScale: 1.5,
       leftDividerText: "",
+
+      // New: object items with image + blurb + href
+      items: [
+        {
+          key: "commercial-ads",
+          title: "Commercial Ads",
+          href: "/work?service=commercial-ads",
+          image: "/images/services/commercial-ads.jpg",
+          blurb: "High-impact TVC & digital spots.",
+          published: true,
+          order: 10,
+        },
+        {
+          key: "corporate-ads",
+          title: "Corporate Ads",
+          href: "/work?service=corporate-ads",
+          image: "/images/services/corporate-ads.jpg", // with the camera in frame
+          blurb: "Boardroom to brand films—captured with pro cinema cameras.",
+          published: true,
+          order: 20,
+        },
+        {
+          key: "documentaries",
+          title: "Documentaries",
+          href: "/work?service=documentaries",
+          image: "/images/services/documentaries.jpg", // vintage journal + camera
+          blurb: "Archive, vérité, and lived stories with a human lens.",
+          published: true,
+          order: 30,
+        },
+        {
+          key: "events",
+          title: "Events",
+          href: "/work?service=events",
+          image: "/images/services/events.jpg", // concert + cinematographer
+          blurb: "Concerts, launches, festivals—captured live and loud.",
+          published: true,
+          order: 40,
+        },
+        {
+          key: "music-videos",
+          title: "Music Videos",
+          href: "/work?service=music-videos",
+          image: "/images/services/music.jpg",
+          blurb: "Narrative & performance pieces with style.",
+          published: true,
+          order: 50,
+        },
+        {
+          key: "social-content",
+          title: "Social Media Content",
+          href: "/work?service=social-content",
+          image: "/images/services/social.jpg",
+          blurb: "Snackable vertical edits for every platform.",
+          published: true,
+          order: 60,
+        },
+      ],
     },
     alternating: {
       background: "/images/alternating-bg.png",
