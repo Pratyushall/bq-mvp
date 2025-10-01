@@ -1,12 +1,42 @@
-// app/admin/page.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import type React from "react";
+
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Save,
+  Download,
+  Upload,
+  RotateCcw,
+  Settings,
+  Film,
+  Home,
+  Users,
+  Mail,
+  Globe,
+  AlertCircle,
+  Plus,
+  Trash2,
+} from "lucide-react";
 
 const LOCAL_KEY = "bq.cms";
-const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "balqony"; // set if you want
+const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "balqony";
 
-// Minimal default config that matches your current sections
 const DEFAULTS = {
   site: {
     brand: {
@@ -31,7 +61,6 @@ const DEFAULTS = {
       { href: "/contact", label: "Contact Us" },
     ],
   },
-
   home: {
     hero: {
       video: "/videos/hnvidv.mp4",
@@ -46,273 +75,88 @@ const DEFAULTS = {
       line2:
         "to tell stories that feel like your own, that stay with you forever.",
       background: "/images/bqbg.png",
-      cta: { enabled: false, text: "View Our Work", href: "/hyderabad-nights" },
     },
-    services: {
-      heading: "Services We Offer",
-      background: "/images/bqbg.png",
-      link: "/work",
-      hoverScale: 1.5,
-      leftDividerText: "",
-
-      // New: object items with image + blurb + href
-      items: [
-        {
-          key: "commercial-ads",
-          title: "Commercial Ads",
-          href: "/work?service=commercial-ads",
-          image: "/images/services/commercial-ads.jpg",
-          blurb: "High-impact TVC & digital spots.",
-          published: true,
-          order: 10,
-        },
-        {
-          key: "corporate-ads",
-          title: "Corporate Ads",
-          href: "/work?service=corporate-ads",
-          image: "/images/services/corporate-ads.jpg", // with the camera in frame
-          blurb: "Boardroom to brand films—captured with pro cinema cameras.",
-          published: true,
-          order: 20,
-        },
-        {
-          key: "documentaries",
-          title: "Documentaries",
-          href: "/work?service=documentaries",
-          image: "/images/services/documentaries.jpg", // vintage journal + camera
-          blurb: "Archive, vérité, and lived stories with a human lens.",
-          published: true,
-          order: 30,
-        },
-        {
-          key: "events",
-          title: "Events",
-          href: "/work?service=events",
-          image: "/images/services/events.jpg", // concert + cinematographer
-          blurb: "Concerts, launches, festivals—captured live and loud.",
-          published: true,
-          order: 40,
-        },
-        {
-          key: "music-videos",
-          title: "Music Videos",
-          href: "/work?service=music-videos",
-          image: "/images/services/music.jpg",
-          blurb: "Narrative & performance pieces with style.",
-          published: true,
-          order: 50,
-        },
-        {
-          key: "social-content",
-          title: "Social Media Content",
-          href: "/work?service=social-content",
-          image: "/images/services/social.jpg",
-          blurb: "Snackable vertical edits for every platform.",
-          published: true,
-          order: 60,
-        },
-      ],
-    },
-    alternating: {
-      background: "/images/alternating-bg.png",
-      moreButton: {
-        label: "Take a Glimpse",
-        href: "https://www.youtube.com/watch?v=baQNINsX-B4",
+    projects: [
+      {
+        id: 1,
+        title: "Hyderabad Nights - A Feature Film",
+        description: "",
+        image: "/images/hp4.png",
+        expandedImage: "/images/hnp1.jpg",
+        expandedText:
+          "A cinematic journey through the vibrant streets of Hyderabad after dark...",
+        link: "https://example.com/hyderabad-nights",
       },
-      cards: [
-        {
-          image: "/images/hp4.png",
-          title: "Hyderabad Nights - A Feature Film",
-          description: "",
-          expandedImage: "/images/hnp1.jpg",
-          expandedText:
-            "A cinematic journey through the vibrant streets of Hyderabad after dark...",
-          link: "/hyderabad-nights",
-        },
-        {
-          image: "/images/akb.png",
-          title: "Aksharabhyasam",
-          description: "",
-          expandedImage: "/images/ab1.jpg",
-          expandedText:
-            "An intense psychological thriller that follows a man's relentless pursuit...",
-          link: "/work",
-        },
-      ],
-      motion: {
-        revealThreshold: 0.35,
-        enableCrazyReveal: true,
-        enableSpark: true,
+      {
+        id: 2,
+        title: "Aksharabhyasam",
+        description: "",
+        image: "/images/akb.png",
+        expandedImage: "/images/ab1.jpg",
+        expandedText:
+          "An intense psychological thriller that follows a man's relentless pursuit of justice...",
+        link: "https://example.com/akshabhyasam",
       },
-    },
+    ],
+    services: [
+      {
+        title: "Commercial Ads",
+        href: "/work",
+        image: "/images/comad.png",
+        blurb: "High-impact TVC & digital spots",
+      },
+      {
+        title: "Corporate Films",
+        href: "/work",
+        image: "/images/corp.jpg",
+        blurb: "Brand stories & explainers",
+      },
+      {
+        title: "Documentaries",
+        href: "/work",
+        image: "/images/docu.jpg",
+        blurb: "Real people, real impact",
+      },
+      {
+        title: "Music Videos",
+        href: "/work",
+        image: "/images/musicvid.jpg",
+        blurb: "Narrative & performance pieces",
+      },
+      {
+        title: "Social Content",
+        href: "/work",
+        image: "/images/social.jpg",
+        blurb: "Snackable vertical edits",
+      },
+      {
+        title: "Events",
+        href: "/work",
+        image: "/images/event.jpg",
+        blurb: "Launches, concerts & festivals",
+      },
+    ],
   },
-
-  film: {
-    hyderabadNights: {
-      hero: "/images/hnpd.jpg",
-      background: "/images/film-bg.png",
-      scenes: [
-        {
-          title: "Opening Night",
-          description:
-            "The bustling streets of Hyderabad come alive as our story begins...",
-          image: "/images/hp3.png",
-        },
-        {
-          title: "The Encounter",
-          description:
-            "A chance meeting between two strangers at a local chai stall...",
-          image: "/images/hp4.png",
-        },
-        {
-          title: "City Lights",
-          description:
-            "Neon lights reflect off rain-soaked streets as our protagonists...",
-          image: "/images/2of6.png",
-        },
-        {
-          title: "The Chase",
-          description:
-            "An intense sequence through the narrow lanes of the old city...",
-          image: "/images/3of6.png",
-        },
-        {
-          title: "Emotional Crossroads",
-          description:
-            "A pivotal moment where characters confront their past...",
-          image: "/images/4of6.png",
-        },
-        {
-          title: "Dawn of Hope",
-          description:
-            "As the night gives way to dawn, our story concludes with hope...",
-          image: "/images/1of6.png",
-        },
-      ],
-      bottomCTA: { label: "Take a glimpse", href: "#" },
-      modal: { showDots: true },
-    },
-  },
-
   work: {
     heading: "Our Work",
     intro:
       "Explore our portfolio of award-winning projects that showcase our commitment to creative excellence and innovative storytelling across diverse industries.",
     background: "/images/work-bg.png",
-    categories: [
-      "All",
-      "Commercial",
-      "Corporate",
-      "Documentary",
-      "Music Video",
-      "Social Media",
-      "Short Film",
-    ],
     projects: [
       {
+        id: 1,
         title: "Ad",
         client: "Aegon",
         category: "Corporate",
-        year: "",
         description:
           "A crisp corporate brand film highlighting people, culture, and impact...",
         image: "/images/aegon.png",
         videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-        videoFile: "",
         snippetSrc: "/videos/aegonv.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
         tags: ["Corporate", "Brand Film", "Hyderabad"],
-        awards: [],
-      },
-      {
-        title: "BTC - Behind The Card",
-        client: "Balqony Sitraalu",
-        category: "Documentary",
-        year: "",
-        description: "A documentary.",
-        image: "/images/btc.png",
-        videoUrl: "https://www.youtube.com/watch?v=xlIpoJ15Pb0",
-        snippetSrc: "/videos/btcv.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
-        tags: ["Documentary", "Design", "VFX", "Process"],
-        awards: ["Festival Official Selection"],
-      },
-      {
-        title: "Ee Sannivesham",
-        client: "Independent Artist",
-        category: "Music Video",
-        year: "",
-        description: "A Telugu music video.",
-        image: "/images/es.png",
-        videoUrl: "https://www.youtube.com/watch?v=Q0aZd371bPs",
-        snippetSrc: "/videos/eesanv.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
-        tags: ["Music Video", "Telugu", "Romance"],
-        awards: ["MTV VMA Nomination"],
-      },
-      {
-        title: "Podcasts",
-        client: "",
-        category: "Social Media",
-        year: "",
-        description: "Snackable vertical edits from long-form conversations...",
-        image: "/images/bqk.png",
-        videoUrl: "https://www.youtube.com/watch?v=tEEiIUJlo_U",
-        snippetSrc: "/videos/podcastv.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
-        tags: ["Social Media", "Vertical", "Captions"],
-        awards: [],
-      },
-      {
-        title: "Honey Ad",
-        client: "Balqony Sitraalu",
-        category: "Commercial",
-        year: "",
-        description:
-          "A dreamlike commercial that wanders through rain-washed lanes...",
-        image: "/images/honey1.jpg",
-        videoFile: "/videos/honey.mp4",
-        snippetSrc: "/videos/honey.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
-        tags: ["Commercial", "Cinematic", "Beauty shots"],
-        awards: [],
-      },
-      {
-        title: "Akshabhyasam",
-        client: "",
-        category: "Short Film",
-        year: "",
-        description: "Coverage of the traditional ‘Akshabhyasam’ ceremony...",
-        image: "/images/aksh.png",
-        videoUrl: "https://vimeo.com/845898106",
-        snippetSrc: "/videos/abv.mp4",
-        snippetStart: 0,
-        snippetEnd: 15,
-        tags: ["Short Film"],
-        awards: [],
       },
     ],
-    commercialGallery: {
-      images: [
-        "/images/honey1.jpg",
-        "/images/honey2.jpg",
-        "/images/honey3.jpg",
-        "/images/honey4.jpg",
-        "/images/honey5.jpg",
-      ],
-    },
-    cta: {
-      heading: "Ready to Create Something Amazing?",
-      copy: "Let’s discuss how we can bring your vision to life with the same level of creativity and excellence showcased in our portfolio.",
-      button: { label: "Start Your Project", href: "/contact" },
-    },
   },
-
   about: {
     hero: {
       heading: "Who We Are",
@@ -321,371 +165,1713 @@ const DEFAULTS = {
       background: "/images/about-hero-bg.png",
     },
     story: {
-      heading: "Our Story",
+      title: "Our Story",
       paragraphs: [
-        "Founded in 2014, Balqony Sitraalu emerged from a simple belief: every brand has a unique story worth telling...",
-        "Our name reflects our philosophy—“Balqony” is our elevated perspective...",
+        "Founded in 2014, Balqony Sitraalu emerged from a simple belief: every brand has a unique story worth telling, and every story deserves to be told beautifully.",
+        "Our name reflects our philosophy—'Balqony' is our elevated perspective on storytelling, while 'Sitraalu' channels authenticity that resonates deeper.",
         "Today, we blend timeless narrative with modern craft to create work that looks stunning and moves people.",
       ],
-      background: "/images/about-story-bg.png",
+      image: "/images/abti.png",
     },
-    team: {
-      heading: "Meet Our Team",
-      sub: "A compact crew with a big cinema heart—directors, camera, performance, and post.",
-      background: "/images/about-team-bg.png",
-      members: [
-        {
-          name: "Sagar Yvv",
-          role: "Founder",
-          image: "/images/Sagar.jpg",
-          bio: "Sagar founded Balqony Sitraalu to blend craft and culture—turning everyday moments into cinematic experiences...",
-          dialog: {
-            favoriteGear:
-              "Favorite gear: vintage primes, a quiet dolly, and tungsten practicals.",
-            offSet:
-              "Off-set: chai, old Telugu OSTs, night walks, and color palettes from markets.",
-          },
-        },
-        {
-          name: "Jithin Mohan",
-          role: "Cinematographer",
-          image: "/images/Saik.jpg",
-          bio: "Prefers practicals over perfection. Frames breathe with handheld energy...",
-          dialog: { favoriteGear: "", offSet: "" },
-        },
-        {
-          name: "Shiva Pranav",
-          role: "Actor",
-          image: "/images/pranav1.jpg",
-          bio: "A natural on camera with a quiet range—grounded realism, deadpan humor...",
-          dialog: { favoriteGear: "", offSet: "" },
-        },
-        {
-          name: "Sai Kumar",
-          role: "Editor",
-          image: "/images/saik1.jpg",
-          bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace...",
-          dialog: { favoriteGear: "", offSet: "" },
-        },
-        {
-          name: "Bhanu Prasad",
-          role: "Executive Producer",
-          image: "/images/bhanu.jpg",
-          bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace...",
-          dialog: { favoriteGear: "", offSet: "" },
-        },
-        {
-          name: "Gayathri Gupta",
-          role: "Actor & Show Host",
-          image: "/images/gg.jpg",
-          bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace...",
-          dialog: { favoriteGear: "", offSet: "" },
-        },
-      ],
-      dialogButtons: { closeLabel: "Close" },
-    },
-    cta: {
-      heading: "Ready to Work Together?",
-      copy: "Let's discuss how we can bring your vision to life with our expertise and passion for storytelling.",
-      background: "/images/about-cta-bg.png",
-      buttons: [
-        { label: "Start Your Project", href: "/contact", style: "outline" },
-        { label: "View Our Work", href: "/work", style: "outline" },
-      ],
-    },
+    team: [
+      {
+        name: "Sagar Yvv",
+        role: "Founder",
+        image: "/images/Sagar.jpg",
+        bio: "Sagar founded Balqony Sitraalu to blend craft and culture—turning everyday moments into cinematic experiences.",
+      },
+      {
+        name: "Jithin Mohan",
+        role: "Cinematographer",
+        image: "/images/Saik.jpg",
+        bio: "Prefers practicals over perfection. Frames breathe with handheld energy, neon washes, and subtle natural bounce.",
+      },
+      {
+        name: "Shiva Pranav",
+        role: "Actor",
+        image: "/images/pranav1.jpg",
+        bio: "A natural on camera with a quiet range—grounded realism, deadpan humor, and sudden vulnerability.",
+      },
+      {
+        name: "Sai Kumar",
+        role: "Editor",
+        image: "/images/saik1.jpg",
+        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+      },
+      {
+        name: "Bhanu Prasad",
+        role: "Executive Producer",
+        image: "/images/bhanu.jpg",
+        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+      },
+      {
+        name: "Gayathri Gupta",
+        role: "Actor & Show Host",
+        image: "/images/gg.jpg",
+        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+      },
+    ],
   },
-
+  hyderabadNights: {
+    heroImage: "/images/hnpd.jpg",
+    scenes: [
+      {
+        title: "Opening Night",
+        description:
+          "The bustling streets of Hyderabad come alive as our story begins...",
+        image: "/images/hp3.png",
+      },
+      {
+        title: "The Encounter",
+        description:
+          "A chance meeting between two strangers at a local chai stall...",
+        image: "/images/hp4.png",
+      },
+      {
+        title: "City Lights",
+        description: "Neon lights reflect off rain-soaked streets...",
+        image: "/images/2of6.png",
+      },
+      {
+        title: "The Chase",
+        description:
+          "An intense sequence through the narrow lanes of the old city...",
+        image: "/images/3of6.png",
+      },
+      {
+        title: "Emotional Crossroads",
+        description: "A pivotal moment where characters confront their past...",
+        image: "/images/4of6.png",
+      },
+      {
+        title: "Dawn of Hope",
+        description:
+          "As the night gives way to dawn, our story concludes with hope...",
+        image: "/images/1of6.png",
+      },
+    ],
+  },
   contact: {
     hero: {
       heading: "Get In Touch",
       copy: "Ready to bring your vision to life? Let's discuss your project and explore how we can create something extraordinary together.",
       background: "/images/contact-hero-bg.png",
     },
-    formSpreeId: "yourFormId",
-    scheduleUrl: "https://calendly.com/your_handle/intro-call-15",
     address:
       "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
-    background: "/images/contact-bg.png",
-    mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Balqony%20Sitraalu%20Studio%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
-    phones: ["+91 98765 43210", "+91 91234 56789"],
-    emails: ["hello@balqonysitraalu.com", "projects@balqonysitraalu.com"],
-    businessHours: ["Mon – Sat: 10:00 AM – 7:00 PM", "Sunday: Closed"],
-    formLabels: {
-      name: "Full Name *",
-      email: "Email Address *",
-      company: "Company/Organization",
-      projectType: "Project Type *",
-      budget: "Budget Range",
-      timeline: "Project Timeline",
-      details: "Project Details *",
-      submit: "Send Message",
-      thankYouTitle: "Thank You!",
-      thankYouCopy:
-        "We've received your message and will get back to you shortly.",
-      sending: "Sending...",
-    },
-    projectTypes: [
-      "Commercial",
-      "Corporate Video",
-      "Documentary",
-      "Music Video",
-      "Social Media Content",
-      "Event Coverage",
-      "Other",
-    ],
-    budgets: [
-      "Under ₹10,00,000",
-      "₹10,00,000 – ₹25,00,000",
-      "₹25,00,000 – ₹50,00,000",
-      "₹50,00,000 – ₹1 Cr",
-      "Over ₹1 Cr",
-    ],
-    timelines: [
-      "ASAP",
-      "Within 1 month",
-      "2–3 months",
-      "3–6 months",
-      "Flexible timeline",
-    ],
-    cta: {
-      heading: "Ready to Work Together?",
-      copy: "Let's discuss how we can bring your vision to life with our expertise and passion for storytelling.",
-      buttons: [{ label: "View Our Work", href: "/work" }],
-    },
+    phones: ["+91 94965 67888"],
+    emails: ["balqonysitralu@gmail.com"],
   },
-
   footer: {
     brand: "Balqony Sitraalu",
-    background: "/images/footer-bg.png",
-    instagram: "https://www.instagram.com/balqony_sitralu",
-    youtube: "https://www.youtube.com/@BalQonySitralu",
-    contactButton: { label: "Contact Us" },
-    modal: {
-      phoneLabel: "Phone",
-      phone: "+91 94965 67888",
-      emailLabel: "Email",
-      email: "balqonysitralu@gmail.com",
-      title: "Contact Us",
-      close: "Close",
-    },
     copyright: "© 2025 Balqony Sitraalu",
+    contactPhone: "+91 94965 67888",
+    contactEmail: "balqonysitralu@gmail.com",
   },
 };
 
 type CMS = typeof DEFAULTS;
 
-const SECTIONS = [
-  { key: "site", label: "Site" },
-  { key: "home.hero", label: "Home • Hero" },
-  { key: "home.vision", label: "Home • Vision" },
-  { key: "home.services", label: "Home • Services" },
-  { key: "home.alternating", label: "Home • Alternating" },
-  { key: "work", label: "Work" },
-  { key: "film.hyderabadNights", label: "Hyderabad Nights" },
-  { key: "about.story", label: "About • Story" },
-  { key: "about.team", label: "About • Team" },
-  { key: "contact", label: "Contact" },
-  { key: "footer", label: "Footer" },
-] as const;
-
-type SectionKey = (typeof SECTIONS)[number]["key"];
-
-function get(obj: any, path: string) {
-  return path.split(".").reduce((o, k) => (o ? o[k] : undefined), obj);
-}
-function set(obj: any, path: string, value: any) {
-  const keys = path.split(".");
-  const last = keys.pop() as string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const parent = keys.reduce((o: any, k) => (o[k] ??= {}), obj);
-  parent[last] = value;
-}
-
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
-  const [active, setActive] = useState<SectionKey>("site");
-  const [text, setText] = useState("");
-  const [toast, setToast] = useState<string | null>(null);
+  const [config, setConfig] = useState<CMS>(DEFAULTS);
+  const [activeTab, setActiveTab] = useState("site");
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const { toast } = useToast();
 
-  // Load full config from localStorage (or defaults)
-  const full = useMemo<CMS>(() => {
-    if (typeof window === "undefined") return DEFAULTS as CMS;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     try {
       const raw = window.localStorage.getItem(LOCAL_KEY);
-      return raw ? (JSON.parse(raw) as CMS) : (DEFAULTS as CMS);
+      if (raw) {
+        const loaded = JSON.parse(raw);
+        // Merge loaded config with DEFAULTS to ensure all properties exist
+        const merged = {
+          ...DEFAULTS,
+          site: { ...DEFAULTS.site, ...loaded.site },
+          home: {
+            ...DEFAULTS.home,
+            ...loaded.home,
+            hero: { ...DEFAULTS.home.hero, ...loaded.home?.hero },
+            vision: { ...DEFAULTS.home.vision, ...loaded.home?.vision },
+            projects: loaded.home?.projects || DEFAULTS.home.projects,
+            services: loaded.home?.services || DEFAULTS.home.services,
+          },
+          work: { ...DEFAULTS.work, ...loaded.work },
+          about: {
+            ...DEFAULTS.about,
+            ...loaded.about,
+            hero: { ...DEFAULTS.about.hero, ...loaded.about?.hero },
+            story: { ...DEFAULTS.about.story, ...loaded.about?.story },
+            team: loaded.about?.team || DEFAULTS.about.team,
+          },
+          hyderabadNights: {
+            ...DEFAULTS.hyderabadNights,
+            ...loaded.hyderabadNights,
+            scenes:
+              loaded.hyderabadNights?.scenes || DEFAULTS.hyderabadNights.scenes,
+          },
+          contact: {
+            ...DEFAULTS.contact,
+            ...loaded.contact,
+            hero: { ...DEFAULTS.contact.hero, ...loaded.contact?.hero },
+          },
+          footer: { ...DEFAULTS.footer, ...loaded.footer },
+        };
+        setConfig(merged as CMS);
+      }
     } catch {
-      return DEFAULTS as CMS;
+      // Use defaults if parsing fails
     }
   }, []);
-  const [config, setConfig] = useState<CMS>(full);
 
-  // When tab changes, show that slice as JSON
+  // Authentication check
   useEffect(() => {
-    const slice = get(config, active);
-    setText(JSON.stringify(slice, null, 2));
-  }, [active, config]);
-
-  function ping(msg: string) {
-    setToast(msg);
-    setTimeout(() => setToast(null), 1500);
-  }
-
-  function saveSection() {
-    try {
-      const value = JSON.parse(text);
-      const next = structuredClone(config);
-      set(next, active, value);
-      setConfig(next);
-      window.localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
-      ping("Saved ✔");
-    } catch {
-      ping("Invalid JSON");
+    if (!authed) {
+      const input =
+        typeof window !== "undefined"
+          ? window.prompt("Enter admin password:")
+          : null;
+      if (input === ADMIN_PASS) {
+        setAuthed(true);
+      } else if (input) {
+        alert("Incorrect password");
+      }
     }
-  }
+  }, [authed]);
 
-  function resetSection() {
-    const next = structuredClone(config);
-    set(next, active, get(DEFAULTS, active));
-    setConfig(next);
-    window.localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
-    setText(JSON.stringify(get(DEFAULTS, active), null, 2));
-    ping("Reset to defaults");
-  }
+  const saveConfig = () => {
+    try {
+      window.localStorage.setItem(LOCAL_KEY, JSON.stringify(config));
+      setHasUnsavedChanges(false);
+      toast({
+        title: "✓ Changes saved successfully",
+        description: "Your configuration has been saved to local storage.",
+      });
+    } catch (error) {
+      toast({
+        title: "Save failed",
+        description: "Failed to save configuration. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
 
-  function exportAll() {
+  const exportConfig = () => {
     const blob = new Blob([JSON.stringify(config, null, 2)], {
       type: "application/json",
     });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "balqony-cms.json";
+    a.download = "balqony-cms-config.json";
     a.click();
     URL.revokeObjectURL(a.href);
-  }
+    toast({
+      title: "✓ Configuration exported",
+      description: "Your configuration has been downloaded as JSON.",
+    });
+  };
 
-  function importAll(e: React.ChangeEvent<HTMLInputElement>) {
+  const importConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = () => {
       try {
-        const next = JSON.parse(String(reader.result));
-        setConfig(next);
-        window.localStorage.setItem(LOCAL_KEY, JSON.stringify(next));
-        setText(JSON.stringify(get(next, active), null, 2));
-        ping("Imported ✔");
+        const imported = JSON.parse(String(reader.result));
+        setConfig(imported);
+        window.localStorage.setItem(LOCAL_KEY, JSON.stringify(imported));
+        setHasUnsavedChanges(false);
+        toast({
+          title: "✓ Configuration imported",
+          description: "Your configuration has been imported and saved.",
+        });
       } catch {
-        ping("Invalid file");
+        toast({
+          title: "Import failed",
+          description:
+            "Invalid configuration file. Please check the file format.",
+          variant: "destructive",
+        });
       }
     };
     reader.readAsText(file);
-  }
+  };
 
-  function clearAll() {
-    window.localStorage.removeItem(LOCAL_KEY);
-    setConfig(structuredClone(DEFAULTS));
-    setText(JSON.stringify(get(DEFAULTS, active), null, 2));
-    ping("Cleared");
-  }
+  const resetToDefaults = () => {
+    if (
+      window.confirm(
+        "Are you sure you want to reset all settings to defaults? This cannot be undone."
+      )
+    ) {
+      setConfig(DEFAULTS);
+      window.localStorage.setItem(LOCAL_KEY, JSON.stringify(DEFAULTS));
+      setHasUnsavedChanges(false);
+      toast({
+        title: "✓ Settings reset",
+        description: "All settings have been reset to defaults.",
+      });
+    }
+  };
 
-  function promptGate() {
-    const input =
-      typeof window !== "undefined" ? window.prompt("Password") : null;
-    if (input === ADMIN_PASS) setAuthed(true);
-    else if (input) alert("Wrong password");
-  }
+  const updateConfig = (path: string, value: any) => {
+    const keys = path.split(".");
+    const newConfig = { ...config };
+    let current: any = newConfig;
 
-  useEffect(() => {
-    if (!authed) promptGate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authed]);
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) current[keys[i]] = {};
+      current = current[keys[i]];
+    }
+
+    current[keys[keys.length - 1]] = value;
+    setConfig(newConfig);
+    setHasUnsavedChanges(true);
+  };
+
+  const addArrayItem = (path: string, item: any) => {
+    const keys = path.split(".");
+    const newConfig = { ...config };
+    let current: any = newConfig;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) current[keys[i]] = {};
+      current = current[keys[i]];
+    }
+
+    const arr = current[keys[keys.length - 1]] || [];
+    current[keys[keys.length - 1]] = [...arr, item];
+    setConfig(newConfig);
+    setHasUnsavedChanges(true);
+  };
+
+  const removeArrayItem = (path: string, index: number) => {
+    const keys = path.split(".");
+    const newConfig = { ...config };
+    let current: any = newConfig;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) current[keys[i]] = {};
+      current = current[keys[i]];
+    }
+
+    const arr = current[keys[keys.length - 1]] || [];
+    current[keys[keys.length - 1]] = arr.filter(
+      (_: any, i: number) => i !== index
+    );
+    setConfig(newConfig);
+    setHasUnsavedChanges(true);
+  };
+
+  const updateArrayItem = (
+    path: string,
+    index: number,
+    field: string,
+    value: any
+  ) => {
+    const keys = path.split(".");
+    const newConfig = { ...config };
+    let current: any = newConfig;
+
+    for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) current[keys[i]] = {};
+      current = current[keys[i]];
+    }
+
+    const arr = [...(current[keys[keys.length - 1]] || [])];
+    arr[index] = { ...arr[index], [field]: value };
+    current[keys[keys.length - 1]] = arr;
+    setConfig(newConfig);
+    setHasUnsavedChanges(true);
+  };
 
   if (!authed) return null;
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur px-6 py-4 flex items-center justify-between">
-        <h1 className="text-lg font-semibold">
-          Balqony Sitraalu — Admin (Ultra-Simple)
-        </h1>
-        <div className="flex items-center gap-3 text-sm">
-          <button
-            onClick={exportAll}
-            className="px-3 py-1 rounded bg-white/10 border border-white/20 hover:bg-white/15"
-          >
-            Export
-          </button>
-          <label className="px-3 py-1 rounded bg-white/10 border border-white/20 hover:bg-white/15 cursor-pointer">
-            Import
-            <input
-              type="file"
-              accept="application/json"
-              className="hidden"
-              onChange={importAll}
-            />
-          </label>
-          <button
-            onClick={clearAll}
-            className="px-3 py-1 rounded bg-white/10 border border-white/20 hover:bg-white/15"
-          >
-            Clear
-          </button>
+    <div className="min-h-screen bg-black text-white">
+      {/* Header */}
+      <header className="sticky top-0 z-50 border-b border-yellow-500/20 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/90">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Film className="h-6 w-6 text-yellow-500" />
+            <h1 className="text-xl font-semibold text-white">
+              Balqony Sitraalu CMS
+            </h1>
+            <Badge className="bg-yellow-500 text-black hover:bg-yellow-400">
+              Admin Panel
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {hasUnsavedChanges && (
+              <div className="flex items-center gap-2 text-sm text-yellow-500 mr-2">
+                <AlertCircle className="h-4 w-4" />
+                <span>Unsaved changes</span>
+              </div>
+            )}
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportConfig}
+              className="border-yellow-500/30 bg-black text-white hover:bg-yellow-500/10 hover:text-yellow-500"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+
+            <label>
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+                className="border-yellow-500/30 bg-black text-white hover:bg-yellow-500/10 hover:text-yellow-500"
+              >
+                <span>
+                  <Upload className="h-4 w-4 mr-2" />
+                  Import
+                </span>
+              </Button>
+              <input
+                type="file"
+                accept="application/json"
+                className="hidden"
+                onChange={importConfig}
+              />
+            </label>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={resetToDefaults}
+              className="border-yellow-500/30 bg-black text-white hover:bg-yellow-500/10 hover:text-yellow-500"
+            >
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Reset
+            </Button>
+
+            <Button
+              onClick={saveConfig}
+              className="bg-yellow-500 text-black hover:bg-yellow-400"
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save Changes
+            </Button>
+          </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-6 py-6">
-        <div className="flex flex-wrap gap-2 mb-4">
-          {SECTIONS.map((s) => (
-            <button
-              key={s.key}
-              onClick={() => setActive(s.key)}
-              className={`px-3 py-2 rounded border text-sm ${
-                active === s.key
-                  ? "bg-yellow-400 text-black border-yellow-300"
-                  : "border-white/20 hover:border-yellow-400/50"
-              }`}
+      <div className="container py-6">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="space-y-6"
+        >
+          <TabsList className="grid w-full grid-cols-6 bg-zinc-900 border border-yellow-500/20">
+            <TabsTrigger
+              value="site"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              {s.label}
-            </button>
-          ))}
-        </div>
+              <Settings className="h-4 w-4" />
+              Site
+            </TabsTrigger>
+            <TabsTrigger
+              value="home"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+            >
+              <Home className="h-4 w-4" />
+              Home
+            </TabsTrigger>
+            <TabsTrigger
+              value="work"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+            >
+              <Film className="h-4 w-4" />
+              Work
+            </TabsTrigger>
+            <TabsTrigger
+              value="about"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+            >
+              <Users className="h-4 w-4" />
+              About
+            </TabsTrigger>
+            <TabsTrigger
+              value="hn"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+            >
+              <Film className="h-4 w-4" />
+              HN Film
+            </TabsTrigger>
+            <TabsTrigger
+              value="contact"
+              className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
+            >
+              <Mail className="h-4 w-4" />
+              Contact
+            </TabsTrigger>
+          </TabsList>
 
-        <div className="rounded-lg border border-white/15 overflow-hidden">
-          <div className="bg-white/5 px-4 py-2 text-sm flex items-center justify-between">
-            <span className="opacity-80">{active}</span>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={resetSection}
-                className="px-3 py-1 border border-white/20 rounded hover:border-yellow-400/50"
-              >
-                Reset
-              </button>
-              <button
-                onClick={saveSection}
-                className="px-3 py-1 rounded bg-yellow-400 text-black font-semibold"
-              >
-                Save
-              </button>
-            </div>
-          </div>
-          <textarea
-            spellCheck={false}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="w-full h-[70vh] p-4 font-mono text-sm bg-black text-white/90 outline-none resize-none"
-            placeholder="Edit JSON and Save"
-          />
-        </div>
+          {/* Site Settings Tab */}
+          <TabsContent value="site" className="space-y-6">
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <Globe className="h-5 w-5 text-yellow-500" />
+                  Brand Settings
+                </CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure your brand identity and global site settings
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="brand-name" className="text-white">
+                      Brand Name
+                    </Label>
+                    <Input
+                      id="brand-name"
+                      value={config.site.brand.name}
+                      onChange={(e) =>
+                        updateConfig("site.brand.name", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="logo-path" className="text-white">
+                      Logo Path
+                    </Label>
+                    <Input
+                      id="logo-path"
+                      value={config.site.brand.logo}
+                      onChange={(e) =>
+                        updateConfig("site.brand.logo", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                </div>
 
-        {toast && (
-          <div className="mt-3 text-sm">
-            <span className="px-2 py-1 rounded bg白/10 border border-white/20">
-              {toast}
-            </span>
-          </div>
-        )}
+                <Separator className="bg-yellow-500/20" />
+
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-yellow-500">
+                    Social Media Links
+                  </h4>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="instagram" className="text-white">
+                        Instagram URL
+                      </Label>
+                      <Input
+                        id="instagram"
+                        value={config.site.socials.instagram}
+                        onChange={(e) =>
+                          updateConfig("site.socials.instagram", e.target.value)
+                        }
+                        className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="youtube" className="text-white">
+                        YouTube URL
+                      </Label>
+                      <Input
+                        id="youtube"
+                        value={config.site.socials.youtube}
+                        onChange={(e) =>
+                          updateConfig("site.socials.youtube", e.target.value)
+                        }
+                        className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Separator className="bg-yellow-500/20" />
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium text-yellow-500">
+                      Navigation Menu
+                    </h4>
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        addArrayItem("site.nav", {
+                          href: "/",
+                          label: "New Page",
+                        })
+                      }
+                      className="bg-yellow-500 text-black hover:bg-yellow-400"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Item
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    {config.site.nav.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex gap-2 p-3 bg-black rounded-lg border border-yellow-500/20"
+                      >
+                        <Input
+                          placeholder="Label"
+                          value={item.label}
+                          onChange={(e) =>
+                            updateArrayItem(
+                              "site.nav",
+                              index,
+                              "label",
+                              e.target.value
+                            )
+                          }
+                          className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                        />
+                        <Input
+                          placeholder="URL"
+                          value={item.href}
+                          onChange={(e) =>
+                            updateArrayItem(
+                              "site.nav",
+                              index,
+                              "href",
+                              e.target.value
+                            )
+                          }
+                          className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                        />
+                        <Button
+                          size="icon"
+                          variant="outline"
+                          onClick={() => removeArrayItem("site.nav", index)}
+                          className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">Footer Settings</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure footer content and contact information
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="footer-brand" className="text-white">
+                      Footer Brand Name
+                    </Label>
+                    <Input
+                      id="footer-brand"
+                      value={config.footer.brand}
+                      onChange={(e) =>
+                        updateConfig("footer.brand", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="footer-copyright" className="text-white">
+                      Copyright Text
+                    </Label>
+                    <Input
+                      id="footer-copyright"
+                      value={config.footer.copyright}
+                      onChange={(e) =>
+                        updateConfig("footer.copyright", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="footer-phone" className="text-white">
+                      Contact Phone
+                    </Label>
+                    <Input
+                      id="footer-phone"
+                      value={config.footer.contactPhone}
+                      onChange={(e) =>
+                        updateConfig("footer.contactPhone", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="footer-email" className="text-white">
+                      Contact Email
+                    </Label>
+                    <Input
+                      id="footer-email"
+                      value={config.footer.contactEmail}
+                      onChange={(e) =>
+                        updateConfig("footer.contactEmail", e.target.value)
+                      }
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Home Page Tab */}
+          <TabsContent value="home" className="space-y-6">
+            {/* Hero Section */}
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">Hero Section</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure the main hero section with video background
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="hero-video" className="text-white">
+                    Hero Video Path
+                  </Label>
+                  <Input
+                    id="hero-video"
+                    value={config.home.hero.video}
+                    onChange={(e) =>
+                      updateConfig("home.hero.video", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="marquee-text" className="text-white">
+                    Sliding Marquee Text
+                  </Label>
+                  <Input
+                    id="marquee-text"
+                    value={config.home.hero.marquee}
+                    onChange={(e) =>
+                      updateConfig("home.hero.marquee", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="cta-text" className="text-white">
+                    Call-to-Action Button Text
+                  </Label>
+                  <Input
+                    id="cta-text"
+                    value={config.home.hero.ctaText}
+                    onChange={(e) =>
+                      updateConfig("home.hero.ctaText", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Vision Section */}
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">Vision Section</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure your company vision statement
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="vision-title" className="text-white">
+                    Vision Title
+                  </Label>
+                  <Input
+                    id="vision-title"
+                    value={config.home.vision.title}
+                    onChange={(e) =>
+                      updateConfig("home.vision.title", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="vision-line1" className="text-white">
+                    Vision Line 1
+                  </Label>
+                  <Input
+                    id="vision-line1"
+                    value={config.home.vision.line1}
+                    onChange={(e) =>
+                      updateConfig("home.vision.line1", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="vision-line2" className="text-white">
+                    Vision Line 2
+                  </Label>
+                  <Textarea
+                    id="vision-line2"
+                    value={config.home.vision.line2}
+                    onChange={(e) =>
+                      updateConfig("home.vision.line2", e.target.value)
+                    }
+                    rows={3}
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="vision-background" className="text-white">
+                    Background Image
+                  </Label>
+                  <Input
+                    id="vision-background"
+                    value={config.home.vision.background}
+                    onChange={(e) =>
+                      updateConfig("home.vision.background", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-white">
+                      Featured Projects
+                    </CardTitle>
+                    <CardDescription className="text-zinc-400">
+                      Manage the alternating image cards for featured projects
+                    </CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      addArrayItem("home.projects", {
+                        id: Date.now(),
+                        title: "New Project",
+                        description: "",
+                        image: "/images/placeholder.jpg",
+                        expandedImage: "/images/placeholder.jpg",
+                        expandedText: "Project description...",
+                        link: "",
+                      })
+                    }
+                    className="bg-yellow-500 text-black hover:bg-yellow-400"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Project
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {config.home.projects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-semibold">
+                        Project {index + 1}
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeArrayItem("home.projects", index)}
+                        className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Remove
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Title"
+                        value={project.title}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.projects",
+                            index,
+                            "title",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Link URL"
+                        value={project.link}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.projects",
+                            index,
+                            "link",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Card Image"
+                        value={project.image}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.projects",
+                            index,
+                            "image",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Expanded Image"
+                        value={project.expandedImage}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.projects",
+                            index,
+                            "expandedImage",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                    </div>
+                    <Textarea
+                      placeholder="Expanded description"
+                      value={project.expandedText}
+                      onChange={(e) =>
+                        updateArrayItem(
+                          "home.projects",
+                          index,
+                          "expandedText",
+                          e.target.value
+                        )
+                      }
+                      rows={3}
+                      className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-white">
+                      Services Carousel
+                    </CardTitle>
+                    <CardDescription className="text-zinc-400">
+                      Manage the 3D carousel of services
+                    </CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      addArrayItem("home.services", {
+                        title: "New Service",
+                        href: "/work",
+                        image: "/images/placeholder.jpg",
+                        blurb: "Service description",
+                      })
+                    }
+                    className="bg-yellow-500 text-black hover:bg-yellow-400"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Service
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {config.home.services.map((service, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-semibold">
+                        {service.title}
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeArrayItem("home.services", index)}
+                        className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Service Title"
+                        value={service.title}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.services",
+                            index,
+                            "title",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Link URL"
+                        value={service.href}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.services",
+                            index,
+                            "href",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Image Path"
+                        value={service.image}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "home.services",
+                            index,
+                            "image",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500 col-span-2"
+                      />
+                    </div>
+                    <Textarea
+                      placeholder="Service blurb"
+                      value={service.blurb}
+                      onChange={(e) =>
+                        updateArrayItem(
+                          "home.services",
+                          index,
+                          "blurb",
+                          e.target.value
+                        )
+                      }
+                      rows={2}
+                      className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Work Page Tab */}
+          <TabsContent value="work" className="space-y-6">
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">Work Page Settings</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure your portfolio and work showcase page
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="work-heading" className="text-white">
+                    Page Heading
+                  </Label>
+                  <Input
+                    id="work-heading"
+                    value={config.work.heading}
+                    onChange={(e) =>
+                      updateConfig("work.heading", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="work-intro" className="text-white">
+                    Introduction Text
+                  </Label>
+                  <Textarea
+                    id="work-intro"
+                    value={config.work.intro}
+                    onChange={(e) => updateConfig("work.intro", e.target.value)}
+                    rows={4}
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-white">
+                      Portfolio Projects
+                    </CardTitle>
+                    <CardDescription className="text-zinc-400">
+                      Manage your work portfolio items
+                    </CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      addArrayItem("work.projects", {
+                        id: Date.now(),
+                        title: "New Project",
+                        client: "Client Name",
+                        category: "Commercial",
+                        description: "Project description...",
+                        image: "/images/placeholder.jpg",
+                        videoUrl: "",
+                        snippetSrc: "",
+                        tags: [],
+                      })
+                    }
+                    className="bg-yellow-500 text-black hover:bg-yellow-400"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Project
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {config.work.projects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-semibold">
+                        {project.title}
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeArrayItem("work.projects", index)}
+                        className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        Remove
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Project Title"
+                        value={project.title}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "title",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Client Name"
+                        value={project.client}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "client",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Category"
+                        value={project.category}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "category",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Thumbnail Image"
+                        value={project.image}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "image",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Video URL (YouTube/Vimeo)"
+                        value={project.videoUrl}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "videoUrl",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Snippet Video Path"
+                        value={project.snippetSrc}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "work.projects",
+                            index,
+                            "snippetSrc",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                    </div>
+                    <Textarea
+                      placeholder="Project description"
+                      value={project.description}
+                      onChange={(e) =>
+                        updateArrayItem(
+                          "work.projects",
+                          index,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                      rows={3}
+                      className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* About Page Tab */}
+          <TabsContent value="about" className="space-y-6">
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">About Page Hero</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure the hero section of your about page
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="about-heading" className="text-white">
+                    Hero Heading
+                  </Label>
+                  <Input
+                    id="about-heading"
+                    value={config.about.hero.heading}
+                    onChange={(e) =>
+                      updateConfig("about.hero.heading", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="about-sub" className="text-white">
+                    Hero Subtitle
+                  </Label>
+                  <Textarea
+                    id="about-sub"
+                    value={config.about.hero.sub}
+                    onChange={(e) =>
+                      updateConfig("about.hero.sub", e.target.value)
+                    }
+                    rows={4}
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="about-hero-image" className="text-white">
+                    Hero Image
+                  </Label>
+                  <Input
+                    id="about-hero-image"
+                    value={config.about.hero.heroImage}
+                    onChange={(e) =>
+                      updateConfig("about.hero.heroImage", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="about-hero-bg" className="text-white">
+                    Hero Background Image
+                  </Label>
+                  <Input
+                    id="about-hero-bg"
+                    value={config.about.hero.background}
+                    onChange={(e) =>
+                      updateConfig("about.hero.background", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">Our Story Section</CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure the company story section with multiple paragraphs
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="story-title" className="text-white">
+                    Story Title
+                  </Label>
+                  <Input
+                    id="story-title"
+                    value={config.about.story.title}
+                    onChange={(e) =>
+                      updateConfig("about.story.title", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="story-image" className="text-white">
+                    Story Image
+                  </Label>
+                  <Input
+                    id="story-image"
+                    value={config.about.story.image}
+                    onChange={(e) =>
+                      updateConfig("about.story.image", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <Separator className="bg-yellow-500/20" />
+
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-medium text-yellow-500">
+                      Story Paragraphs
+                    </h4>
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        addArrayItem(
+                          "about.story.paragraphs",
+                          "New paragraph..."
+                        )
+                      }
+                      className="bg-yellow-500 text-black hover:bg-yellow-400"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Paragraph
+                    </Button>
+                  </div>
+                  <div className="space-y-3">
+                    {config.about.story.paragraphs.map((paragraph, index) => (
+                      <div
+                        key={index}
+                        className="p-3 bg-black rounded-lg border border-yellow-500/20 space-y-2"
+                      >
+                        <div className="flex items-center justify-between">
+                          <Label className="text-white text-sm">
+                            Paragraph {index + 1}
+                          </Label>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              removeArrayItem("about.story.paragraphs", index)
+                            }
+                            className="border-red-500/30 text-red-500 hover:bg-red-500/10 h-8"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Textarea
+                          placeholder="Paragraph text..."
+                          value={paragraph}
+                          onChange={(e) => {
+                            const newParagraphs = [
+                              ...config.about.story.paragraphs,
+                            ];
+                            newParagraphs[index] = e.target.value;
+                            updateConfig(
+                              "about.story.paragraphs",
+                              newParagraphs
+                            );
+                          }}
+                          rows={4}
+                          className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-white">Team Members</CardTitle>
+                    <CardDescription className="text-zinc-400">
+                      Manage your team member profiles
+                    </CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      addArrayItem("about.team", {
+                        name: "New Member",
+                        role: "Role",
+                        image: "/images/placeholder.jpg",
+                        bio: "Bio description...",
+                      })
+                    }
+                    className="bg-yellow-500 text-black hover:bg-yellow-400"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Member
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {config.about.team.map((member, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-semibold">
+                        {member.name}
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => removeArrayItem("about.team", index)}
+                        className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Name"
+                        value={member.name}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "about.team",
+                            index,
+                            "name",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Role"
+                        value={member.role}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "about.team",
+                            index,
+                            "role",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Image Path"
+                        value={member.image}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "about.team",
+                            index,
+                            "image",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500 col-span-2"
+                      />
+                    </div>
+                    <Textarea
+                      placeholder="Bio"
+                      value={member.bio}
+                      onChange={(e) =>
+                        updateArrayItem(
+                          "about.team",
+                          index,
+                          "bio",
+                          e.target.value
+                        )
+                      }
+                      rows={3}
+                      className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="hn" className="space-y-6">
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">
+                  Hyderabad Nights Film Page
+                </CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure the Hyderabad Nights film showcase page
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="hn-hero" className="text-white">
+                    Hero Image
+                  </Label>
+                  <Input
+                    id="hn-hero"
+                    value={config.hyderabadNights.heroImage}
+                    onChange={(e) =>
+                      updateConfig("hyderabadNights.heroImage", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-white">Film Scenes</CardTitle>
+                    <CardDescription className="text-zinc-400">
+                      Manage the film scene cards
+                    </CardDescription>
+                  </div>
+                  <Button
+                    size="sm"
+                    onClick={() =>
+                      addArrayItem("hyderabadNights.scenes", {
+                        title: "New Scene",
+                        description: "Scene description...",
+                        image: "/images/placeholder.jpg",
+                      })
+                    }
+                    className="bg-yellow-500 text-black hover:bg-yellow-400"
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Scene
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {config.hyderabadNights.scenes.map((scene, index) => (
+                  <div
+                    key={index}
+                    className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
+                  >
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-white font-semibold">
+                        {scene.title}
+                      </h4>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          removeArrayItem("hyderabadNights.scenes", index)
+                        }
+                        className="border-red-500/30 text-red-500 hover:bg-red-500/10"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Scene Title"
+                        value={scene.title}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "hyderabadNights.scenes",
+                            index,
+                            "title",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                      <Input
+                        placeholder="Image Path"
+                        value={scene.image}
+                        onChange={(e) =>
+                          updateArrayItem(
+                            "hyderabadNights.scenes",
+                            index,
+                            "image",
+                            e.target.value
+                          )
+                        }
+                        className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                      />
+                    </div>
+                    <Textarea
+                      placeholder="Scene description"
+                      value={scene.description}
+                      onChange={(e) =>
+                        updateArrayItem(
+                          "hyderabadNights.scenes",
+                          index,
+                          "description",
+                          e.target.value
+                        )
+                      }
+                      rows={3}
+                      className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Contact Page Tab */}
+          <TabsContent value="contact" className="space-y-6">
+            <Card className="bg-zinc-900 border-yellow-500/20">
+              <CardHeader>
+                <CardTitle className="text-white">
+                  Contact Page Settings
+                </CardTitle>
+                <CardDescription className="text-zinc-400">
+                  Configure your contact information and page content
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="contact-heading" className="text-white">
+                    Hero Heading
+                  </Label>
+                  <Input
+                    id="contact-heading"
+                    value={config.contact.hero.heading}
+                    onChange={(e) =>
+                      updateConfig("contact.hero.heading", e.target.value)
+                    }
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="contact-copy" className="text-white">
+                    Hero Copy
+                  </Label>
+                  <Textarea
+                    id="contact-copy"
+                    value={config.contact.hero.copy}
+                    onChange={(e) =>
+                      updateConfig("contact.hero.copy", e.target.value)
+                    }
+                    rows={3}
+                    className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                  />
+                </div>
+
+                <Separator className="bg-yellow-500/20" />
+
+                <div className="space-y-4">
+                  <h4 className="text-sm font-medium text-yellow-500">
+                    Contact Information
+                  </h4>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="address" className="text-white">
+                      Address
+                    </Label>
+                    <Textarea
+                      id="address"
+                      value={config.contact.address}
+                      onChange={(e) =>
+                        updateConfig("contact.address", e.target.value)
+                      }
+                      rows={2}
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="phone1" className="text-white">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="phone1"
+                      value={config.contact.phones[0]}
+                      onChange={(e) => {
+                        const newPhones = [...config.contact.phones];
+                        newPhones[0] = e.target.value;
+                        updateConfig("contact.phones", newPhones);
+                      }}
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email1" className="text-white">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="email1"
+                      type="email"
+                      value={config.contact.emails[0]}
+                      onChange={(e) => {
+                        const newEmails = [...config.contact.emails];
+                        newEmails[0] = e.target.value;
+                        updateConfig("contact.emails", newEmails);
+                      }}
+                      className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
-    </main>
+    </div>
   );
 }

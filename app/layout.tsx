@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import type React from "react";
 import { Cormorant_Garamond, Cinzel } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/hooks/use-toast";
+import Toaster from "@/components/ui/toaster";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -19,16 +22,17 @@ const cinzel = Cinzel({
 export const metadata: Metadata = {
   title: "Balqony Sitraalu",
   description: "Film production company",
-  themeColor: "#0b0d10", // near-black (slightly grey)
+  themeColor: "#0b0d10",
   icons: { icon: "/favicon.ico" },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" className="dark">
-      {/* NOTE: the whole site background/color comes from globals.css variables */}
       <body
         className={[
           cormorant.variable,
@@ -36,14 +40,16 @@ export default function RootLayout({
           "min-h-screen bg-background text-foreground antialiased",
         ].join(" ")}
       >
-        {/* Optional: anchor for your hero "merge into header" animation. 
-            If you already render a header with #brand-anchor, remove this. */}
+        {/* anchor for brand/hero effects */}
         <div
           id="brand-anchor"
           className="fixed top-6 left-[max(1rem,calc(50%-640px))] h-10 w-40"
           aria-hidden
         />
-        {children}
+        <ToastProvider>
+          {children}
+          <Toaster />
+        </ToastProvider>
       </body>
     </html>
   );
