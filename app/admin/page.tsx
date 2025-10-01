@@ -729,7 +729,7 @@ export default function AdminPage() {
                     </Button>
                   </div>
                   <div className="space-y-3">
-                    {config.site.nav.map((item, index) => (
+                    {config.site?.nav.map((item, index) => (
                       <div
                         key={index}
                         className="flex gap-2 p-3 bg-black rounded-lg border border-yellow-500/20"
@@ -998,7 +998,7 @@ export default function AdminPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {config.home.projects.map((project, index) => (
+                {(config.home?.projects || []).map((project, index) => (
                   <div
                     key={project.id}
                     className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
@@ -1119,7 +1119,7 @@ export default function AdminPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {config.home.services.map((service, index) => (
+                {(config.home?.services || []).map((service, index) => (
                   <div
                     key={index}
                     className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
@@ -1271,7 +1271,7 @@ export default function AdminPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {config.work.projects.map((project, index) => (
+                {(config.work?.projects || []).map((project, index) => (
                   <div
                     key={project.id}
                     className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
@@ -1587,7 +1587,7 @@ export default function AdminPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {config.about.team.map((member, index) => (
+                {(config.about?.team || []).map((member, index) => (
                   <div
                     key={index}
                     className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
@@ -1719,7 +1719,7 @@ export default function AdminPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                {config.hyderabadNights.scenes.map((scene, index) => (
+                {(config.hyderabadNights?.scenes || []).map((scene, index) => (
                   <div
                     key={index}
                     className="p-4 bg-black rounded-lg border border-yellow-500/20 space-y-3"
