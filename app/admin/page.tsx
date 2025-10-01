@@ -345,7 +345,7 @@ export default function AdminPage() {
         window.location.href = "/";
       }
     }
-  }, [mounted]);
+  }, [mounted, authed]);
 
   const saveConfig = () => {
     try {
@@ -495,7 +495,10 @@ export default function AdminPage() {
 
   if (!mounted || !authed) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div
+        className="min-h-screen bg-black flex items-center justify-center"
+        suppressHydrationWarning
+      >
         <div className="text-center">
           <Film className="h-12 w-12 text-yellow-500 mx-auto mb-4 animate-pulse" />
           <p className="text-white text-lg">Loading CMS...</p>
@@ -505,7 +508,7 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white" suppressHydrationWarning>
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-yellow-500/20 bg-black/95 backdrop-blur supports-[backdrop-filter]:bg-black/90">
         <div className="container flex h-16 items-center justify-between">
