@@ -274,13 +274,18 @@ type CMS = typeof DEFAULTS;
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [config, setConfig] = useState<CMS>(DEFAULTS);
   const [activeTab, setActiveTab] = useState("site");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !mounted) return;
     try {
       const raw = window.localStorage.getItem(LOCAL_KEY);
       if (raw) {
@@ -323,22 +328,24 @@ export default function AdminPage() {
     } catch {
       // Use defaults if parsing fails
     }
-  }, []);
+  }, [mounted]);
 
-  // Authentication check
   useEffect(() => {
+    if (!mounted) return;
     if (!authed) {
-      const input =
-        typeof window !== "undefined"
-          ? window.prompt("Enter admin password:")
-          : null;
+      const input = window.prompt("Enter admin password:");
       if (input === ADMIN_PASS) {
         setAuthed(true);
-      } else if (input) {
+      } else if (input !== null) {
         alert("Incorrect password");
+        // Redirect to home if password is wrong
+        window.location.href = "/";
+      } else {
+        // User cancelled, redirect to home
+        window.location.href = "/";
       }
     }
-  }, [authed]);
+  }, [mounted]);
 
   const saveConfig = () => {
     try {
@@ -486,7 +493,16 @@ export default function AdminPage() {
     setHasUnsavedChanges(true);
   };
 
-  if (!authed) return null;
+  if (!mounted || !authed) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <Film className="h-12 w-12 text-yellow-500 mx-auto mb-4 animate-pulse" />
+          <p className="text-white text-lg">Loading CMS...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
