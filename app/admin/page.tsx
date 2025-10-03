@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,15 +33,14 @@ import {
   Trash2,
 } from "lucide-react";
 
+// Keep a client-side copy too (backup/local preview)
 const LOCAL_KEY = "bq.cms";
 const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "balqony";
 
+// ⬇️ Same defaults as server (keep in sync with lib/getServerConfig.ts)
 const DEFAULTS = {
   site: {
-    brand: {
-      name: "Balqony Sitraalu",
-      logo: "/images/bqlogo2.png",
-    },
+    brand: { name: "Balqony Sitraalu", logo: "/images/bqlogo2.png" },
     theme: {
       primary: "#eab308",
       enableHoverGlow: true,
@@ -83,8 +81,7 @@ const DEFAULTS = {
         description: "",
         image: "/images/hp4.png",
         expandedImage: "/images/hnp1.jpg",
-        expandedText:
-          "A cinematic journey through the vibrant streets of Hyderabad after dark...",
+        expandedText: "A cinematic journey...",
         link: "https://example.com/hyderabad-nights",
       },
       {
@@ -93,8 +90,7 @@ const DEFAULTS = {
         description: "",
         image: "/images/akb.png",
         expandedImage: "/images/ab1.jpg",
-        expandedText:
-          "An intense psychological thriller that follows a man's relentless pursuit of justice...",
+        expandedText: "An intense psychological thriller...",
         link: "https://example.com/akshabhyasam",
       },
     ],
@@ -139,8 +135,7 @@ const DEFAULTS = {
   },
   work: {
     heading: "Our Work",
-    intro:
-      "Explore our portfolio of award-winning projects that showcase our commitment to creative excellence and innovative storytelling across diverse industries.",
+    intro: "Explore our portfolio of award-winning projects...",
     background: "/images/work-bg.png",
     projects: [
       {
@@ -148,8 +143,7 @@ const DEFAULTS = {
         title: "Ad",
         client: "Aegon",
         category: "Corporate",
-        description:
-          "A crisp corporate brand film highlighting people, culture, and impact...",
+        description: "A crisp corporate brand film...",
         image: "/images/aegon.png",
         videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
         snippetSrc: "/videos/aegonv.mp4",
@@ -160,16 +154,16 @@ const DEFAULTS = {
   about: {
     hero: {
       heading: "Who We Are",
-      sub: "We are a passionate team of filmmakers, storytellers, and creative professionals dedicated to bringing your vision to life through the power of visual storytelling.",
+      sub: "We are a passionate team of filmmakers...",
       heroImage: "/images/abti.png",
       background: "/images/about-hero-bg.png",
     },
     story: {
       title: "Our Story",
       paragraphs: [
-        "Founded in 2014, Balqony Sitraalu emerged from a simple belief: every brand has a unique story worth telling, and every story deserves to be told beautifully.",
-        "Our name reflects our philosophy—'Balqony' is our elevated perspective on storytelling, while 'Sitraalu' channels authenticity that resonates deeper.",
-        "Today, we blend timeless narrative with modern craft to create work that looks stunning and moves people.",
+        "Founded in 2014, Balqony Sitraalu emerged from a simple belief...",
+        "Our name reflects our philosophy...",
+        "Today, we blend timeless narrative with modern craft...",
       ],
       image: "/images/abti.png",
     },
@@ -178,37 +172,37 @@ const DEFAULTS = {
         name: "Sagar Yvv",
         role: "Founder",
         image: "/images/Sagar.jpg",
-        bio: "Sagar founded Balqony Sitraalu to blend craft and culture—turning everyday moments into cinematic experiences.",
+        bio: "Sagar founded Balqony Sitraalu...",
       },
       {
         name: "Jithin Mohan",
         role: "Cinematographer",
         image: "/images/Saik.jpg",
-        bio: "Prefers practicals over perfection. Frames breathe with handheld energy, neon washes, and subtle natural bounce.",
+        bio: "Prefers practicals...",
       },
       {
         name: "Shiva Pranav",
         role: "Actor",
         image: "/images/pranav1.jpg",
-        bio: "A natural on camera with a quiet range—grounded realism, deadpan humor, and sudden vulnerability.",
+        bio: "A natural on camera...",
       },
       {
         name: "Sai Kumar",
         role: "Editor",
         image: "/images/saik1.jpg",
-        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+        bio: "Cuts for rhythm first...",
       },
       {
         name: "Bhanu Prasad",
         role: "Executive Producer",
         image: "/images/bhanu.jpg",
-        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+        bio: "Cuts for rhythm first...",
       },
       {
         name: "Gayathri Gupta",
         role: "Actor & Show Host",
         image: "/images/gg.jpg",
-        bio: "Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.",
+        bio: "Cuts for rhythm first...",
       },
     ],
   },
@@ -217,36 +211,32 @@ const DEFAULTS = {
     scenes: [
       {
         title: "Opening Night",
-        description:
-          "The bustling streets of Hyderabad come alive as our story begins...",
+        description: "The bustling streets...",
         image: "/images/hp3.png",
       },
       {
         title: "The Encounter",
-        description:
-          "A chance meeting between two strangers at a local chai stall...",
+        description: "A chance meeting...",
         image: "/images/hp4.png",
       },
       {
         title: "City Lights",
-        description: "Neon lights reflect off rain-soaked streets...",
+        description: "Neon lights reflect...",
         image: "/images/2of6.png",
       },
       {
         title: "The Chase",
-        description:
-          "An intense sequence through the narrow lanes of the old city...",
+        description: "An intense sequence...",
         image: "/images/3of6.png",
       },
       {
         title: "Emotional Crossroads",
-        description: "A pivotal moment where characters confront their past...",
+        description: "A pivotal moment...",
         image: "/images/4of6.png",
       },
       {
         title: "Dawn of Hope",
-        description:
-          "As the night gives way to dawn, our story concludes with hope...",
+        description: "As the night gives way...",
         image: "/images/1of6.png",
       },
     ],
@@ -254,7 +244,7 @@ const DEFAULTS = {
   contact: {
     hero: {
       heading: "Get In Touch",
-      copy: "Ready to bring your vision to life? Let's discuss your project and explore how we can create something extraordinary together.",
+      copy: "Ready to bring your vision to life? Let's discuss your project...",
       background: "/images/contact-hero-bg.png",
     },
     address:
@@ -279,63 +269,43 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("site");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !mounted) return;
-    try {
-      const raw = window.localStorage.getItem(LOCAL_KEY);
-      if (raw) {
-        const loaded = JSON.parse(raw);
-        // Merge loaded config with DEFAULTS to ensure all properties exist
-        const merged = {
-          ...DEFAULTS,
-          site: { ...DEFAULTS.site, ...loaded.site },
-          home: {
-            ...DEFAULTS.home,
-            ...loaded.home,
-            hero: { ...DEFAULTS.home.hero, ...loaded.home?.hero },
-            vision: { ...DEFAULTS.home.vision, ...loaded.home?.vision },
-            projects: loaded.home?.projects || DEFAULTS.home.projects,
-            services: loaded.home?.services || DEFAULTS.home.services,
-          },
-          work: { ...DEFAULTS.work, ...loaded.work },
-          about: {
-            ...DEFAULTS.about,
-            ...loaded.about,
-            hero: { ...DEFAULTS.about.hero, ...loaded.about?.hero },
-            story: { ...DEFAULTS.about.story, ...loaded.about?.story },
-            team: loaded.about?.team || DEFAULTS.about.team,
-          },
-          hyderabadNights: {
-            ...DEFAULTS.hyderabadNights,
-            ...loaded.hyderabadNights,
-            scenes:
-              loaded.hyderabadNights?.scenes || DEFAULTS.hyderabadNights.scenes,
-          },
-          contact: {
-            ...DEFAULTS.contact,
-            ...loaded.contact,
-            hero: { ...DEFAULTS.contact.hero, ...loaded.contact?.hero },
-          },
-          footer: { ...DEFAULTS.footer, ...loaded.footer },
-        };
-        setConfig(merged as CMS);
-      }
-    } catch {
-      // Use defaults if parsing fails
-    }
-  }, [mounted]);
-
   const [pwd, setPwd] = useState("");
   const [authErr, setAuthErr] = useState("");
 
+  useEffect(() => setMounted(true), []);
+
+  // Load remote config from Blob on open (so you edit the real value)
+  useEffect(() => {
+    if (!mounted) return;
+    let alive = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/cms", { cache: "no-store" });
+        const remote = await res.json().catch(() => null);
+        if (alive && remote) {
+          // shallow merge so new fields in DEFAULTS don't disappear
+          setConfig((prev) => ({ ...prev, ...remote }));
+          setHasUnsavedChanges(false);
+        } else {
+          // If nothing in Blob yet, fall back to local (if exists)
+          const raw = localStorage.getItem(LOCAL_KEY);
+          if (raw) {
+            const loaded = JSON.parse(raw);
+            setConfig((prev) => ({ ...prev, ...loaded }));
+          }
+        }
+      } catch {
+        // ignore, keep defaults or local
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [mounted]);
+
+  // Optional: quick unlock via query ?admin=1
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // optional shortcut: /admin?admin=1 auto-unlocks
     const qs = new URLSearchParams(window.location.search);
     if (qs.has("admin")) setAuthed(true);
   }, []);
@@ -394,18 +364,26 @@ export default function AdminPage() {
     );
   }
 
-  const saveConfig = () => {
+  // ⬇️ PUBLISH to Blob (and keep local backup)
+  const saveConfig = async () => {
     try {
-      window.localStorage.setItem(LOCAL_KEY, JSON.stringify(config));
-      setHasUnsavedChanges(false);
-      toast({
-        title: "✓ Changes saved successfully",
-        description: "Your configuration has been saved to local storage.",
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(config)); // optional backup
+      const res = await fetch("/api/cms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config),
+        cache: "no-store",
       });
-    } catch (error) {
+      if (!res.ok) throw new Error("Failed to save to Blob");
+      toast({
+        title: "✓ Published globally",
+        description: "Configuration saved to Vercel Blob.",
+      });
+      setHasUnsavedChanges(false);
+    } catch (error: any) {
       toast({
         title: "Save failed",
-        description: "Failed to save configuration. Please try again.",
+        description: error?.message || "Unknown error",
         variant: "destructive",
       });
     }
@@ -429,23 +407,21 @@ export default function AdminPage() {
   const importConfig = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = () => {
       try {
         const imported = JSON.parse(String(reader.result));
         setConfig(imported);
-        window.localStorage.setItem(LOCAL_KEY, JSON.stringify(imported));
-        setHasUnsavedChanges(false);
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(imported));
+        setHasUnsavedChanges(true); // require publish
         toast({
           title: "✓ Configuration imported",
-          description: "Your configuration has been imported and saved.",
+          description: "Click Publish to make it live.",
         });
       } catch {
         toast({
           title: "Import failed",
-          description:
-            "Invalid configuration file. Please check the file format.",
+          description: "Invalid configuration file.",
           variant: "destructive",
         });
       }
@@ -455,63 +431,56 @@ export default function AdminPage() {
 
   const resetToDefaults = () => {
     if (
-      window.confirm(
-        "Are you sure you want to reset all settings to defaults? This cannot be undone."
-      )
+      window.confirm("Reset all settings to defaults? This cannot be undone.")
     ) {
       setConfig(DEFAULTS);
-      window.localStorage.setItem(LOCAL_KEY, JSON.stringify(DEFAULTS));
-      setHasUnsavedChanges(false);
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(DEFAULTS));
+      setHasUnsavedChanges(true); // require publish
       toast({
         title: "✓ Settings reset",
-        description: "All settings have been reset to defaults.",
+        description: "Click Publish to make it live.",
       });
     }
   };
 
+  // helpers to mutate config
   const updateConfig = (path: string, value: any) => {
     const keys = path.split(".");
-    const newConfig = { ...config };
-    let current: any = newConfig;
-
+    const newConfig = { ...config } as any;
+    let curr: any = newConfig;
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+      if (!curr[keys[i]]) curr[keys[i]] = {};
+      curr = curr[keys[i]];
     }
-
-    current[keys[keys.length - 1]] = value;
+    curr[keys[keys.length - 1]] = value;
     setConfig(newConfig);
     setHasUnsavedChanges(true);
   };
 
   const addArrayItem = (path: string, item: any) => {
     const keys = path.split(".");
-    const newConfig = { ...config };
-    let current: any = newConfig;
-
+    const newConfig = { ...config } as any;
+    let curr: any = newConfig;
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+      if (!curr[keys[i]]) curr[keys[i]] = {};
+      curr = curr[keys[i]];
     }
-
-    const arr = current[keys[keys.length - 1]] || [];
-    current[keys[keys.length - 1]] = [...arr, item];
+    const arr = curr[keys[keys.length - 1]] || [];
+    curr[keys[keys.length - 1]] = [...arr, item];
     setConfig(newConfig);
     setHasUnsavedChanges(true);
   };
 
   const removeArrayItem = (path: string, index: number) => {
     const keys = path.split(".");
-    const newConfig = { ...config };
-    let current: any = newConfig;
-
+    const newConfig = { ...config } as any;
+    let curr: any = newConfig;
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+      if (!curr[keys[i]]) curr[keys[i]] = {};
+      curr = curr[keys[i]];
     }
-
-    const arr = current[keys[keys.length - 1]] || [];
-    current[keys[keys.length - 1]] = arr.filter(
+    const arr = curr[keys[keys.length - 1]] || [];
+    curr[keys[keys.length - 1]] = arr.filter(
       (_: any, i: number) => i !== index
     );
     setConfig(newConfig);
@@ -525,34 +494,18 @@ export default function AdminPage() {
     value: any
   ) => {
     const keys = path.split(".");
-    const newConfig = { ...config };
-    let current: any = newConfig;
-
+    const newConfig = { ...config } as any;
+    let curr: any = newConfig;
     for (let i = 0; i < keys.length - 1; i++) {
-      if (!current[keys[i]]) current[keys[i]] = {};
-      current = current[keys[i]];
+      if (!curr[keys[i]]) curr[keys[i]] = {};
+      curr = curr[keys[i]];
     }
-
-    const arr = [...(current[keys[keys.length - 1]] || [])];
+    const arr = [...(curr[keys[keys.length - 1]] || [])];
     arr[index] = { ...arr[index], [field]: value };
-    current[keys[keys.length - 1]] = arr;
+    curr[keys[keys.length - 1]] = arr;
     setConfig(newConfig);
     setHasUnsavedChanges(true);
   };
-
-  if (!mounted || !authed) {
-    return (
-      <div
-        className="min-h-screen bg-black flex items-center justify-center"
-        suppressHydrationWarning
-      >
-        <div className="text-center">
-          <Film className="h-12 w-12 text-yellow-500 mx-auto mb-4 animate-pulse" />
-          <p className="text-white text-lg">Loading CMS...</p>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-black text-white" suppressHydrationWarning>
@@ -562,7 +515,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <Film className="h-6 w-6 text-yellow-500" />
             <h1 className="text-xl font-semibold text-white">
-              Balqony Sitralu CMS
+              Balqony Sitraalu CMS
             </h1>
             <Badge className="bg-yellow-500 text-black hover:bg-yellow-400">
               Admin Panel
@@ -626,12 +579,13 @@ export default function AdminPage() {
               className="bg-yellow-500 text-black hover:bg-yellow-400"
             >
               <Save className="h-4 w-4 mr-2" />
-              Save Changes
+              Publish
             </Button>
           </div>
         </div>
       </header>
 
+      {/* Body */}
       <div className="container py-6">
         <Tabs
           value={activeTab}
@@ -643,53 +597,46 @@ export default function AdminPage() {
               value="site"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Settings className="h-4 w-4" />
-              Site
+              <Settings className="h-4 w-4" /> Site
             </TabsTrigger>
             <TabsTrigger
               value="home"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Home className="h-4 w-4" />
-              Home
+              <Home className="h-4 w-4" /> Home
             </TabsTrigger>
             <TabsTrigger
               value="work"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Film className="h-4 w-4" />
-              Work
+              <Film className="h-4 w-4" /> Work
             </TabsTrigger>
             <TabsTrigger
               value="about"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Users className="h-4 w-4" />
-              About
+              <Users className="h-4 w-4" /> About
             </TabsTrigger>
             <TabsTrigger
               value="hn"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Film className="h-4 w-4" />
-              HN Film
+              <Film className="h-4 w-4" /> HN Film
             </TabsTrigger>
             <TabsTrigger
               value="contact"
               className="flex items-center gap-2 data-[state=active]:bg-yellow-500 data-[state=active]:text-black"
             >
-              <Mail className="h-4 w-4" />
-              Contact
+              <Mail className="h-4 w-4" /> Contact
             </TabsTrigger>
           </TabsList>
 
-          {/* Site Settings Tab */}
+          {/* Site Settings */}
           <TabsContent value="site" className="space-y-6">
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
-                  <Globe className="h-5 w-5 text-yellow-500" />
-                  Brand Settings
+                  <Globe className="h-5 w-5 text-yellow-500" /> Brand Settings
                 </CardTitle>
                 <CardDescription className="text-zinc-400">
                   Configure your brand identity and global site settings
@@ -778,8 +725,7 @@ export default function AdminPage() {
                       }
                       className="bg-yellow-500 text-black hover:bg-yellow-400"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Item
+                      <Plus className="h-4 w-4 mr-2" /> Add Item
                     </Button>
                   </div>
                   <div className="space-y-3">
@@ -897,9 +843,8 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
-          {/* Home Page Tab */}
+          {/* Home */}
           <TabsContent value="home" className="space-y-6">
-            {/* Hero Section */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Hero Section</CardTitle>
@@ -921,7 +866,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="marquee-text" className="text-white">
                     Sliding Marquee Text
@@ -935,7 +879,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="cta-text" className="text-white">
                     Call-to-Action Button Text
@@ -952,7 +895,7 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
-            {/* Vision Section */}
+            {/* Vision */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Vision Section</CardTitle>
@@ -974,7 +917,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="vision-line1" className="text-white">
                     Vision Line 1
@@ -988,7 +930,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="vision-line2" className="text-white">
                     Vision Line 2
@@ -1003,7 +944,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="vision-background" className="text-white">
                     Background Image
@@ -1020,6 +960,7 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
+            {/* Featured projects */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -1046,8 +987,7 @@ export default function AdminPage() {
                     }
                     className="bg-yellow-500 text-black hover:bg-yellow-400"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Project
+                    <Plus className="h-4 w-4 mr-2" /> Add Project
                   </Button>
                 </div>
               </CardHeader>
@@ -1067,8 +1007,7 @@ export default function AdminPage() {
                         onClick={() => removeArrayItem("home.projects", index)}
                         className="border-red-500/30 text-red-500 hover:bg-red-500/10"
                       >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Remove
+                        <Trash2 className="h-4 w-4 mr-2" /> Remove
                       </Button>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -1144,6 +1083,7 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
+            {/* Services */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -1167,8 +1107,7 @@ export default function AdminPage() {
                     }
                     className="bg-yellow-500 text-black hover:bg-yellow-400"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Service
+                    <Plus className="h-4 w-4 mr-2" /> Add Service
                   </Button>
                 </div>
               </CardHeader>
@@ -1252,7 +1191,7 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
-          {/* Work Page Tab */}
+          {/* Work */}
           <TabsContent value="work" className="space-y-6">
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
@@ -1275,7 +1214,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="work-intro" className="text-white">
                     Introduction Text
@@ -1319,8 +1257,7 @@ export default function AdminPage() {
                     }
                     className="bg-yellow-500 text-black hover:bg-yellow-400"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Project
+                    <Plus className="h-4 w-4 mr-2" /> Add Project
                   </Button>
                 </div>
               </CardHeader>
@@ -1340,8 +1277,7 @@ export default function AdminPage() {
                         onClick={() => removeArrayItem("work.projects", index)}
                         className="border-red-500/30 text-red-500 hover:bg-red-500/10"
                       >
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Remove
+                        <Trash2 className="h-4 w-4 mr-2" /> Remove
                       </Button>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -1444,7 +1380,7 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
-          {/* About Page Tab */}
+          {/* About */}
           <TabsContent value="about" className="space-y-6">
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
@@ -1467,7 +1403,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="about-sub" className="text-white">
                     Hero Subtitle
@@ -1482,7 +1417,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="about-hero-image" className="text-white">
                     Hero Image
@@ -1496,7 +1430,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="about-hero-bg" className="text-white">
                     Hero Background Image
@@ -1513,6 +1446,7 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
+            {/* Story */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <CardTitle className="text-white">Our Story Section</CardTitle>
@@ -1534,7 +1468,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="story-image" className="text-white">
                     Story Image
@@ -1566,8 +1499,7 @@ export default function AdminPage() {
                       }
                       className="bg-yellow-500 text-black hover:bg-yellow-400"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Paragraph
+                      <Plus className="h-4 w-4 mr-2" /> Add Paragraph
                     </Button>
                   </div>
                   <div className="space-y-3">
@@ -1595,14 +1527,9 @@ export default function AdminPage() {
                           placeholder="Paragraph text..."
                           value={paragraph}
                           onChange={(e) => {
-                            const newParagraphs = [
-                              ...config.about.story.paragraphs,
-                            ];
-                            newParagraphs[index] = e.target.value;
-                            updateConfig(
-                              "about.story.paragraphs",
-                              newParagraphs
-                            );
+                            const arr = [...config.about.story.paragraphs];
+                            arr[index] = e.target.value;
+                            updateConfig("about.story.paragraphs", arr);
                           }}
                           rows={4}
                           className="bg-zinc-900 border-yellow-500/30 text-white focus:border-yellow-500"
@@ -1614,6 +1541,7 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
+            {/* Team */}
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -1635,8 +1563,7 @@ export default function AdminPage() {
                     }
                     className="bg-yellow-500 text-black hover:bg-yellow-400"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Member
+                    <Plus className="h-4 w-4 mr-2" /> Add Member
                   </Button>
                 </div>
               </CardHeader>
@@ -1720,6 +1647,7 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
+          {/* Hyderabad Nights */}
           <TabsContent value="hn" className="space-y-6">
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
@@ -1767,8 +1695,7 @@ export default function AdminPage() {
                     }
                     className="bg-yellow-500 text-black hover:bg-yellow-400"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add Scene
+                    <Plus className="h-4 w-4 mr-2" /> Add Scene
                   </Button>
                 </div>
               </CardHeader>
@@ -1841,7 +1768,7 @@ export default function AdminPage() {
             </Card>
           </TabsContent>
 
-          {/* Contact Page Tab */}
+          {/* Contact */}
           <TabsContent value="contact" className="space-y-6">
             <Card className="bg-zinc-900 border-yellow-500/20">
               <CardHeader>
@@ -1866,7 +1793,6 @@ export default function AdminPage() {
                     className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                   />
                 </div>
-
                 <div className="space-y-2">
                   <Label htmlFor="contact-copy" className="text-white">
                     Hero Copy
@@ -1912,9 +1838,9 @@ export default function AdminPage() {
                       id="phone1"
                       value={config.contact.phones[0]}
                       onChange={(e) => {
-                        const newPhones = [...config.contact.phones];
-                        newPhones[0] = e.target.value;
-                        updateConfig("contact.phones", newPhones);
+                        const arr = [...config.contact.phones];
+                        arr[0] = e.target.value;
+                        updateConfig("contact.phones", arr);
                       }}
                       className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                     />
@@ -1929,9 +1855,9 @@ export default function AdminPage() {
                       type="email"
                       value={config.contact.emails[0]}
                       onChange={(e) => {
-                        const newEmails = [...config.contact.emails];
-                        newEmails[0] = e.target.value;
-                        updateConfig("contact.emails", newEmails);
+                        const arr = [...config.contact.emails];
+                        arr[0] = e.target.value;
+                        updateConfig("contact.emails", arr);
                       }}
                       className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
                     />
