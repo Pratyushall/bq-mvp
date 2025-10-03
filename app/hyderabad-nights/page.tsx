@@ -119,16 +119,7 @@ export default function HyderabadNightsPage() {
           </div>
 
           {/* Bottom CTA: black & white button */}
-          <div className="mt-12 flex justify-center">
-            <button
-              className="px-8 py-3 rounded-full border border-white/80 text-white bg-transparent
-                         hover:bg-white hover:text-black transition-all duration-300
-                         shadow-[0_0_0_rgba(255,255,255,0)] hover:shadow-[0_0_22px_rgba(255,255,255,0.18)]
-                         tracking-wide uppercase"
-            >
-              Take a glimpse
-            </button>
-          </div>
+          <div className="mt-12 flex justify-center"></div>
         </div>
       </div>
 
