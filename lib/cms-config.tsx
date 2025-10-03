@@ -12,7 +12,7 @@ const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || "balqony"; // set if yo
 const DEFAULTS = {
   site: {
     brand: {
-      name: "Balqony Sitraalu",
+      name: "Balqony Sitralu",
       logo: "/images/bqlogo2.png",
     },
     theme: {
@@ -229,7 +229,7 @@ const DEFAULTS = {
       },
       {
         title: "BTC - Behind The Card",
-        client: "Balqony Sitraalu",
+        client: "Balqony Sitralu",
         category: "Documentary",
         year: "",
         description: "A documentary.",
@@ -271,7 +271,7 @@ const DEFAULTS = {
       },
       {
         title: "Honey Ad",
-        client: "Balqony Sitraalu",
+        client: "Balqony Sitralu",
         category: "Commercial",
         year: "",
         description:
@@ -406,12 +406,12 @@ const DEFAULTS = {
     formSpreeId: "yourFormId",
     scheduleUrl: "https://calendly.com/your_handle/intro-call-15",
     address:
-      "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
+      "Balqony Sitralu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
     background: "/images/contact-bg.png",
     mapsUrl:
-      "https://www.google.com/maps/search/?api=1&query=Balqony%20Sitraalu%20Studio%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
+      "https://www.google.com/maps/search/?api=1&query=Balqony%20Sitralu%20Studio%2C%20Jubilee%20Hills%2C%20Hyderabad%2C%20Telangana%20500033",
     phones: ["+91 98765 43210", "+91 91234 56789"],
-    emails: ["hello@balqonysitraalu.com", "projects@balqonysitraalu.com"],
+    emails: ["hello@balqonysitralu.com", "projects@balqonysitralu.com"],
     businessHours: ["Mon – Sat: 10:00 AM – 7:00 PM", "Sunday: Closed"],
     formLabels: {
       name: "Full Name *",
@@ -458,7 +458,7 @@ const DEFAULTS = {
   },
 
   footer: {
-    brand: "Balqony Sitraalu",
+    brand: "Balqony Sitralu",
     background: "/images/footer-bg.png",
     instagram: "https://www.instagram.com/balqony_sitralu",
     youtube: "https://www.youtube.com/@BalQonySitralu",
@@ -609,7 +609,7 @@ export default function AdminPage() {
     <main className="min-h-screen bg-black text-white">
       <header className="sticky top-0 z-10 border-b border-white/10 bg-black/70 backdrop-blur px-6 py-4 flex items-center justify-between">
         <h1 className="text-lg font-semibold">
-          Balqony Sitraalu — Admin (Ultra-Simple)
+          Balqony Sitralu — Admin (Ultra-Simple)
         </h1>
         <div className="flex items-center gap-3 text-sm">
           <button

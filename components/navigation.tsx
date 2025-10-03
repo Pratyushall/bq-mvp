@@ -63,11 +63,11 @@ export function Navigation() {
             href="/"
             id="brand-anchor"
             className="group inline-flex items-center gap-2 transition-transform hover:scale-[1.03]"
-            aria-label="Balqony Sitraalu — Home"
+            aria-label="Balqony Sitralu — Home"
           >
             <Image
               src="/images/bqlogo2.png"
-              alt="Balqony Sitraalu"
+              alt="Balqony Sitralu"
               width={180}
               height={48}
               priority

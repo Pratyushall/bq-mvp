@@ -248,13 +248,13 @@ const DEFAULTS = {
       background: "/images/contact-hero-bg.png",
     },
     address:
-      "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
+      "Balqony Sitralu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
     phones: ["+91 94965 67888"],
     emails: ["balqonysitralu@gmail.com"],
   },
   footer: {
-    brand: "Balqony Sitraalu",
-    copyright: "© 2025 Balqony Sitraalu",
+    brand: "Balqony Sitralu",
+    copyright: "© 2025 Balqony Sitralu",
     contactPhone: "+91 94965 67888",
     contactEmail: "balqonysitralu@gmail.com",
   },
@@ -515,7 +515,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <Film className="h-6 w-6 text-yellow-500" />
             <h1 className="text-xl font-semibold text-white">
-              Balqony Sitraalu CMS
+              Balqony Sitralu CMS
             </h1>
             <Badge className="bg-yellow-500 text-black hover:bg-yellow-400">
               Admin Panel

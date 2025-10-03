@@ -22,7 +22,7 @@ import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/xgvnyrbg"; // ✅ your real Formspree endpoint
 const SCHEDULE_URL = "https://calendly.com/your_handle/intro-call-15";
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033"
+  "Balqony Sitralu Studio, Jubilee Hills, Hyderabad, Telangana 500033"
 )}`;
 
 export default function ContactPage() {
@@ -106,7 +106,7 @@ export default function ContactPage() {
       icon: MapPin,
       title: "Our Studio",
       details: [
-        "Balqony Sitraalu Studio",
+        "Balqony Sitralu Studio",
         "Jubilee Hills, Hyderabad, Telangana 500033",
         "India",
       ],

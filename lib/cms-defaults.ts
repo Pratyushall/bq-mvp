@@ -4,7 +4,7 @@ export const CMS_KEY = "bq.cms";
 export const DEFAULTS = {
   site: {
     brand: {
-      name: "Balqony Sitraalu",
+      name: "Balqony Sitralu",
       logo: "/images/bqlogo2.png",
     },
     theme: {
@@ -222,13 +222,13 @@ export const DEFAULTS = {
       background: "/images/contact-hero-bg.png",
     },
     address:
-      "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
+      "Balqony Sitralu Studio, Jubilee Hills, Hyderabad, Telangana 500033",
     phones: ["+91 94965 67888"],
     emails: ["balqonysitralu@gmail.com"],
   },
   footer: {
-    brand: "Balqony Sitraalu",
-    copyright: "© 2025 Balqony Sitraalu",
+    brand: "Balqony Sitralu",
+    copyright: "© 2025 Balqony Sitralu",
     contactPhone: "+91 94965 67888",
     contactEmail: "balqonysitralu@gmail.com",
   },

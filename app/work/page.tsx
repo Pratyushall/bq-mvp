@@ -56,7 +56,7 @@ const projects: Project[] = [
   {
     id: 2,
     title: "BTC - Behind The Card",
-    client: "Balqony Sitraalu",
+    client: "Balqony Sitralu",
     category: "Documentary",
     year: "",
     description: "A documentary.",
@@ -95,7 +95,7 @@ const projects: Project[] = [
   {
     id: 5,
     title: "Honey Ad",
-    client: "Balqony Sitraalu",
+    client: "Balqony Sitralu",
     category: "Commercial",
     year: "",
     description:

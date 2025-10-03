@@ -20,7 +20,7 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "Balqony Sitraalu",
+  title: "Balqony Sitralu",
   description: "Film production company",
   themeColor: "#0b0d10",
   icons: { icon: "/favicon.ico" },

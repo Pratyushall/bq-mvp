@@ -13,7 +13,7 @@ export default function ScrollFooter() {
         <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between text-base text-gray-300">
           {/* Brand */}
           <span className="text-yellow-400 font-semibold text-xl">
-            Balqony Sitraalu
+            Balqony Sitralu
           </span>
 
           {/* Right cluster: social + contact + copyright */}
@@ -49,9 +49,7 @@ export default function ScrollFooter() {
             </button>
 
             {/* Copyright */}
-            <span className="text-sm text-gray-500">
-              © 2024 Balqony Sitraalu
-            </span>
+            <span className="text-sm text-gray-500">© Balqony Sitralu</span>
           </div>
         </div>
       </footer>
