@@ -49,7 +49,7 @@ const projects: Project[] = [
     description:
       "A crisp corporate brand film highlighting people, culture, and impact—shot across Hyderabad offices and shopfloors with clean graphics and VO.",
     image: "/images/aegon.png",
-    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    videoUrl: "",
     snippetSrc: "/videos/aegonv.mp4",
     tags: ["Corporate", "Brand Film", "Hyderabad"],
   },

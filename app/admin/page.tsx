@@ -330,22 +330,69 @@ export default function AdminPage() {
     }
   }, [mounted]);
 
+  const [pwd, setPwd] = useState("");
+  const [authErr, setAuthErr] = useState("");
+
   useEffect(() => {
-    if (!mounted) return;
-    if (!authed) {
-      const input = window.prompt("Enter admin password:");
-      if (input === ADMIN_PASS) {
-        setAuthed(true);
-      } else if (input !== null) {
-        alert("Incorrect password");
-        // Redirect to home if password is wrong
-        window.location.href = "/";
-      } else {
-        // User cancelled, redirect to home
-        window.location.href = "/";
-      }
-    }
-  }, [mounted, authed]);
+    if (typeof window === "undefined") return;
+    // optional shortcut: /admin?admin=1 auto-unlocks
+    const qs = new URLSearchParams(window.location.search);
+    if (qs.has("admin")) setAuthed(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div
+        className="min-h-screen bg-black flex items-center justify-center"
+        suppressHydrationWarning
+      >
+        <div className="text-center">
+          <Film className="h-12 w-12 text-yellow-500 mx-auto mb-4 animate-pulse" />
+          <p className="text-white text-lg">Loading CMS...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!authed) {
+    return (
+      <div
+        className="min-h-screen bg-black flex items-center justify-center px-4"
+        suppressHydrationWarning
+      >
+        <div className="w-full max-w-sm bg-zinc-900 border border-yellow-500/20 p-6 rounded-2xl space-y-4">
+          <div className="flex items-center gap-2">
+            <Film className="h-6 w-6 text-yellow-500" />
+            <h1 className="text-white text-lg font-semibold">Admin Login</h1>
+          </div>
+          <Label htmlFor="admin-pass" className="text-white">
+            Password
+          </Label>
+          <Input
+            id="admin-pass"
+            type="password"
+            value={pwd}
+            onChange={(e) => setPwd(e.target.value)}
+            className="bg-black border-yellow-500/30 text-white focus:border-yellow-500"
+          />
+          {authErr && <p className="text-sm text-red-400">{authErr}</p>}
+          <Button
+            onClick={() => {
+              if (pwd === ADMIN_PASS) setAuthed(true);
+              else setAuthErr("Incorrect password");
+            }}
+            className="w-full bg-yellow-500 text-black hover:bg-yellow-400"
+          >
+            Enter
+          </Button>
+          <p className="text-xs text-zinc-400">
+            Tip: add <code>?admin=1</code> to the URL to skip this gate on your
+            device.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   const saveConfig = () => {
     try {
@@ -515,7 +562,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <Film className="h-6 w-6 text-yellow-500" />
             <h1 className="text-xl font-semibold text-white">
-              Balqony Sitraalu CMS
+              Balqony Sitralu CMS
             </h1>
             <Badge className="bg-yellow-500 text-black hover:bg-yellow-400">
               Admin Panel
