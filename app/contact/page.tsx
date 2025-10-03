@@ -19,9 +19,8 @@ import {
 } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 
-/** 🔧 TODO: Replace these with your real links */
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/yourFormId"; // <-- Formspree form ID
-const SCHEDULE_URL = "https://calendly.com/your_handle/intro-call-15"; // <-- or "tel:+919876543210"
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xgvnyrbg"; // ✅ your real Formspree endpoint
+const SCHEDULE_URL = "https://calendly.com/your_handle/intro-call-15";
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
   "Balqony Sitraalu Studio, Jubilee Hills, Hyderabad, Telangana 500033"
 )}`;
@@ -43,23 +42,31 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // 👉 Send Message
+  // 👉 Send Message via Formspree
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!FORMSPREE_ENDPOINT.includes("formspree.io/f/")) {
-      alert("Add your Formspree endpoint in the file (FORMSPREE_ENDPOINT).");
+    if (!/^https:\/\/formspree\.io\/f\/.+/.test(FORMSPREE_ENDPOINT)) {
+      alert("Add your real Formspree endpoint to FORMSPREE_ENDPOINT.");
       return;
     }
     setSubmitting(true);
     try {
+      const payload = {
+        ...formData,
+        _subject: `New inquiry from ${formData.name || "Website"}`,
+        _replyto: formData.email,
+        _format: "json",
+      };
+
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
+
       if (res.ok) {
         setIsSubmitted(true);
         setFormData({
@@ -227,7 +234,6 @@ export default function ContactPage() {
                               <SelectTrigger className="rounded-2xl bg-background border-border/80 hover:border-primary/40 focus:border-primary focus-visible:ring-2 focus-visible:ring-primary/40">
                                 <SelectValue placeholder="Select project type" />
                               </SelectTrigger>
-                              {/* Opaque menu so text behind doesn't bleed through */}
                               <SelectContent className="z-[70] bg-background text-foreground border border-border shadow-2xl rounded-xl overflow-hidden">
                                 <SelectItem value="commercial">
                                   Commercial
@@ -382,8 +388,6 @@ export default function ContactPage() {
                   </Card>
                 ))}
               </div>
-
-              {/* Map → open Google Maps */}
             </div>
           </div>
         </div>
@@ -401,9 +405,6 @@ export default function ContactPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {/* Start Your Project -> /contact */}
-
-            {/* View Our Work -> /work */}
             <Button
               asChild
               size="lg"

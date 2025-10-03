@@ -569,6 +569,10 @@ export default function AdminPage() {
             </Badge>
           </div>
 
+          <span className="text-xs text-zinc-400">
+            v: {process.env.NEXT_PUBLIC_BUILD_ID ?? "local"}
+          </span>
+
           <div className="flex items-center gap-2">
             {hasUnsavedChanges && (
               <div className="flex items-center gap-2 text-sm text-yellow-500 mr-2">
