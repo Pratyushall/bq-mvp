@@ -1,38 +1,65 @@
 // app/api/cms/route.ts
-import { NextResponse } from "next/server";
-import { put, head } from "@vercel/blob";
+import { NextRequest } from "next/server";
+import { put, list } from "@vercel/blob";
 
-const PATH = "cms/bq.json"; // one JSON file for your whole config
-export const dynamic = "force-dynamic"; // never cache this route
+const KEY = "cms.json";
+export const runtime = "nodejs";
+
+function jsonResponse(data: unknown, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-store",
+    },
+  });
+}
 
 export async function GET() {
   try {
-    const meta = await head(PATH); // check if the blob exists
-    if (!meta) return NextResponse.json(null, { status: 200 });
+    // Find our file by pathname
+    const { blobs } = await list();
+    const hit = blobs.find((b) => b.pathname === KEY);
 
-    // meta.url is a public URL if we uploaded with access:"public"
-    const json = await fetch(meta.url, { cache: "no-store" }).then((r) =>
-      r.json()
-    );
-    return NextResponse.json(json, { status: 200 });
-  } catch (e) {
-    return NextResponse.json(null, { status: 200 });
+    if (!hit) {
+      // nothing saved yet → return empty so app can fall back to defaults
+      return jsonResponse({}, 200);
+    }
+
+    // Read the JSON from its public URL
+    const res = await fetch(hit.url, { cache: "no-store" });
+    const text = await res.text();
+
+    return new Response(text, {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store",
+      },
+    });
+  } catch (err) {
+    console.error("GET /api/cms error:", err);
+    // Don’t crash the site; return empty and let pages use DEFAULTS
+    return jsonResponse({}, 200);
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
-    const data = await req.json();
-    // overwrite the file with your config; make it public so pages can read it fast
-    await put(PATH, JSON.stringify(data), {
+    const body = await req.json();
+    const json = JSON.stringify(body ?? {}, null, 2);
+
+    await put(KEY, json, {
       contentType: "application/json",
-      access: "public",
+      addRandomSuffix: false, // overwrite same KEY
     });
-    return NextResponse.json({ ok: true }, { status: 200 });
-  } catch (e: any) {
-    return NextResponse.json(
-      { ok: false, error: e?.message || "Invalid JSON" },
-      { status: 400 }
-    );
+
+    return jsonResponse({ ok: true }, 200);
+  } catch (err: any) {
+    const message =
+      err?.message ||
+      err?.toString?.() ||
+      "Unknown error writing to Vercel Blob";
+    console.error("POST /api/cms error:", message);
+    return jsonResponse({ ok: false, error: message }, 500);
   }
 }
