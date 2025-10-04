@@ -8,39 +8,51 @@ import { AlternatingImagesSection } from "@/components/alternating-images-sectio
 import { ServicesSection } from "@/components/services-section";
 import ScrollFooter from "@/components/scroll-footer";
 
-// Always get the latest from Blob/API
+// Always fetch fresh (so admin publishes appear immediately)
 export const revalidate = 0; // or: export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const config = await getServerConfig();
+  // getServerConfig() should never throw; make extra-safe anyway.
+  let config: any;
+  try {
+    config = await getServerConfig();
+  } catch {
+    config = undefined;
+  }
 
-  // Pull out pieces used on the home page
-  const { site, home, footer } = config;
+  // Optional: quick sanity (won’t render anything user-visible)
+  // console.log("CMS config loaded?", Boolean(config));
 
   return (
     <main className="min-h-screen">
-      {/* If your components don't accept these props yet, remove the props OR update the components' prop types. */}
-      <Navigation
-        {...({
-          brand: site.brand,
-          nav: site.nav,
-          socials: site.socials,
-        } as any)}
-      />
+      {/* Render your sections without props so runtime can’t explode.
+         After this page loads successfully, start passing props one by one. */}
 
-      {/* Hero */}
-      <HeroSection {...({ hero: home.hero } as any)} />
+      <Navigation />
+      <HeroSection />
+      <VideoSection />
+      <ServicesSection />
+      <AlternatingImagesSection />
+      <ScrollFooter />
 
-      {/* Vision (your VideoSection is the vision text/bg) */}
-      <VideoSection {...({ vision: home.vision } as any)} />
+      {/* ---------- HOW TO WIRE PROPS (do this incrementally) ----------
+        1) Uncomment one block at a time.
+        2) Ensure the component accepts that prop shape.
+        3) If it errors, re-comment and fix the component’s prop types.
 
-      {/* Services */}
-      <ServicesSection {...({ services: home.services } as any)} />
-
-      {/* Featured / Alternating Projects */}
-      <AlternatingImagesSection {...({ projects: home.projects } as any)} />
-
-      <ScrollFooter {...({ footer } as any)} />
+        {config && (
+          <>
+            <Navigation
+              {...({ brand: config.site.brand, nav: config.site.nav, socials: config.site.socials } as any)}
+            />
+            <HeroSection {...({ hero: config.home.hero } as any)} />
+            <VideoSection {...({ vision: config.home.vision } as any)} />
+            <ServicesSection {...({ services: config.home.services } as any)} />
+            <AlternatingImagesSection {...({ projects: config.home.projects } as any)} />
+            <ScrollFooter {...({ footer: config.footer } as any)} />
+          </>
+        )}
+      ---------------------------------------------------------------- */}
     </main>
   );
 }
