@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
 
     await put(KEY, json, {
       contentType: "application/json",
-      addRandomSuffix: false, // overwrite same KEY
+      addRandomSuffix: false,
+      access: "public",
     });
 
     return jsonResponse({ ok: true }, 200);
