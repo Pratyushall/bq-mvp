@@ -118,18 +118,6 @@ export function ServicesSection() {
       onMouseEnter={() => setHovering(true)}
       onMouseLeave={() => setHovering(false)}
     >
-      {/* Background */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/bqb.png"
-          alt="Services background"
-          fill
-          priority
-          className="object-cover object-center opacity-10"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/40 to-black/60" />
-      </div>
-
       <div className="mx-auto max-w-6xl px-6 relative z-10">
         <h2
           className="text-4xl sm:text-6xl font-bold tracking-wide"

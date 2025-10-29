@@ -1,11 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { Phone, Mail, Instagram, Youtube } from "lucide-react";
+import Link from "next/link";
+import { Instagram, Youtube } from "lucide-react";
 
 export default function ScrollFooter() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
-
   return (
     <>
       {/* Footer (always visible, bigger) */}
@@ -40,49 +38,20 @@ export default function ScrollFooter() {
               </a>
             </div>
 
-            {/* Contact button (looping pulse, larger) */}
-            <button
-              onClick={() => setIsContactOpen(true)}
+            {/* Contact button -> route to /contact */}
+            <Link
+              href="/contact"
               className="px-5 py-2 text-base rounded-full bg-yellow-400 text-black font-semibold ring-1 ring-yellow-300/70 hover:bg-yellow-300 transition animate-contact-pulse"
+              aria-label="Go to Contact page"
             >
               Contact Us
-            </button>
+            </Link>
 
             {/* Copyright */}
             <span className="text-sm text-gray-500">© Balqony Sitralu</span>
           </div>
         </div>
       </footer>
-
-      {/* Contact Modal */}
-      {isContactOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-8 text-center relative">
-            <button
-              onClick={() => setIsContactOpen(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black text-lg"
-              aria-label="Close"
-            >
-              ✕
-            </button>
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">
-              Contact Us
-            </h3>
-            <div className="space-y-6 text-gray-700">
-              <div className="flex items-center justify-center gap-3">
-                <Phone className="w-6 h-6 text-yellow-500" />
-                <span className="font-medium text-lg">+91 94965 67888</span>
-              </div>
-              <div className="flex items-center justify-center gap-3">
-                <Mail className="w-6 h-6 text-yellow-500" />
-                <span className="font-medium text-lg">
-                  balqonysitralu@gmail.com
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Styles: looping pulse for Contact button */}
       <style jsx>{`
