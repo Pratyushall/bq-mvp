@@ -4,7 +4,7 @@ import { Cormorant_Garamond, Cinzel } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/hooks/use-toast";
 import Toaster from "@/components/ui/toaster";
-import Footer from "@/components/scroll-footer"; // ⬅️ add this
+import Footer from "@/components/scroll-footer";
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
@@ -49,7 +49,7 @@ export default function RootLayout({
         />
 
         <ToastProvider>
-          {/* Make footer appear on every page and stick to bottom on short pages */}
+          {/* Ensure footer is present and page fills the viewport */}
           <div className="min-h-[100svh] flex flex-col">
             <main className="flex-1">{children}</main>
             <Footer />
