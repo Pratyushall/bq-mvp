@@ -39,9 +39,12 @@ export default function ScrollFooter() {
       >
         <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between text-base text-gray-300">
           {/* Brand */}
-          <span className="text-yellow-400 font-semibold text-xl">
+          <Link
+            href="/"
+            className="text-yellow-400 font-semibold text-xl hover:text-yellow-300 transition-colors duration-300"
+          >
             Balqony Sitralu
-          </span>
+          </Link>
 
           {/* Right cluster: social + contact + copyright */}
           <div className="flex items-center gap-8">

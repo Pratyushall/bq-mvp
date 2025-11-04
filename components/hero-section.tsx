@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Libre_Baskerville as Libertinus_Keyboard } from "next/font/google";
-import { Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, ArrowRight } from "lucide-react";
 
 const libertinusKeyboard = Libertinus_Keyboard({
   subsets: ["latin"],
@@ -13,9 +13,10 @@ const libertinusKeyboard = Libertinus_Keyboard({
 
 /**
  * Recommended video dimensions:
- * - Desktop: 1920x1080 (16:9)
- * - Mobile: 1080x1920 (9:16)
+ * - Desktop: 1920x1080px (16:9 landscape) for full-screen hero
+ * - Mobile: 1080x1920px (9:16 portrait) for vertical mobile viewing
  */
+
 export function HeroSection() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -26,7 +27,6 @@ export function HeroSection() {
   const togglePlay = () => {
     const v = videoRef.current;
     const mv = mobileVideoRef.current;
-
     if (v && v.paused) {
       v.play();
       setPlaying(true);
@@ -34,9 +34,11 @@ export function HeroSection() {
       v.pause();
       setPlaying(false);
     }
-
-    if (mv && mv.paused) mv.play();
-    else if (mv) mv.pause();
+    if (mv && mv.paused) {
+      mv.play();
+    } else if (mv) {
+      mv.pause();
+    }
   };
 
   const toggleMute = () => {
@@ -46,40 +48,42 @@ export function HeroSection() {
       v.muted = !v.muted;
       setMuted(v.muted);
     }
-    if (mv) mv.muted = !mv.muted;
+    if (mv) {
+      mv.muted = !mv.muted;
+    }
   };
 
   const goToWork = async () => {
     try {
       const v = videoRef.current;
-      // Try PiP to keep video alive while navigating (best-effort)
-      // @ts-ignore
+      // Try to keep the video alive in PiP while navigating
+      // @ts-ignore – PiP types aren't in DOM lib in some TS versions
       if (v && document.pictureInPictureEnabled && !v.disablePictureInPicture) {
         // @ts-ignore
         await v.requestPictureInPicture();
       }
-    } catch {}
+    } catch {
+      // no-op if PiP not supported
+    }
     router.push("/hyderabad-nights");
   };
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-black">
-      {/* Desktop video */}
       <video
         ref={videoRef}
-        className="absolute inset-0 hidden h-full w-full object-cover md:block"
-        src="/videos/hnvidv.mp4"
+        className="absolute inset-0 h-full w-full object-cover hidden md:block"
+        src="/videos/hnvidv.mp4" // Desktop video (1920x1080px recommended)
         autoPlay
         loop
         muted={muted}
         playsInline
       />
 
-      {/* Mobile video */}
       <video
         ref={mobileVideoRef}
-        className="absolute inset-0 block h-full w-full object-cover md:hidden"
-        src="/videos/hnvidv-mobile.mp4"
+        className="absolute inset-0 h-full w-full object-cover block md:hidden"
+        src="/videos/hnvidv-mobile.mp4" // Mobile video (1080x1920px recommended)
         autoPlay
         loop
         muted={muted}
@@ -89,42 +93,18 @@ export function HeroSection() {
       {/* Soft gradient for readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
 
-      {/* Seamless marquee — bottom-left, RIGHT → LEFT */}
       <div
-        className={
-          // Optional edge fade with CSS mask for clean enter/exit:
-          // add: [mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent)]
-          "pointer-events-none absolute left-0 right-0 bottom-24 sm:bottom-28 overflow-hidden"
-        }
+        className="pointer-events-none absolute left-6 bottom-20 md:bottom-24 z-10"
         aria-hidden
       >
         <div
-          className={`
-            relative inline-flex w-[200vw] transform-gpu
-            whitespace-nowrap pl-6
-            ${libertinusKeyboard.className}
-            text-white/95 drop-shadow-lg
-            text-2xl sm:text-4xl md:text-5xl font-semibold
-            animate-marquee-fast
-          `}
-          style={{
-            animationPlayState: playing ? ("running" as const) : "paused",
-          }}
+          className={`${libertinusKeyboard.className} text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold italic animate-slide-in-from-left`}
         >
-          {/* Duplicate content for seamless loop (3x for ultra-wide) */}
-          <span className="pr-16">
-            Make Stories That <em className="italic">Move</em>
-          </span>
-          <span className="pr-16">
-            Make Stories That <em className="italic">Move</em>
-          </span>
-          <span className="pr-16">
-            Make Stories That <em className="italic">Move</em>
-          </span>
+          Make Stories That <span className="italic font-bold">Move</span>
         </div>
       </div>
 
-      {/* Controls: bottom-left */}
+      {/* Controls: bottom-left icons */}
       <div className="absolute left-6 bottom-6 z-10 flex items-center gap-3">
         <button
           onClick={togglePlay}
@@ -151,7 +131,6 @@ export function HeroSection() {
         </button>
       </div>
 
-      {/* CTA: bottom-right */}
       <div className="absolute right-6 bottom-6 z-10">
         <button
           onClick={goToWork}
@@ -162,31 +141,24 @@ export function HeroSection() {
           >
             View Our Work
           </span>
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
 
-      {/* Keyframes */}
       <style jsx>{`
-        /* Seamless marquee track: move 200vw by 50% so copy 2 replaces copy 1 */
-        @keyframes marqueeFast {
+        @keyframes slideInFromLeft {
           0% {
-            transform: translate3d(0, 0, 0);
+            transform: translateX(-100%);
+            opacity: 0;
           }
           100% {
-            transform: translate3d(-50%, 0, 0);
+            transform: translateX(0);
+            opacity: 1;
           }
         }
-        .animate-marquee-fast {
-          animation: marqueeFast 9s linear infinite;
-          will-change: transform;
-          backface-visibility: hidden;
-        }
-
-        /* Respect users who prefer reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-          .animate-marquee-fast {
-            animation: none;
-          }
+        .animate-slide-in-from-left {
+          animation: slideInFromLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          will-change: transform, opacity;
         }
       `}</style>
     </section>

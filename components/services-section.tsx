@@ -1,5 +1,7 @@
 "use client";
 
+import type React from "react";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -194,17 +196,17 @@ export function ServicesSection() {
 
                         {/* content */}
                         <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6">
-                          <div className="inline-flex items-center rounded-full bg-yellow-400/90 px-2.5 py-0.5 text-[10px] sm:text-xs font-semibold text-black shadow">
+                          <div className="inline-flex items-center rounded-full bg-yellow-400/90 px-2.5 py-0.5 text-2xl sm:text-sm font-semibold text-black shadow">
                             Explore
                           </div>
                           <h3
-                            className="mt-2 text-xl sm:text-2xl font-bold drop-shadow"
+                            className="mt-2 text-2xl sm:text-3xl md:text-4xl font-bold drop-shadow"
                             style={{ fontFamily: "var(--font-cormorant)" }}
                           >
                             {item.title}
                           </h3>
                           {item.blurb && (
-                            <p className="mt-1 text-[13px] sm:text-sm text-white/80 max-w-prose">
+                            <p className="mt-1 text-sm sm:text-base md:text-lg text-white/80 max-w-prose">
                               {item.blurb}
                             </p>
                           )}

@@ -339,16 +339,18 @@ function CloseButton({
       aria-label={title}
       className={[
         "absolute top-3 right-3 z-20",
-        "h-8 w-8 rounded-full",
-        "bg-black/30 text-white",
-        "border border-white/20",
+        "p-2",
+        "text-yellow-400",
         "flex items-center justify-center",
         "transition-all duration-300",
-        "hover:bg-black/60 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/60",
+        "hover:text-yellow-300 hover:scale-125",
+        "hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.8)]",
+        "drop-shadow-[0_0_4px_rgba(0,0,0,0.8)]",
+        "focus:outline-none focus:ring-2 focus:ring-yellow-400/60",
         className,
       ].join(" ")}
     >
-      <span className="text-xl leading-none">×</span>
+      <X className="h-6 w-6" />
     </button>
   );
 }
@@ -599,11 +601,11 @@ export default function WorkPage() {
               e.stopPropagation();
               setIsGalleryOpen(false);
             }}
-            className="absolute top-6 right-6 z-10 h-8 w-8 rounded-full bg-black/30 hover:bg-black/60 text-white border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            className="absolute top-6 right-6 z-10 p-2 text-yellow-400 hover:text-yellow-300 hover:scale-125 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(250,204,21,0.8)] drop-shadow-[0_0_4px_rgba(0,0,0,0.8)] focus:outline-none focus:ring-2 focus:ring-yellow-400/60"
             aria-label="Close Gallery"
             title="Close Gallery"
           >
-            <X className="h-4 w-4" />
+            <X className="h-6 w-6" />
           </button>
 
           <button
