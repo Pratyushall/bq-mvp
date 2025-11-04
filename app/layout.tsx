@@ -21,8 +21,66 @@ const cinzel = Cinzel({
 });
 
 export const metadata: Metadata = {
-  title: "Balqony Sitralu",
-  description: "Film production company",
+  title: {
+    default: "Balqony Sitraalu | Cinematic Video Production in Hyderabad",
+    template: "%s | Balqony Sitraalu",
+  },
+  description:
+    "Balqony Sitraalu creates cinematic stories that move audiences. Award-winning video production for brands, events, and films in Hyderabad.",
+  keywords: [
+    "video production",
+    "cinematic storytelling",
+    "Hyderabad",
+    "film production",
+    "brand videos",
+    "event coverage",
+    "Balqony Sitraalu",
+  ],
+  authors: [{ name: "Balqony Sitraalu" }],
+  creator: "Balqony Sitraalu",
+  publisher: "Balqony Sitraalu",
+  metadataBase: new URL("https://balqonysitraalu.com"), // Replace with your actual domain
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://balqonysitraalu.com",
+    siteName: "Balqony Sitraalu",
+    title: "Balqony Sitraalu | Cinematic Video Production in Hyderabad",
+    description:
+      "Balqony Sitraalu creates cinematic stories that move audiences. Award-winning video production for brands, events, and films in Hyderabad.",
+    images: [
+      {
+        url: "/og-image.jpg", // Add your Open Graph image to public folder
+        width: 1200,
+        height: 630,
+        alt: "Balqony Sitraalu - Cinematic Video Production",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Balqony Sitraalu | Cinematic Video Production in Hyderabad",
+    description:
+      "Balqony Sitraalu creates cinematic stories that move audiences. Award-winning video production for brands, events, and films in Hyderabad.",
+    images: ["/og-image.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code-here", // Replace with actual code from Google Search Console
+  },
   themeColor: "#0b0d10",
   icons: { icon: "/favicon.ico" },
 };

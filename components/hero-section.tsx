@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Libre_Baskerville as Libertinus_Keyboard } from "next/font/google";
-import { Play, Pause, Volume2, VolumeX, ArrowRight } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 const libertinusKeyboard = Libertinus_Keyboard({
   subsets: ["latin"],
@@ -11,53 +11,75 @@ const libertinusKeyboard = Libertinus_Keyboard({
   display: "swap",
 });
 
+/**
+ * Recommended video dimensions:
+ * - Desktop: 1920x1080 (16:9)
+ * - Mobile: 1080x1920 (9:16)
+ */
 export function HeroSection() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const mobileVideoRef = useRef<HTMLVideoElement | null>(null);
   const [muted, setMuted] = useState(true);
   const [playing, setPlaying] = useState(true);
 
   const togglePlay = () => {
     const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) {
+    const mv = mobileVideoRef.current;
+
+    if (v && v.paused) {
       v.play();
       setPlaying(true);
-    } else {
+    } else if (v) {
       v.pause();
       setPlaying(false);
     }
+
+    if (mv && mv.paused) mv.play();
+    else if (mv) mv.pause();
   };
 
   const toggleMute = () => {
     const v = videoRef.current;
-    if (!v) return;
-    v.muted = !v.muted;
-    setMuted(v.muted);
+    const mv = mobileVideoRef.current;
+    if (v) {
+      v.muted = !v.muted;
+      setMuted(v.muted);
+    }
+    if (mv) mv.muted = !mv.muted;
   };
 
   const goToWork = async () => {
     try {
       const v = videoRef.current;
-      // Try to keep the video alive in PiP while navigating
-      // @ts-ignore – PiP types aren’t in DOM lib in some TS versions
+      // Try PiP to keep video alive while navigating (best-effort)
+      // @ts-ignore
       if (v && document.pictureInPictureEnabled && !v.disablePictureInPicture) {
         // @ts-ignore
         await v.requestPictureInPicture();
       }
-    } catch {
-      // no-op if PiP not supported
-    }
+    } catch {}
     router.push("/hyderabad-nights");
   };
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-black">
-      {/* Full-bleed video */}
+      {/* Desktop video */}
       <video
         ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
-        src="/videos/hnvidv.mp4" // <-- put your file here
+        className="absolute inset-0 hidden h-full w-full object-cover md:block"
+        src="/videos/hnvidv.mp4"
+        autoPlay
+        loop
+        muted={muted}
+        playsInline
+      />
+
+      {/* Mobile video */}
+      <video
+        ref={mobileVideoRef}
+        className="absolute inset-0 block h-full w-full object-cover md:hidden"
+        src="/videos/hnvidv-mobile.mp4"
         autoPlay
         loop
         muted={muted}
@@ -67,22 +89,42 @@ export function HeroSection() {
       {/* Soft gradient for readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
 
-      {/* Sliding line (right -> left) */}
+      {/* Seamless marquee — bottom-left, RIGHT → LEFT */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-[45%] md:top-[48%] overflow-hidden"
+        className={
+          // Optional edge fade with CSS mask for clean enter/exit:
+          // add: [mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent)]
+          "pointer-events-none absolute left-0 right-0 bottom-24 sm:bottom-28 overflow-hidden"
+        }
         aria-hidden
       >
         <div
-          className={`${libertinusKeyboard.className} inline-block whitespace-nowrap text-white/95 drop-shadow-lg text-2xl sm:text-4xl md:text-5xl font-semibold animate-slide-rtl`}
+          className={`
+            relative inline-flex w-[200vw] transform-gpu
+            whitespace-nowrap pl-6
+            ${libertinusKeyboard.className}
+            text-white/95 drop-shadow-lg
+            text-2xl sm:text-4xl md:text-5xl font-semibold
+            animate-marquee-fast
+          `}
           style={{
             animationPlayState: playing ? ("running" as const) : "paused",
           }}
         >
-          <span className="px-[120vw]">Make Stories That Move</span>
+          {/* Duplicate content for seamless loop (3x for ultra-wide) */}
+          <span className="pr-16">
+            Make Stories That <em className="italic">Move</em>
+          </span>
+          <span className="pr-16">
+            Make Stories That <em className="italic">Move</em>
+          </span>
+          <span className="pr-16">
+            Make Stories That <em className="italic">Move</em>
+          </span>
         </div>
       </div>
 
-      {/* Controls: bottom-left icons */}
+      {/* Controls: bottom-left */}
       <div className="absolute left-6 bottom-6 z-10 flex items-center gap-3">
         <button
           onClick={togglePlay}
@@ -113,38 +155,38 @@ export function HeroSection() {
       <div className="absolute right-6 bottom-6 z-10">
         <button
           onClick={goToWork}
-          className="group flex items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-white ring-1 ring-white/30 backdrop-blur hover:bg-white/20 hover:ring-white/60 transition"
+          className="group relative flex items-center gap-2 rounded-full bg-black/30 px-6 py-3 text-white border-2 border-yellow-400 backdrop-blur transition-all duration-300 hover:bg-black/50 hover:shadow-[0_0_20px_rgba(250,204,21,0.5),0_0_40px_rgba(250,204,21,0.3)] cursor-pointer"
         >
           <span
             className={`${libertinusKeyboard.className} text-sm md:text-base`}
           >
             View Our Work
           </span>
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
 
       {/* Keyframes */}
       <style jsx>{`
-        @keyframes slideRtl {
+        /* Seamless marquee track: move 200vw by 50% so copy 2 replaces copy 1 */
+        @keyframes marqueeFast {
           0% {
-            transform: translateX(0%);
-            opacity: 0.9;
-          }
-          10% {
-            opacity: 1;
-          }
-          90% {
-            opacity: 1;
+            transform: translate3d(0, 0, 0);
           }
           100% {
-            transform: translateX(-100%);
-            opacity: 0.9;
+            transform: translate3d(-50%, 0, 0);
           }
         }
-        .animate-slide-rtl {
-          animation: slideRtl 22s linear infinite;
+        .animate-marquee-fast {
+          animation: marqueeFast 9s linear infinite;
           will-change: transform;
+          backface-visibility: hidden;
+        }
+
+        /* Respect users who prefer reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .animate-marquee-fast {
+            animation: none;
+          }
         }
       `}</style>
     </section>

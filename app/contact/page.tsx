@@ -19,10 +19,10 @@ import {
 } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle } from "lucide-react";
 
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xgvnyrbg"; // ✅ your real Formspree endpoint
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xgvnyrbg";
 const SCHEDULE_URL = "https://calendly.com/your_handle/intro-call-15";
 const MAPS_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  "Balqony Sitralu Studio, Jubilee Hills, Hyderabad, Telangana 500033"
+  "Balqony Sitralu, Gachibowli, Hyderabad - 81"
 )}`;
 
 export default function ContactPage() {
@@ -42,7 +42,6 @@ export default function ContactPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // 👉 Send Message via Formspree
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^https:\/\/formspree\.io\/f\/.+/.test(FORMSPREE_ENDPOINT)) {
@@ -90,36 +89,29 @@ export default function ContactPage() {
     }
   };
 
-  // 👉 Schedule a Call
   const handleSchedule = () => {
     window.open(SCHEDULE_URL, "_blank", "noopener,noreferrer");
   };
 
-  // 👉 Open Maps
   const openMaps = () => {
     window.open(MAPS_URL, "_blank", "noopener,noreferrer");
   };
 
-  // INDIA / HYDERABAD DETAILS
   const contactInfo = [
     {
       icon: MapPin,
       title: "Our Studio",
-      details: [
-        "Balqony Sitralu Studio",
-        "Jubilee Hills, Hyderabad, Telangana 500033",
-        "India",
-      ],
+      details: ["Balqony Sitralu", "Gachibowli, Hyderabad - 81", "India"],
     },
     {
       icon: Phone,
       title: "Phone",
-      details: ["+91 98765 43210", "+91 91234 56789"],
+      details: ["+91 94923 12627"],
     },
     {
       icon: Mail,
       title: "Email",
-      details: ["hello@balqonysitraalu.com", "projects@balqonysitraalu.com"],
+      details: ["balqonysitralusales@gmail.com", "sales@balqonysitralu.in"],
     },
     {
       icon: Clock,
@@ -136,10 +128,10 @@ export default function ContactPage() {
       <section className="pt-24 pb-16 bg-gradient-to-br from-background via-card to-muted group">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 group-hover:-translate-y-2 cursor-default">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 group-hover:-translate-y-2 cursor-default">
               Get In Touch
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
               Ready to bring your vision to life? Let's discuss your project and
               explore how we can create something extraordinary together.
             </p>
@@ -154,7 +146,7 @@ export default function ContactPage() {
             {/* Form */}
             <div className="group relative">
               <div className="pointer-events-none absolute -inset-x-10 -top-10 h-48 blur-3xl opacity-30 bg-[radial-gradient(40%_60%_at_20%_20%,rgba(250,204,21,0.2),transparent_60%),radial-gradient(40%_60%_at_80%_40%,rgba(234,179,8,0.14),transparent_60%)]" />
-              <h2 className="text-3xl font-bold text-foreground mb-8 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
                 Contact Us
               </h2>
 
@@ -341,7 +333,7 @@ export default function ContactPage() {
                           type="submit"
                           size="lg"
                           disabled={submitting}
-                          className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-1 active:scale-95 group"
+                          className="w-full rounded-xl bg-transparent text-foreground border-2 border-yellow-400 hover:bg-yellow-400/10 transition-all duration-300 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)] hover:-translate-y-1 active:scale-95 group px-8 py-6 text-base font-semibold"
                         >
                           <Send className="mr-2 h-5 w-5 transition-all duration-300 group-hover:translate-x-1 group-hover:scale-110" />
                           {submitting ? "Sending..." : "Send Message"}
@@ -355,11 +347,11 @@ export default function ContactPage() {
 
             {/* Contact info grid */}
             <div className="group">
-              <h2 className="text-3xl font-bold text-foreground mb-8 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
+              <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-8 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
                 Contact Information
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                 {contactInfo.map((info, index) => (
                   <Card
                     key={index}
@@ -377,7 +369,7 @@ export default function ContactPage() {
                           {info.details.map((detail, detailIndex) => (
                             <p
                               key={detailIndex}
-                              className="text-muted-foreground transition-all duration-300 group-hover/card:text-foreground hover:text-primary cursor-pointer"
+                              className="text-muted-foreground transition-all duration-300 group-hover/card:text-foreground hover:text-primary cursor-pointer text-sm"
                             >
                               {detail}
                             </p>
@@ -393,13 +385,12 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-background">
+      <section className="py-20 pb-32 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center group">
-          <h2 className="text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-primary group-hover:scale-105 cursor-default">
             Ready to Work Together?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 transition-all duration-500 group-hover:text-foreground">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 transition-all duration-500 group-hover:text-foreground">
             Let's discuss how we can bring your vision to life with our
             expertise and passion for storytelling.
           </p>
@@ -408,7 +399,7 @@ export default function ContactPage() {
             <Button
               asChild
               size="lg"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full transition-all duration-300 hover:scale-110 hover:shadow-[0_0_30px_rgba(255,255,0,0.4)] hover:-translate-y-2 hover:rotate-1 active:scale-95"
+              className="rounded-xl bg-transparent text-foreground border-2 border-yellow-400 hover:bg-yellow-400/10 px-8 py-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)] hover:-translate-y-2 active:scale-95 text-base font-semibold"
             >
               <Link href="/work">View Our Work</Link>
             </Button>

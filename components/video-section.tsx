@@ -19,13 +19,11 @@ export function VideoSection() {
   }, []);
 
   return (
-    <section>
-      <div
-        ref={textSectionRef}
-        className="relative isolate mx-auto max-w-6xl px-4 py-20 sm:py-24"
-      >
-        {/* Background image only — NO gradient overlay */}
-        <div className="pointer-events-none absolute inset-0 -z-10">
+    <section className="relative overflow-x-clip">
+      {/* FULL-BLEED BG (end-to-end) */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        {/* Center a viewport-wide box so the image spans edge to edge */}
+        <div className="relative left-1/2 h-full w-screen -translate-x-1/2">
           <Image
             src="/images/bqbg.png"
             alt=""
@@ -36,7 +34,13 @@ export function VideoSection() {
             }`}
           />
         </div>
+      </div>
 
+      {/* CONTENT stays constrained to max-w */}
+      <div
+        ref={textSectionRef}
+        className="relative isolate mx-auto max-w-6xl px-4 py-20 sm:py-24"
+      >
         <div className="text-center space-y-6 sm:space-y-8">
           {/* OUR VISION */}
           <h2

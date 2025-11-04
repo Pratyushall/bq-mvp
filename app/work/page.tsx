@@ -4,17 +4,17 @@ import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Play, ExternalLink, ChevronLeft, ChevronRight, X } from "lucide-react";
+import {
+  Play,
+  ExternalLink,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Pause,
+  Volume2,
+  VolumeX,
+} from "lucide-react";
 
-/* ==========================================================
-   PERFORMANCE CHANGES
-   - Grid uses lazy snippet videos (no iframes in grid)
-   - YouTube on grid shows thumbnail only (no iframe)
-   - Videos: preload="none", attach src only when in view
-   - Images: loading="lazy" decoding="async"
-========================================================== */
-
-/* ---------- Types ---------- */
 interface Project {
   id: number;
   title: string;
@@ -29,16 +29,15 @@ interface Project {
   year: string;
   description: string;
   image: string;
-  videoUrl?: string; // YouTube/Vimeo/etc
-  videoFile?: string; // Local MP4/HLS
-  snippetSrc?: string; // Prefer this for grid & modal (non-YT)
+  videoUrl?: string;
+  videoFile?: string;
+  snippetSrc?: string;
   snippetStart?: number;
   snippetEnd?: number;
   awards?: string[];
   tags: string[];
 }
 
-/* ---------- Data ---------- */
 const projects: Project[] = [
   {
     id: 1,
@@ -103,7 +102,7 @@ const projects: Project[] = [
     image: "/images/honey1.jpg",
     videoFile: "/videos/honey.mp4",
     snippetSrc: "/videos/honey.mp4",
-    videoUrl: "https://vimeo.com/1131762914", // ✅ added: open local MP4 in new tab
+    videoUrl: "https://vimeo.com/1131762914",
     tags: ["Commercial", "Cinematic", "Beauty shots"],
   },
   {
@@ -113,7 +112,7 @@ const projects: Project[] = [
     category: "Short Film",
     year: "",
     description:
-      "Coverage of the traditional ‘Akshabhyasam’ ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
+      "Coverage of the traditional 'Akshabhyasam' ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
     image: "/images/aksh.png",
     videoUrl: "https://vimeo.com/845898106",
     snippetSrc: "/videos/abv.mp4",
@@ -131,9 +130,6 @@ const categories = [
   "Short Film",
 ] as const;
 
-/* ==========================================================
-   Utilities
-========================================================== */
 function getYouTubeId(url?: string): string | null {
   if (!url) return null;
   const m = url.match(
@@ -142,7 +138,6 @@ function getYouTubeId(url?: string): string | null {
   return m ? m[1] : null;
 }
 
-/** Very small in-view hook (rootMargin = 200px) */
 function useInView<T extends Element>(opts?: { rootMargin?: string }) {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
@@ -163,12 +158,6 @@ function useInView<T extends Element>(opts?: { rootMargin?: string }) {
   return { ref, inView } as const;
 }
 
-/* ==========================================================
-   Grid Media (fast)
-   - If snippetSrc: lazy MP4, attach src only when near view
-   - If YT only: show thumbnail (no iframe)
-   - Else: image
-========================================================== */
 function GridMedia({ project }: { project: Project }) {
   const ytId = getYouTubeId(project.videoUrl);
 
@@ -185,11 +174,10 @@ function GridMedia({ project }: { project: Project }) {
   }
 
   if (ytId) {
-    // Lightweight thumbnail (no iframe)
     const thumb = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
     return (
       <img
-        src={thumb}
+        src={thumb || "/placeholder.svg"}
         alt={project.title}
         loading="lazy"
         decoding="async"
@@ -198,7 +186,6 @@ function GridMedia({ project }: { project: Project }) {
     );
   }
 
-  // Fallback image
   return (
     <img
       src={project.image || "/placeholder.svg"}
@@ -210,7 +197,6 @@ function GridMedia({ project }: { project: Project }) {
   );
 }
 
-/** Attaches video src only when near viewport; preload=none; muted autoplay loop */
 function LazySegmentVideo({
   src,
   poster,
@@ -226,7 +212,10 @@ function LazySegmentVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const { ref, inView } = useInView<HTMLDivElement>({ rootMargin: "200px" });
-  const [armed, setArmed] = useState(false); // set true once inView to attach src
+  const [armed, setArmed] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [showControls, setShowControls] = useState(false);
 
   useEffect(() => {
     if (inView) setArmed(true);
@@ -261,8 +250,34 @@ function LazySegmentVideo({
     };
   }, [start, end, armed]);
 
+  const togglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const v = videoRef.current;
+    if (!v) return;
+    if (isPlaying) {
+      v.pause();
+      setIsPlaying(false);
+    } else {
+      v.play().catch(() => {});
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = !v.muted;
+    setIsMuted(v.muted);
+  };
+
   return (
-    <div ref={ref} className="relative w-full h-64 overflow-hidden">
+    <div
+      ref={ref}
+      className="relative w-full h-64 overflow-hidden group/video"
+      onMouseEnter={() => setShowControls(true)}
+      onMouseLeave={() => setShowControls(false)}
+    >
       <video
         ref={videoRef}
         src={armed ? src : undefined}
@@ -274,11 +289,40 @@ function LazySegmentVideo({
         loop
         preload="none"
       />
+
+      <div
+        className={`absolute inset-0 flex items-center justify-center gap-3 transition-opacity duration-300 ${
+          showControls ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <button
+          onClick={togglePlay}
+          className="z-10 p-3 rounded-full bg-black/70 text-white border border-white/20 hover:bg-black/90 hover:scale-110 transition-all duration-300"
+          aria-label={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? (
+            <Pause className="h-5 w-5" />
+          ) : (
+            <Play className="h-5 w-5" />
+          )}
+        </button>
+
+        <button
+          onClick={toggleMute}
+          className="z-10 p-3 rounded-full bg-black/70 text-white border border-white/20 hover:bg-black/90 hover:scale-110 transition-all duration-300"
+          aria-label={isMuted ? "Unmute" : "Mute"}
+        >
+          {isMuted ? (
+            <VolumeX className="h-5 w-5" />
+          ) : (
+            <Volume2 className="h-5 w-5" />
+          )}
+        </button>
+      </div>
     </div>
   );
 }
 
-/* ---------- Close Button ---------- */
 function CloseButton({
   onClick,
   className = "",
@@ -295,21 +339,20 @@ function CloseButton({
       aria-label={title}
       className={[
         "absolute top-3 right-3 z-20",
-        "h-12 w-12 rounded-full",
-        "bg-black/70 text-white",
+        "h-8 w-8 rounded-full",
+        "bg-black/30 text-white",
         "border border-white/20",
         "flex items-center justify-center",
         "transition-all duration-300",
-        "hover:bg-black/90 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/60",
+        "hover:bg-black/60 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[var(--primary)]/60",
         className,
       ].join(" ")}
     >
-      <span className="text-2xl leading-none">×</span>
+      <span className="text-xl leading-none">×</span>
     </button>
   );
 }
 
-/* ---------- YouTube in modal only ---------- */
 function YouTubeFrame({ url, title }: { url?: string; title: string }) {
   const id = getYouTubeId(url);
   if (!id) return null;
@@ -368,10 +411,10 @@ export default function WorkPage() {
       {/* Hero */}
       <section className="pt-24 pb-16 bg-gradient-to-br from-background via-card to-muted group">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 group-hover:-translate-y-2">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 group-hover:-translate-y-2">
             Our Work
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
             Explore our portfolio of award-winning projects that showcase our
             commitment to creative excellence and innovative storytelling across
             diverse industries.
@@ -389,7 +432,7 @@ export default function WorkPage() {
                   onClick={() => setSelectedCategory(category)}
                   className={[
                     "relative overflow-hidden",
-                    "rounded-full px-5 py-3 md:px-6 md:py-3.5",
+                    "rounded-full px-4 py-2.5 sm:px-5 sm:py-3 md:px-6 md:py-3.5",
                     "text-sm md:text-base font-semibold",
                     "transition-all duration-300",
                     selectedCategory === category
@@ -408,7 +451,7 @@ export default function WorkPage() {
       {/* Grid */}
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProjects.map((project, index) => (
               <Card
                 key={project.id}
@@ -419,7 +462,6 @@ export default function WorkPage() {
                 <div className="relative overflow-hidden">
                   <GridMedia project={project} />
 
-                  {/* Non-blocking overlays */}
                   <div className="pointer-events-none absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
                     <Play className="h-12 w-12 text-white transition-all duration-300 group-hover:scale-125 group-hover:text-[var(--primary)]" />
                   </div>
@@ -461,9 +503,6 @@ export default function WorkPage() {
 
             <div className="max-h-[85vh] overflow-y-auto rounded-2xl">
               <div className="relative group">
-                {/* Modal media:
-                    - YouTube -> iframe (interactive)
-                    - else -> snippet (or local file) */}
                 {getYouTubeId(selectedProject.videoUrl) ? (
                   <YouTubeFrame
                     url={selectedProject.videoUrl}
@@ -504,22 +543,22 @@ export default function WorkPage() {
               <div className="p-8">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 group">
                   <div>
-                    <h2 className="text-3xl font-bold text-foreground mb-2 transition-all duration-300 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2 transition-all duration-300 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
                       {selectedProject.title}
                     </h2>
-                    <p className="text-xl text-[var(--primary)] font-medium transition-all duration-300 group-hover:scale-105 cursor-default">
+                    <p className="text-lg sm:text-xl text-[var(--primary)] font-medium transition-all duration-300 group-hover:scale-105 cursor-default">
                       {selectedProject.client}
                     </p>
                   </div>
                 </div>
 
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 transition-all duration-300 hover:text-foreground cursor-default">
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-8 transition-all duration-300 hover:text-foreground cursor-default">
                   {selectedProject.description}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <a
-                    className="relative group inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-5 md:px-10 md:py-6 text-base md:text-lg font-semibold uppercase bg-black text-white border border-white/15 transition-all duration-300 hover:scale-[1.04] hover:-translate-y-0.5"
+                    className="relative group inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 text-sm sm:text-base md:text-lg font-semibold uppercase bg-transparent text-foreground border-2 border-yellow-400 transition-all duration-300 hover:bg-yellow-400/10 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)] hover:-translate-y-0.5"
                     href={selectedProject.videoUrl || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -534,7 +573,7 @@ export default function WorkPage() {
                         setIsGalleryOpen(true);
                         setCurrentImageIndex(0);
                       }}
-                      className="relative group inline-flex items-center justify-center gap-3 rounded-2xl px-8 py-5 md:px-10 md:py-6 text-base md:text-lg font-semibold uppercase bg-transparent text-foreground border border-white/20 transition-all duration-300 hover:bg-white hover:text-black"
+                      className="relative group inline-flex items-center justify-center gap-3 rounded-xl px-6 py-4 sm:px-8 sm:py-5 md:px-10 md:py-6 text-sm sm:text-base md:text-lg font-semibold uppercase bg-transparent text-foreground border-2 border-yellow-400 transition-all duration-300 hover:bg-yellow-400/10 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)]"
                     >
                       <ExternalLink className="h-5 w-5" />
                       View Gallery
@@ -560,11 +599,11 @@ export default function WorkPage() {
               e.stopPropagation();
               setIsGalleryOpen(false);
             }}
-            className="absolute top-6 right-6 z-10 h-12 w-12 rounded-full bg-black/70 hover:bg-black/90 text-white border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
+            className="absolute top-6 right-6 z-10 h-8 w-8 rounded-full bg-black/30 hover:bg-black/60 text-white border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110"
             aria-label="Close Gallery"
             title="Close Gallery"
           >
-            <X className="h-6 w-6" />
+            <X className="h-4 w-4" />
           </button>
 
           <button
@@ -572,22 +611,22 @@ export default function WorkPage() {
               e.stopPropagation();
               prevImage();
             }}
-            className="absolute left-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
+            className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-10 p-3 sm:p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
           >
-            <ChevronLeft className="h-8 w-8" />
+            <ChevronLeft className="h-6 w-6 sm:h-8 sm:w-8" />
           </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
               nextImage();
             }}
-            className="absolute right-6 top-1/2 -translate-y-1/2 z-10 p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
+            className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-10 p-3 sm:p-4 rounded-full bg-black/50 text-white hover:bg-black/70 transition-all duration-300 hover:scale-110"
           >
-            <ChevronRight className="h-8 w-8" />
+            <ChevronRight className="h-6 w-6 sm:h-8 sm:w-8" />
           </button>
 
           <div
-            className="max-w-7xl max-h-[90vh] mx-auto px-20 py-20 overflow-auto"
+            className="max-w-7xl max-h-[90vh] mx-auto px-8 sm:px-20 py-20 overflow-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <img
@@ -618,59 +657,21 @@ export default function WorkPage() {
         </div>
       )}
 
-      {/* CTA */}
-      <section className="py-24 bg-muted">
+      <section className="py-24 pb-32 bg-muted">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center group">
-          <h2 className="text-4xl font-bold text-foreground mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6">
             Ready to Create Something Amazing?
           </h2>
-          <p className="text-xl text-muted-foreground mb-10">
-            Let’s discuss how we can bring your vision to life with the same
+          <p className="text-lg sm:text-xl text-muted-foreground mb-10">
+            Let's discuss how we can bring your vision to life with the same
             level of creativity and excellence showcased in our portfolio.
           </p>
 
           <div className="flex justify-center">
             <a
               href="/contact"
-              onMouseMove={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                const r = el.getBoundingClientRect();
-                const x = ((e.clientX - r.left) / r.width) * 100;
-                const y = ((e.clientY - r.top) / r.height) * 100;
-                el.style.setProperty("--mx", `${x}%`);
-                el.style.setProperty("--my", `${y}%`);
-              }}
-              className={[
-                "relative group inline-flex items-center justify-center gap-3",
-                "rounded-2xl px-8 py-5 md:px-10 md:py-6",
-                "text-base md:text-lg font-semibold uppercase",
-                "bg-black text-white",
-                "border border-white/15",
-                "shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.45)]",
-                "transition-all duration-300 hover:scale-[1.04] hover:-translate-y-0.5 active:scale-[0.98]",
-                // yellow hover glow (unchanged from your cinematic vibe)
-                "hover:shadow-[0_0_0_1px_rgba(250,204,21,0.45),0_12px_50px_-10px_rgba(250,204,21,0.35)]",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(250,204,21,0.6)]",
-              ].join(" ")}
-              style={{
-                backgroundImage:
-                  "linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
-              }}
+              className="relative group inline-flex items-center justify-center gap-3 rounded-xl px-8 py-5 md:px-10 md:py-6 text-base md:text-lg font-semibold uppercase bg-transparent text-foreground border-2 border-yellow-400 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_10px_30px_rgba(0,0,0,0.45)] transition-all duration-300 hover:bg-yellow-400/10 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)] hover:-translate-y-0.5 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(250,204,21,0.6)]"
             >
-              {/* cursor-reactive spotlight — now YELLOW */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 rounded-[1rem] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                style={{
-                  background:
-                    "radial-gradient(180px circle at var(--mx,50%) var(--my,50%), rgba(250,204,21,0.22), transparent 45%)",
-                }}
-              />
-              {/* traveling shine — with a soft yellow tint */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute -inset-y-4 -left-1/2 h-[200%] w-1/3 -skew-x-12 bg-[rgba(250,204,21,0.12)] blur-md opacity-0 transition-all duration-500 group-hover:left-full group-hover:opacity-100"
-              />
               Start Your Project
             </a>
           </div>

@@ -69,7 +69,6 @@ Keeper of alt takes and late-night coffee.`,
 
   const [openMember, setOpenMember] = useState<Member | null>(null);
 
-  // Close on ESC
   useEffect(() => {
     const onKey = (e: KeyboardEvent) =>
       e.key === "Escape" && setOpenMember(null);
@@ -84,10 +83,10 @@ Keeper of alt takes and late-night coffee.`,
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-gradient-to-br from-background via-card to-muted group">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-5xl sm:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 group-hover:-translate-y-2 cursor-default">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 group-hover:-translate-y-2 cursor-default">
             Who We Are
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
             We are a passionate team of filmmakers, storytellers, and creative
             professionals dedicated to bringing your vision to life through the
             power of visual storytelling.
@@ -99,18 +98,18 @@ Keeper of alt takes and late-night coffee.`,
       <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center group">
           <div className="transition-all duration-500 group-hover:-translate-y-2">
-            <h2 className="text-4xl font-bold text-foreground mb-6 transition-all duration-500 hover:text-[var(--primary)] hover:scale-105 cursor-default">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6 transition-all duration-500 hover:text-[var(--primary)] hover:scale-105 cursor-default">
               Our Story
             </h2>
-            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+            <div className="space-y-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
               <p className="transition-all duration-300 hover:text-foreground hover:translate-x-2 cursor-default">
                 Founded in 2014, Balqony Sitraalu emerged from a simple belief:
                 every brand has a unique story worth telling, and every story
                 deserves to be told beautifully.
               </p>
               <p className="transition-all duration-300 hover:text-foreground hover:translate-x-2 cursor-default">
-                Our name reflects our philosophy—“Balqony” is our elevated
-                perspective on storytelling, while “Sitraalu” channels
+                Our name reflects our philosophy—"Balqony" is our elevated
+                perspective on storytelling, while "Sitraalu" channels
                 authenticity that resonates deeper.
               </p>
               <p className="transition-all duration-300 hover:text-foreground hover:translate-x-2 cursor-default">
@@ -135,16 +134,16 @@ Keeper of alt takes and late-night coffee.`,
       <section className="py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 group">
-            <h2 className="text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
               Meet Our Team
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto transition-all duration-500 group-hover:text-foreground">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto transition-all duration-500 group-hover:text-foreground">
               A compact crew with a big cinema heart—directors, camera,
               performance, and post.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {teamMembers.map((member, i) => (
               <Card
                 key={i}
@@ -190,7 +189,6 @@ Keeper of alt takes and late-night coffee.`,
             className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-background border border-white/10 shadow-2xl animate-in zoom-in-95"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close button */}
             <button
               aria-label="Close"
               onClick={() => setOpenMember(null)}
@@ -199,25 +197,21 @@ Keeper of alt takes and late-night coffee.`,
               <X className="h-5 w-5" />
             </button>
 
-            {/* Content area with PORTRAIT image */}
             <div className="p-6 md:p-8">
               <div className="grid md:grid-cols-[320px,1fr] gap-6 items-start">
-                {/* Portrait image panel */}
                 <div className="relative rounded-xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
                   <img
                     src={openMember.image || "/placeholder.svg"}
                     alt={openMember.name}
                     className="w-full aspect-[3/4] object-cover"
                   />
-                  {/* soft vignette + glow */}
                   <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_50%,transparent_60%,rgba(0,0,0,0.55))]" />
                   <div className="pointer-events-none absolute -inset-2 blur-xl opacity-60 bg-[radial-gradient(220px_220px_at_0%_0%,rgba(255,255,255,0.07),transparent_60%),radial-gradient(220px_220px_at_100%_100%,rgba(255,255,255,0.07),transparent_60%)]" />
                 </div>
 
-                {/* Text panel */}
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-black/40 border border-white/10 backdrop-blur-md">
-                    <span className="text-lg font-semibold">
+                  <div className="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-black/40 border border-white/10 backdrop-blur-md flex-wrap">
+                    <span className="text-base sm:text-lg font-semibold">
                       {openMember.name}
                     </span>
                     <span className="text-sm text-[var(--primary)]">
@@ -225,10 +219,10 @@ Keeper of alt takes and late-night coffee.`,
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-bold text-foreground">
+                  <h3 className="text-xl sm:text-2xl font-bold text-foreground">
                     About {openMember.name}
                   </h3>
-                  <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed whitespace-pre-line">
                     {openMember.bio}
                   </p>
 
@@ -262,34 +256,29 @@ Keeper of alt takes and late-night coffee.`,
         </div>
       )}
 
-      {/* CTA */}
-      <section className="py-20 bg-background">
+      <section className="py-20 pb-32 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center group">
-          <h2 className="text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
+          <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-6 transition-all duration-500 group-hover:text-[var(--primary)] group-hover:scale-105 cursor-default">
             Ready to Work Together?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8 transition-all duration-500 group-hover:text-foreground">
+          <p className="text-lg sm:text-xl text-muted-foreground mb-8 transition-all duration-500 group-hover:text-foreground">
             Let's discuss how we can bring your vision to life with our
             expertise and passion for storytelling.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {/* Start Your Project -> /contact */}
             <Button
               asChild
-              variant="outline"
               size="lg"
-              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] hover:border-yellow-400 px-8 py-4 bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.6),0_0_60px_rgba(255,255,255,0.3)] active:scale-95"
+              className="rounded-xl bg-transparent text-foreground border-2 border-white hover:bg-white/10 px-8 py-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.6),0_0_60px_rgba(255,255,255,0.3)] hover:-translate-y-2 active:scale-95 text-base font-semibold"
             >
               <Link href="/contact">Start Your Project</Link>
             </Button>
 
-            {/* View Our Work (unchanged style, add link if desired) */}
             <Button
               asChild
-              variant="outline"
               size="lg"
-              className="border-[var(--primary)] text-[var(--primary)] hover:bg-[var(--primary)] hover:text-[var(--primary-foreground)] hover:border-yellow-400 px-8 py-4 bg-transparent transition-all duration-300 hover:shadow-[0_0_30px_rgba(255,255,255,0.6),0_0_60px_rgba(255,255,255,0.3)] active:scale-95"
+              className="rounded-xl bg-transparent text-foreground border-2 border-yellow-400 hover:bg-yellow-400/10 px-8 py-6 transition-all duration-300 hover:shadow-[0_0_30px_rgba(250,204,21,0.6),0_0_60px_rgba(250,204,21,0.3)] hover:-translate-y-2 active:scale-95 text-base font-semibold"
             >
               <Link href="/work">View Our Work</Link>
             </Button>

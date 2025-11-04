@@ -1,13 +1,42 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { Instagram, Youtube } from "lucide-react";
 
 export default function ScrollFooter() {
+  const ref = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const setVar = () => {
+      const h = el.offsetHeight;
+      document.documentElement.style.setProperty("--footer-h", `${h}px`);
+      // Also set on the element so children can reference if needed
+      el.style.setProperty("--footer-h", `${h}px`);
+    };
+
+    setVar();
+    // Recalculate on resize and on font/icon loads
+    const ro = new ResizeObserver(setVar);
+    ro.observe(el);
+    window.addEventListener("resize", setVar);
+
+    return () => {
+      window.removeEventListener("resize", setVar);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <>
-      {/* Footer (always visible, bigger) */}
-      <footer className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-t border-yellow-400/20">
+      {/* Footer (fixed to bottom) */}
+      <footer
+        ref={ref}
+        className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-t border-yellow-400/20"
+      >
         <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between text-base text-gray-300">
           {/* Brand */}
           <span className="text-yellow-400 font-semibold text-xl">

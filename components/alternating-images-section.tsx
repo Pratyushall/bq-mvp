@@ -11,7 +11,8 @@ const playfair = Playfair_Display({
 
 interface ImageContentItem {
   id: number;
-  image: string;
+  image: string; // Desktop image - Recommended: 1920x1080px (16:9 landscape)
+  mobileImage: string; // Mobile image - Recommended: 1080x1920px (9:16 portrait)
   title: string;
   description: string;
   expandedImage: string;
@@ -19,10 +20,31 @@ interface ImageContentItem {
   link?: string;
 }
 
+/**
+ * Image Dimension Guidelines:
+ *
+ * Desktop Images (image):
+ * - Recommended: 1920x1080px (Full HD 16:9)
+ * - Minimum: 1600x900px
+ * - Aspect Ratio: 16:9 landscape
+ * - Format: JPG or PNG
+ *
+ * Mobile Images (mobileImage):
+ * - Recommended: 1080x1920px (9:16 portrait)
+ * - Minimum: 720x1280px
+ * - Aspect Ratio: 9:16 portrait
+ * - Format: JPG or PNG
+ *
+ * Expanded Images (expandedImage):
+ * - Recommended: 800x1200px
+ * - Aspect Ratio: 2:3 or 3:4
+ */
+
 const imageContent: ImageContentItem[] = [
   {
     id: 1,
-    image: "/images/hp4.png",
+    image: "/images/hp4.png", // Desktop: 1920x1080px recommended
+    mobileImage: "/hyderabad-nights-mobile-poster.jpg", // Mobile: 1080x1920px recommended
     title: "Hyderabad Nights - A Feature Film",
     description: "",
     expandedImage: "/images/hnp1.jpg",
@@ -32,7 +54,8 @@ const imageContent: ImageContentItem[] = [
   },
   {
     id: 2,
-    image: "/images/akb.png",
+    image: "/images/akb.png", // Desktop: 1920x1080px recommended
+    mobileImage: "/aksharabhyasam-mobile-poster.jpg", // Mobile: 1080x1920px recommended
     title: "Aksharabhyasam",
     description: "",
     expandedImage: "/images/ab1.jpg",
@@ -116,7 +139,15 @@ export function AlternatingImagesSection() {
                     <img
                       src={item.image || "/images/mm.jpg"}
                       alt={item.title}
-                      className={`w-full h-full object-cover transition-all duration-700 ${
+                      className={`hidden md:block w-full h-full object-cover transition-all duration-700 ${
+                        isHovered ? "scale-110 brightness-110" : "scale-100"
+                      }`}
+                    />
+
+                    <img
+                      src={item.mobileImage || "/images/mm.jpg"}
+                      alt={`${item.title} mobile`}
+                      className={`block md:hidden w-full h-full object-cover transition-all duration-700 ${
                         isHovered ? "scale-110 brightness-110" : "scale-100"
                       }`}
                     />
