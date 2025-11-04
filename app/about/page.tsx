@@ -47,7 +47,7 @@ vulnerability. Brings lived-in truth to every scene.`,
     {
       name: "Sai Kumar",
       role: "Editor",
-      image: "/images/saik1.jpg",
+      image: "/images/Saik1.jpg",
       bio: `Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.
 Keeper of alt takes and late-night coffee.`,
     },
@@ -121,7 +121,7 @@ Keeper of alt takes and late-night coffee.`,
 
           <div className="relative group/image">
             <img
-              src="/images/abti.png"
+              src="/images/about123.jpg"
               alt="Our team at work"
               className="rounded-2xl shadow-2xl transition-all duration-500 group-hover/image:scale-105 group-hover/image:shadow-[0_25px_50px_-12px_rgba(250,204,21,0.35)] cursor-pointer"
             />
