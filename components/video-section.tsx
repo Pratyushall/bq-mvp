@@ -62,7 +62,7 @@ export function VideoSection() {
             }`}
             style={{ fontFamily: "var(--font-cormorant)" }}
           >
-            it is simple
+            IT IS SIMPLE
           </p>
 
           <p
@@ -73,7 +73,8 @@ export function VideoSection() {
             }`}
             style={{ fontFamily: "var(--font-cormorant)" }}
           >
-            to tell stories that feel like your own, that stay with you forever.
+            Fueling creativity with bold visuals and redefining stories that
+            push the boundaries of story telling
           </p>
         </div>
       </div>

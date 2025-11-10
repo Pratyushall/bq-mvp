@@ -87,9 +87,14 @@ Keeper of alt takes and late-night coffee.`,
             Who We Are
           </h1>
           <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed transition-all duration-500 group-hover:text-foreground">
-            We are a passionate team of filmmakers, storytellers, and creative
-            professionals dedicated to bringing your vision to life through the
-            power of visual storytelling.
+            Balqony sitralu erupted from the thought of democratisation of film
+            making. With ever changing scape of film and media and rapid
+            audiance evolvement, story telling has surpased both the viewer and
+            maker expectations. At Balqony, we collaborate with open mindedness
+            and churn a mundane evening Balqony banters into life changing
+            visuals. Sailing on the ships of film making and digital media
+            space, we aim to collect and craft stories. We yapp out the voices
+            of independant artists loud and clear.
           </p>
         </div>
       </section>
@@ -179,7 +184,6 @@ Keeper of alt takes and late-night coffee.`,
         </div>
       </section>
 
-      {/* Dialog (portrait image) */}
       {openMember && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { Instagram, Youtube } from "lucide-react";
+import { Instagram, Youtube, Twitter, Facebook } from "lucide-react";
 
 export default function ScrollFooter() {
   const ref = useRef<HTMLElement | null>(null);
@@ -37,19 +37,19 @@ export default function ScrollFooter() {
         ref={ref}
         className="fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-t border-yellow-400/20"
       >
-        <div className="max-w-7xl mx-auto px-8 py-6 flex items-center justify-between text-base text-gray-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-6 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-0 text-base text-gray-300">
           {/* Brand */}
           <Link
             href="/"
-            className="text-yellow-400 font-semibold text-xl hover:text-yellow-300 transition-colors duration-300"
+            className="text-yellow-400 font-semibold text-lg sm:text-xl hover:text-yellow-300 transition-colors duration-300 uppercase"
           >
             Balqony Sitralu
           </Link>
 
-          {/* Right cluster: social + contact + copyright */}
-          <div className="flex items-center gap-8">
+          {/* Right cluster: social + contact */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
             {/* Socials */}
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4 sm:gap-6">
               <a
                 href="https://www.instagram.com/balqony_sitralu"
                 target="_blank"
@@ -57,7 +57,7 @@ export default function ScrollFooter() {
                 className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
                 aria-label="Instagram"
               >
-                <Instagram className="w-7 h-7" />
+                <Instagram className="w-6 h-6 sm:w-7 sm:h-7" />
               </a>
               <a
                 href="https://www.youtube.com/@BalQonySitralu"
@@ -66,21 +66,36 @@ export default function ScrollFooter() {
                 className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
                 aria-label="YouTube"
               >
-                <Youtube className="w-7 h-7" />
+                <Youtube className="w-6 h-6 sm:w-7 sm:h-7" />
+              </a>
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
+                aria-label="Twitter"
+              >
+                <Twitter className="w-6 h-6 sm:w-7 sm:h-7" />
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-yellow-400 transition-transform duration-300 hover:scale-125 hover:-translate-y-0.5"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-6 h-6 sm:w-7 sm:h-7" />
               </a>
             </div>
 
             {/* Contact button -> route to /contact */}
             <Link
               href="/contact"
-              className="px-5 py-2 text-base rounded-full bg-yellow-400 text-black font-semibold ring-1 ring-yellow-300/70 hover:bg-yellow-300 transition animate-contact-pulse"
+              className="px-4 sm:px-5 py-2 text-sm sm:text-base rounded-full bg-yellow-400 text-black font-semibold ring-1 ring-yellow-300/70 hover:bg-yellow-300 transition animate-contact-pulse uppercase"
               aria-label="Go to Contact page"
             >
               Contact Us
             </Link>
-
-            {/* Copyright */}
-            <span className="text-sm text-gray-500">© Balqony Sitralu</span>
           </div>
         </div>
       </footer>

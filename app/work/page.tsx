@@ -42,7 +42,7 @@ const projects: Project[] = [
   {
     id: 1,
     title: "Corporate Advertisements",
-    client: "Client - Aegon",
+    client: "Aegon",
     category: "Corporate",
     year: "",
     description:
@@ -54,11 +54,12 @@ const projects: Project[] = [
   },
   {
     id: 2,
-    title: "BTC - Behind The Card",
-    client: "Balqony Sitralu",
+    title: "BalQony Originals - Documentaries",
+    client: "BTC - Behind The Card",
     category: "Documentary",
     year: "",
-    description: "A documentary.",
+    description:
+      "A cinematic documentary of the Telugu film industry, seen through the eyes of a humble light man. Discover the untold stories that shine behind the spotlight, where passion meets perseverance.",
     image: "/images/btc.png",
     videoUrl: "https://www.youtube.com/watch?v=xlIpoJ15Pb0",
     snippetSrc: "/videos/btcv.mp4",
@@ -67,11 +68,12 @@ const projects: Project[] = [
   },
   {
     id: 3,
-    title: "Ee Sannivesham",
-    client: "Independent Artist",
+    title: "BalQony Originals - Music Videos",
+    client: "Ee Sannivesham",
     category: "Music Video",
     year: "",
-    description: "A Telugu music video.",
+    description:
+      "Capturing the rhythm of independence, we craft cinematic visuals that bring independent songs to life. Collaborating with songwriters and rappers, we turn raw creativity into powerful visual stories.",
     image: "/images/es.png",
     videoUrl: "https://www.youtube.com/watch?v=Q0aZd371bPs",
     snippetSrc: "/videos/eesanv.mp4",
@@ -80,21 +82,21 @@ const projects: Project[] = [
   },
   {
     id: 4,
-    title: "BalQony Originals",
-    client: "Podcasts",
+    title: "Podcasts",
+    client: "BalQony Originals",
     category: "Social Media",
     year: "",
     description:
-      "Snackable vertical edits from long-form conversations—studio-lit frames, animated captions, rhythmic cuts for Reels & Shorts.",
+      "We create podcast videos that feel real capturing authentic conversations, emotions, and stories that connect deeply with your audience.",
     image: "/images/bqk.png",
-    videoUrl: "https://www.youtube.com/watch?v=tEEiIUJlo_U",
+    videoUrl: "https://www.youtube.com/@OfficialGayathriGuptha77",
     snippetSrc: "/videos/podcastv.mp4",
     tags: ["Social Media", "Vertical", "Captions"],
   },
   {
     id: 5,
     title: "Commercials",
-    client: "Client - Indi Rooted",
+    client: "Indi Rooted",
     category: "Commercial",
     year: "",
     description:
@@ -107,14 +109,14 @@ const projects: Project[] = [
   },
   {
     id: 6,
-    title: "BalQony Shorts",
-    client: "Aksharabhyasam",
+    title: "BalQony Originals - Shorts",
+    client: "Aksharabhyasam - A Short Feature",
     category: "Short Film",
     year: "",
     description:
-      "Coverage of the traditional 'Akshabhyasam' ceremony—first letters, blessings, candid family moments. Multi-cam, clean audio, elegant grade.",
+      "Forged in the shadows of ambition and betrayal; BalQony Sitralu crafts gritty, cinematic  films that embody the essence of gangster drama. In collaboration with independent filmmakers, we bring raw street stories to life with style, suave, and soul.",
     image: "/images/aksh.png",
-    videoUrl: "https://vimeo.com/845898106",
+    videoUrl: "https://vimeo.com/1131730382",
     snippetSrc: "/videos/abv.mp4",
     tags: ["Short Film"],
   },
@@ -491,10 +493,9 @@ export default function WorkPage() {
         </div>
       </section>
 
-      {/* Modal */}
       {selectedProject && (
         <div
-          className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 animate-in fade-in duration-300"
+          className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 animate-in fade-in duration-300"
           onClick={() => setSelectedProject(null)}
         >
           <div
@@ -503,7 +504,7 @@ export default function WorkPage() {
           >
             <CloseButton onClick={() => setSelectedProject(null)} />
 
-            <div className="max-h-[85vh] overflow-y-auto rounded-2xl">
+            <div className="max-h-[85vh] overflow-y-auto rounded-2xl pb-24">
               <div className="relative group">
                 {getYouTubeId(selectedProject.videoUrl) ? (
                   <YouTubeFrame
@@ -566,7 +567,9 @@ export default function WorkPage() {
                     rel="noopener noreferrer"
                   >
                     <Play className="h-5 w-5" />
-                    Watch Full Video
+                    {selectedProject.id === 2
+                      ? "Watch Trailer"
+                      : "Watch Full Video"}
                   </a>
 
                   {selectedProject.category === "Commercial" && (
@@ -588,10 +591,9 @@ export default function WorkPage() {
         </div>
       )}
 
-      {/* Gallery Modal */}
       {isGalleryOpen && (
         <div
-          className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center overflow-y-auto"
+          className="fixed inset-0 bg-black/95 z-[100] flex items-center justify-center overflow-y-auto"
           onClick={() => setIsGalleryOpen(false)}
           onKeyDown={handleKeyDown}
           tabIndex={0}

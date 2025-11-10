@@ -44,7 +44,7 @@ const imageContent: ImageContentItem[] = [
   {
     id: 1,
     image: "/images/hp4.png", // Desktop: 1920x1080px recommended
-    mobileImage: "/hyderabad-nights-mobile-poster.jpg", // Mobile: 1080x1920px recommended
+    mobileImage: "/images/hnmob.jpg", // Mobile: 1080x1920px recommended
     title: "Hyderabad Nights - A Feature Film",
     description: "",
     expandedImage: "/images/hnp1.jpg",
@@ -55,7 +55,7 @@ const imageContent: ImageContentItem[] = [
   {
     id: 2,
     image: "/images/akb.png", // Desktop: 1920x1080px recommended
-    mobileImage: "/aksharabhyasam-mobile-poster.jpg", // Mobile: 1080x1920px recommended
+    mobileImage: "/images/akshmob.jpg", // Mobile: 1080x1920px recommended
     title: "Aksharabhyasam",
     description: "",
     expandedImage: "/images/ab1.jpg",
@@ -153,17 +153,6 @@ export function AlternatingImagesSection() {
                     />
 
                     {/* Subtle texture overlay on hover */}
-                    <div
-                      className={`absolute inset-0 transition-all duration-500 ${
-                        isHovered ? "opacity-30" : "opacity-0"
-                      }`}
-                    >
-                      <img
-                        src="/images/mm.jpg"
-                        alt="Overlay pattern"
-                        className="w-full h-full object-cover mix-blend-overlay"
-                      />
-                    </div>
 
                     {/* Dark vignette */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />

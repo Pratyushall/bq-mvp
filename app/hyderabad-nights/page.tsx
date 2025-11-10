@@ -1,11 +1,10 @@
 "use client";
 
 import { Navigation } from "@/components/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function HyderabadNightsPage() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
-  const [hasAutoOpened, setHasAutoOpened] = useState(false);
 
   const filmScenes = [
     {
@@ -49,14 +48,6 @@ export default function HyderabadNightsPage() {
   const heroImage = "/images/hnpd.jpg"; // Desktop: 1920x1080px (16:9 landscape)
   const mobileHeroImage = "/images/hnpd-mobile.jpg"; // Mobile: 1080x1920px (9:16 portrait)
 
-  useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    if (isMobile && !hasAutoOpened) {
-      setSelectedImage(0);
-      setHasAutoOpened(true);
-    }
-  }, [hasAutoOpened]);
-
   const openModal = (index: number) => setSelectedImage(index);
   const closeModal = () => setSelectedImage(null);
   const nextImage = () =>
@@ -72,30 +63,41 @@ export default function HyderabadNightsPage() {
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       <Navigation />
 
-      <div className="relative h-[100svh] w-screen overflow-hidden">
+      <div
+        className="relative h-[100svh] w-screen overflow-hidden cursor-pointer group"
+        onClick={() => openModal(0)}
+      >
         {/* Desktop hero image */}
         <img
           src={
             heroImage ||
             "/placeholder.svg?height=1080&width=1920&query=Hyderabad Nights hero desktop" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
             "/placeholder.svg"
           }
           alt="Hyderabad Nights Hero"
           loading="eager"
           decoding="async"
-          className="hidden md:block absolute inset-0 w-full h-full object-cover origin-center transform-gpu scale-[0.9]"
+          className="hidden md:block absolute inset-0 w-full h-full object-cover origin-center transform-gpu scale-[0.9] group-hover:brightness-110 transition-all duration-500"
         />
-        {/* Mobile hero image */}
+        {/* Mobile hero image - Opens slideshow on click instead of auto-opening */}
         <img
           src={
             mobileHeroImage ||
             "/placeholder.svg?height=1920&width=1080&query=Hyderabad Nights hero mobile portrait" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
+            "/placeholder.svg" ||
             "/placeholder.svg"
           }
           alt="Hyderabad Nights Hero Mobile"
           loading="eager"
           decoding="async"
-          className="md:hidden absolute inset-0 w-full h-full object-cover origin-center transform-gpu scale-[0.9]"
+          className="md:hidden absolute inset-0 w-full h-full object-cover origin-center transform-gpu scale-[0.9] group-hover:brightness-110 transition-all duration-500"
         />
       </div>
 
@@ -134,11 +136,6 @@ export default function HyderabadNightsPage() {
 
                 {/* Subtle hover ring */}
                 <div className="pointer-events-none absolute inset-0 rounded-2xl border border-transparent group-hover:border-foreground/30 transition-all duration-500" />
-
-                {/* Scene number */}
-                <div className="absolute top-8 right-8 w-12 h-12 bg-black/60 rounded-full flex items-center justify-center text-white/90 font-bold text-lg opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  {i + 1}
-                </div>
               </div>
             ))}
           </div>

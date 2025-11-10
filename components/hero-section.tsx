@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Libre_Baskerville as Libertinus_Keyboard } from "next/font/google";
-import { Play, Pause, Volume2, VolumeX, ArrowRight } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 
 const libertinusKeyboard = Libertinus_Keyboard({
   subsets: ["latin"],
@@ -65,7 +65,7 @@ export function HeroSection() {
     } catch {
       // no-op if PiP not supported
     }
-    router.push("/hyderabad-nights");
+    router.push("/work"); // <-- route to Work page
   };
 
   return (
@@ -98,9 +98,9 @@ export function HeroSection() {
         aria-hidden
       >
         <div
-          className={`${libertinusKeyboard.className} text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold italic animate-slide-in-from-left`}
+          className={`${libertinusKeyboard.className} text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold animate-slide-in-from-left`}
         >
-          Make Stories That <span className="italic font-bold">Move</span>
+          Make stories that <span className="italic font-bold">Move.</span>
         </div>
       </div>
 
@@ -135,13 +135,13 @@ export function HeroSection() {
         <button
           onClick={goToWork}
           className="group relative flex items-center gap-2 rounded-full bg-black/30 px-6 py-3 text-white border-2 border-yellow-400 backdrop-blur transition-all duration-300 hover:bg-black/50 hover:shadow-[0_0_20px_rgba(250,204,21,0.5),0_0_40px_rgba(250,204,21,0.3)] cursor-pointer"
+          aria-label="View our work"
         >
           <span
             className={`${libertinusKeyboard.className} text-sm md:text-base`}
           >
             View Our Work
           </span>
-          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </button>
       </div>
 
@@ -157,8 +157,12 @@ export function HeroSection() {
           }
         }
         .animate-slide-in-from-left {
-          animation: slideInFromLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          /* Increased animation duration from 1.2s to 2.5s for slower slide */
+          animation: slideInFromLeft 2.5s cubic-bezier(0.16, 1, 0.3, 1) 3s
+            forwards;
           will-change: transform, opacity;
+          opacity: 0;
+          transform: translateX(-100%);
         }
       `}</style>
     </section>
