@@ -85,7 +85,7 @@ vulnerability. Brings lived-in truth to every scene.`,
     {
       name: "Sai Kumar",
       role: "Editor",
-      image: "/images/Saikumar.jpeg",
+      image: "/images/saikumar.jpeg",
       bio: `Cuts for rhythm first—then story, then style. Lives between sound design and eye-trace.
 Keeper of alt takes and late-night coffee.`,
     },
